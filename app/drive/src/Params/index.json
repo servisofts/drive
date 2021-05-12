@@ -1,0 +1,11 @@
+{
+    "socket": {
+        "name": "drive"
+    },
+    "storage": {
+        "urlLog": "proyecto_usuarioLog",
+        "deviceKey": "proyecto_deviceKey",
+        "fbtoken": "FIREBASE_TOKEN"
+    },
+    "urlImages":"http://192.168.0.199:30017/"
+}
