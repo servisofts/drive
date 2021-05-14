@@ -42,8 +42,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.scrollView}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <BarraDeDesconeccion socketName={AppParams.socket.name} color={"#000000"} />
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}  backgroundColor={"#eee"}/>
+        <BarraDeDesconeccion socketName={AppParams.socket.name} color={"#000000"} visible={false} />
         <Container />
       </SafeAreaView>
     </Provider>
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: '100%',
     flex: 1,
+    backgroundColor: "#000"
   },
   container: {
     flex: 1,

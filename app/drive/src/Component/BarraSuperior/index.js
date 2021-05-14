@@ -13,7 +13,7 @@ export default class BarraSuperior extends Component {
     startAnimation() {
         Animated.timing(this.state.anim, {
             toValue: 100,
-            duration: 1000,
+            duration: !this.props.duration ? 1000 : this.props.duration,
         }).start();
     }
     componentDidMount() {
@@ -46,10 +46,13 @@ export default class BarraSuperior extends Component {
                         justifyContent: "center",
                         alignItems: "center",
                     }} activeOpacity={0.9} onPress={this.props.goBack}>
-                        <Text style={{
-                            color: "#fff",
-                            fontSize: 12,
-                        }}>{!this.props.goBack?"":"Atras"}</Text>
+                        {!this.props.goBack ? <View /> : <Svg resource={require('../../img/arrow.svg')}
+                            style={{
+                                width: "50%",
+                                height: "50%",
+                                fill: "#fff"
+                            }} />}
+
                     </TouchableOpacity>
                     <View style={{
                         flex: 1,

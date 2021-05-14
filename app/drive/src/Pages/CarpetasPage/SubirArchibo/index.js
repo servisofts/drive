@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import * as SFileImput from '../../../Component/SFileImput';
 import { connect } from 'react-redux';
+import Svg from '../../../Svg';
 
 class SubirArchibo extends Component {
     constructor(props) {
@@ -14,10 +15,11 @@ class SubirArchibo extends Component {
         return (
             <TouchableOpacity style={{
                 margin: 4,
-                width: 120,
+                width: 45,
                 height: 35,
-                borderWidth: 1,
-                borderRadius: 8,
+                // borderWidth: 1, 
+                // borderRadius: 8,
+                // backgroundColor:"#000",
                 borderColor: "#ddd",
                 justifyContent: "center",
                 alignItems: "center"
@@ -26,6 +28,7 @@ class SubirArchibo extends Component {
                     component: "file",
                     type: "subir",
                     estado: "cargando",
+                    path: this.props.state.fileReducer.routes
                     // key: this.data.key
                 }, (resp) => {
                     // fetch(urlImage);
@@ -33,11 +36,16 @@ class SubirArchibo extends Component {
                     // this.props.dispatch(obj)
                 });
             }}>
-                <Text style={{
+                <Svg resource={require('../../../img/upload_1.svg')} style={{
+                    width: "100%",
+                    height: "100%",
+                }} />
+                {/* <Text style={{
+                    fontSize:10,    
                     color: "#aaa",
                     fontWeight: "bold",
                     textAlign: "center"
-                }}> Subir archibo </Text>
+                }}> Subir archibo </Text> */}
             </TouchableOpacity>
         );
     }

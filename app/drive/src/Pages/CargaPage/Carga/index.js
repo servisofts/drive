@@ -36,10 +36,10 @@ const Carga = (props) => {
             return "Buscando usuario...";
         } else {
             if (!props.state.usuarioReducer.usuarioLog) {
-                props.navigation.replace("InicioPage");
+                props.navigation.replace("LoginPage");
                 ///no hay usuario
             } else {
-                props.navigation.replace("InicioPage");
+                props.navigation.replace("CarpetasPage");
                 ///existe usuario
             }
         }
@@ -50,9 +50,9 @@ const Carga = (props) => {
         setMensaje(mensajeTemp);
         return <View />;
     }
-    new SThread(3000,"hiloVerificarEntrada").start(() => {
+    new SThread(3000, "hiloVerificarEntrada").start(() => {
         // props.navigation.replace("LoginPage");
-        props.navigation.replace("InicioPage"); 
+        props.navigation.replace("CarpetasPage");
     })
     return (
         <View style={{

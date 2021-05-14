@@ -19,10 +19,31 @@ body {
 }
 /* These styles disable body scrolling if you are using <ScrollView> */
 body {
-  overflow: hidden;
+  max-height: "100vh";
+  /* overflow: hidden; */
 }
 /* These styles make the root element full-height */
 #root {
   display: flex;
   height: 100%;
+}
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+div::-webkit-scrollbar {
+  width: 8px;               /* width of the entire scrollbar */
+  height: 8px;
+}
+
+div::-webkit-scrollbar-track {
+  background: #333;        /* color of the tracking area */
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color:#666;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
 }

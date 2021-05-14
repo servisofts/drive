@@ -4,6 +4,9 @@ import BarraSuperior from '../../Component/BarraSuperior';
 import SubirArchibo from './SubirArchibo';
 import NuevaCarpeta from './NuevaCarpeta';
 import ArchibosContainer from './ArchibosContainer';
+import RoutePath from './RoutePath';
+import BackPath from './BackPath';
+import TopBar from './TopBar';
 
 export default class CarpetasPage extends Component {
     static navigationOptions = {
@@ -20,21 +23,9 @@ export default class CarpetasPage extends Component {
             <View style={{
                 flex: 1,
             }}>
-                <BarraSuperior title={"Drive."} goBack={() => {
-                    this.props.navigation.goBack();
-                }} />
-                <View style={{
-                    width: "100%",
-                    height: 40,
-                    flexDirection: "row"
-                }}>
-                    <SubirArchibo />
-                    <NuevaCarpeta />
-                </View>
-                <ArchibosContainer>
-
-                </ArchibosContainer>
-
+                <BarraSuperior title={"Drive."} />
+                <TopBar />
+                <ArchibosContainer {...this.props} />
             </View>
         );
     }

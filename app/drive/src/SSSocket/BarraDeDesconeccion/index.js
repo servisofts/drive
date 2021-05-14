@@ -78,14 +78,15 @@ const BarraDeDesconeccion = (props) => {
         )
     }
     const HacerPing = async () => {
+        var time = 1000 * 60;
         var curTime = new Date().getTime();
-        if (curTime - lastPing > 5000) {
+        if (curTime - lastPing > time) {
             lastPing = new Date().getTime();
             SessionActual.ping();
         }
         setCurtPing(lastPing);
 
-        await delay(5000);
+        await delay(time);
         HacerPing();
     };
 
@@ -99,10 +100,13 @@ const BarraDeDesconeccion = (props) => {
 
     }
     var heightBar = Dimensions.get("window").height * 0.035;
+    if (!props.visible) {
+        return <View />
+    }
     return (
         <>
             <View style={{
-                backgroundColor:"#000",
+                backgroundColor: "#000",
                 height: heightBar,
             }}>
             </View>
@@ -128,8 +132,8 @@ const BarraDeDesconeccion = (props) => {
                     width: "100%",
                     position: Platform.OS == "web" ? "fixed" : "absolute",
                     // position: "absolute",
-                    top:0,
-                    left:0,
+                    top: 0,
+                    left: 0,
                     elevation: 99,
                     zIndex: 9999,
                     overflow: "hidden",

@@ -1,6 +1,7 @@
 const initialState = {
     estado: "Not Found",
-    data:false
+    data: false,
+    routes: []
 }
 
 export default (state, action) => {
@@ -19,6 +20,12 @@ export default (state, action) => {
             case "getAll":
                 getAll(state, action);
                 break;
+            case "moveFolder":
+                moveFolder(state, action);
+                break;
+            case "backFolder":
+                backFolder(state, action);
+                break;
             case "anular":
                 anular(state, action);
                 break;
@@ -34,7 +41,22 @@ const registro = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
         if (state.data) {
-            state.data[action.data.key] = action.data;
+            if (action.path.length > 0) {
+                var curData = state;
+                action.path.map((obj, key) => {
+                    if (curData) {
+                        curData = curData.data[obj.key];
+                        if (!curData.data) {
+                            curData.data = {}
+                        }
+                    }
+                })
+                if (curData) {
+                    curData.data[action.data.key] = action.data;
+                }
+            } else {
+                state.data[action.data.key] = action.data;
+            }
         }
         state.lastRegister = action.data;
     }
@@ -43,7 +65,22 @@ const subir = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
         if (state.data) {
-            state.data[action.data.key] = action.data;
+            if (action.path.length > 0) {
+                var curData = state;
+                action.path.map((obj, key) => {
+                    if (curData) {
+                        curData = curData.data[obj.key];
+                        if (!curData.data) {
+                            curData.data = {}
+                        }
+                    }
+                })
+                if (curData) {
+                    curData.data[action.data.key] = action.data;
+                }
+            } else {
+                state.data[action.data.key] = action.data;
+            }
         }
         state.lastRegister = action.data;
     }
@@ -52,7 +89,22 @@ const editar = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
         if (state.data) {
-            state.data[action.data.key] = action.data;
+            if (action.path.length > 0) {
+                var curData = state;
+                action.path.map((obj, key) => {
+                    if (curData) {
+                        curData = curData.data[obj.key];
+                        if (!curData.data) {
+                            curData.data = {}
+                        }
+                    }
+                })
+                if (curData) {
+                    curData.data[action.data.key] = action.data;
+                }
+            } else {
+                state.data[action.data.key] = action.data;
+            }
         }
         state.lastEdit = action.data;
     }
@@ -60,7 +112,37 @@ const editar = (state, action) => {
 const getAll = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
-        state.data = action.data;
+        if (action.path) {
+            var curData = state;
+            action.path.map((obj, key) => {
+                if (curData) {
+                    curData = curData.data[obj.key];
+                    if (!curData.data) {
+                        curData.data = {}
+                    }
+                }
+            })
+            if (action.data) {
+                curData.data = action.data;
+            } else {
+                curData.data = {};
+            }
+        } else {
+            state.data = action.data;
+        }
+    }
+}
+const moveFolder = (state, action) => {
+    if (state.routes[state.routes.length - 1]) {
+        if (state.routes[state.routes.length - 1].key == action.data.key) {
+            return;
+        }
+    }
+    state.routes.push(action.data);
+}
+const backFolder = (state, action) => {
+    if (state.routes.length > 0) {
+        state.routes = state.routes.slice(0, state.routes.length - 1)
     }
 }
 

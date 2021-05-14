@@ -6,4 +6,7 @@ const SImage = (props) => {
         <Image {...props} />
     );
 }
+SImage.prototype = {
+    source: String
+}
 export default SImage;

@@ -3,6 +3,7 @@ import InicioPage from './InicioPage'
 import LoginPage from './LoginPage'
 
 import CarpetasPage from './CarpetasPage'
+import FilePerfil from './FilePerfil'
 
 import LobyPage from './LobyPage'
 import LobyTecnologiasPage from './LobyTecnologiasPage'
@@ -24,6 +25,7 @@ export const getPages =() => {
         InicioPage,
         UsuarioPage,
         UsuarioRegistroPage,
-        CarpetasPage
+        CarpetasPage,
+        FilePerfil
     }
 }

@@ -1,7 +1,7 @@
 import { AsyncStorage, Platform } from 'react-native';
 import AppParams from '../../../Params/index.json'
 import TcpSocket from 'react-native-tcp-socket';
-var DEBUG = true;
+var DEBUG = false;
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 class SessionMobile {
