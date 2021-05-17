@@ -10,7 +10,7 @@ export default class BackgroundImage extends Component<type> {
         this.state = {
         };
     }
-    render() {
+    getBackground = () => {
         if (!this.props.source) {
             return <View />
         }
@@ -35,11 +35,17 @@ export default class BackgroundImage extends Component<type> {
                 top: 0,
                 left: 0,
                 position: "absolute",
-                backgroundColor: "#000000",
-                opacity:(0.8 + (Platform.OS == "web" ? -0.3 : 0)),
+                opacity: (0.7 + (Platform.OS == "web" ? -0.2 : 0)),
+                backgroundColor: "#000000"
             }}>
 
             </View>
         </View>
+    }
+    render() {
+        if (!this.props.source) {
+            return <View />
+        }
+        return this.getBackground()
     }
 }

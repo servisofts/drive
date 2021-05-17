@@ -76,10 +76,14 @@ const subir = (state, action) => {
                     }
                 })
                 if (curData) {
-                    curData.data[action.data.key] = action.data;
+                    action.data.map((obj) => {
+                        curData.data[obj.key] = obj;
+                    })
                 }
             } else {
-                state.data[action.data.key] = action.data;
+                action.data.map((obj) => {
+                    state.data[obj.key] = obj;
+                })
             }
         }
         state.lastRegister = action.data;
@@ -101,9 +105,15 @@ const editar = (state, action) => {
                 })
                 if (curData) {
                     curData.data[action.data.key] = action.data;
+                    if(curData.data[action.data.key].estado == 0){
+                        delete curData.data[action.data.key];
+                    }
                 }
             } else {
                 state.data[action.data.key] = action.data;
+                if(state.data[action.data.key].estado == 0){
+                    delete state.data[action.data.key];
+                }
             }
         }
         state.lastEdit = action.data;
@@ -138,7 +148,9 @@ const moveFolder = (state, action) => {
             return;
         }
     }
-    state.routes.push(action.data);
+    var objPath = { ...action.data };
+    delete objPath["data"];
+    state.routes.push(objPath);
 }
 const backFolder = (state, action) => {
     if (state.routes.length > 0) {

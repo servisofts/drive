@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Animated, PanResponder, Platform, TouchableOpacity, TextInput, Linking, Dimensions } from 'react-native';
-import SImage from '../../../../Component/SImage';
+import { View, Text, Animated, PanResponder, Platform, TouchableOpacity, TextInput, Linking, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import TouchableDouble from '../../../../Component/TouchableDouble';
 import AppParams from '../../../../Params';
 import Svg from '../../../../Svg';
-import FilePreview from '../FilePreview';
+import FilePreview from '../../FilePreview';
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 export default class FileDrag extends Component {
@@ -14,129 +13,128 @@ export default class FileDrag extends Component {
             isEdit: false,
             isLive: true,
             select: 0,
-            scale: this.props.scale,
             panActive: true,
-            url: AppParams.urlImages + this.props.obj.key,
+            // url: ,
             pan: new Animated.ValueXY({ x: props.position.x, y: props.position.y }),
             curpost: { x: (props.position.x / this.props.scale), y: (props.position.y / this.props.scale) }
         }
 
+        this.timePanIn = new Date().getTime();
         this.parametros = {
             useNativeDriver: (Platform.OS != "web"),
         }
+
         this.createPam();
     }
+
     verPerfil = async (url) => {
 
         await delay(300)
         this.props.navigation.navigate("FilePerfil", this.props.obj);
     }
-    move(data) {
-        Animated.timing(this.state.pan, {
-            toValue: { x: data.x, y: data.y },
-            duration: 100,
-            useNativeDriver: this.parametros.useNativeDriver
-        }).start(() => {
-        });
-    }
+
     unSelect() {
+
         this.state.select = 0;
         this.state.isEdit = false;
+        if (!this.state.isEdit) {
+            if (this.newName && this.newName != this.props.obj.descripcion) {
+                this.props.obj.descripcion = this.newName;
+                this.props.editarNombre(this.props.obj);
+            }
+        }
         this.setState({ ...this.state });
     }
     createPam() {
         this.panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (evt, gestureState) => ((gestureState.dx < -1 || gestureState.dx > 1) || (gestureState.dy < 0 || gestureState.dy > 0)),
-            // onMoveShouldSetPanResponder: (evt, gestureState) => false,
+            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx!=0 || gestureState.dy!=0),
+            // onShouldBlockNativeResponder:(evt,gh)=>true,
+            // onMoveShouldSetPanResponder: (evt, gestureState) => true,
             // onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
             onPanResponderGrant: () => {
                 this.lastPosition = {
                     x: this.state.pan.x._value,
                     y: this.state.pan.y._value
                 }
-                this.props.scrollView.setNativeProps({ scrollEnabled: false })
-                this.timePanIn = new Date().getTime();
-                // console.log("enter");
                 this.state.pan.flattenOffset();
                 this.state.pan.setOffset({
                     x: this.state.pan.x._value,
                     y: this.state.pan.y._value
                 });
+                this.props.scrollView.setNativeProps({ scrollEnabled: false })
+                this.timePanIn = new Date().getTime();
+
 
             },
             onPanResponderMove: (evt, gs) => {
-                // this.props.scrollView.scrollTo({ x: 0, y: 0, animated: true })
                 this.state.pan.setValue({ x: gs.dx, y: gs.dy });
             },
             onPanResponderRelease: () => {
                 this.props.scrollView.setNativeProps({ scrollEnabled: true })
-                // Animated.timing(this.state.pan, {
-                //     toValue:  this.lastPosition,
-                //     duration: 100,
-                //     useNativeDriver: this.parametros.useNativeDriver
-                // }).start(() => {
-                // });
-                // Animated.timing(this.state.pan, {
-                //     toValue: { x: 0, y: 0 },
-                //     duration: 100,
-                //     useNativeDriver: this.parametros.useNativeDriver
-                // }).start(() => {
-                //     // this.state.pan.flattenOffset();
-                // });
-                // console.log("x:" + this.state.pan.x._value + " y:" + this.state.pan.y._value)
             },
             onPanResponderEnd: () => {
-
                 this.props.scrollView.setNativeProps({ scrollEnabled: true })
                 this.timePanEnd = new Date().getTime();
                 // console.log("x:" + this.state.pan.x._value + " y:" + this.state.pan.y._value)
                 var time = this.timePanEnd - this.timePanIn;
-                var force = (this.state.pan.x._value + this.state.pan.y._value) / 2 / time;
-
+                var force = (this.state.pan.x._value + this.state.pan.y._value) / 3 / time;
                 if (force > 0.7) {
-                    console.log(force);
+                    // console.log(force);
                     this.state.pan.setValue({ x: 0, y: 0 });
-                    // Animated.timing(this.state.pan, {
-                    //     toValue: { x: 0, y: 0 },
-                    //     duration: 0,
-                    //     useNativeDriver: this.parametros.useNativeDriver
-                    // }).start(() => {
-                    //     this.state.pan.flattenOffset();
-                    // });
+                    this.state.pan.flattenOffset();
+                    return;
                 }
-                this.setState({
-                    curpost: {
-                        x: (this.state.pan.x._value / this.state.scale) + this.state.curpost.x,
-                        y: (this.state.pan.y._value / this.state.scale) + this.state.curpost.y
-                    }
+                this.timePanIn = new Date().getTime();
+
+                var x = (this.state.pan.x._value / this.props.scale) + this.state.curpost.x;
+                var y = (this.state.pan.y._value / this.props.scale) + this.state.curpost.y;
+
+                var limitx = this.props.layoutParent.width / this.props.scale
+                var limity = this.props.layoutParent.height / this.props.scale
+                if (x > limitx || x < 0 || y > limity || y < 0) {
+                    console.log(this.state.curpost);
+                    return;
+                }
+                this.state.curpost = {
+                    x: x,
+                    y: y
+                }
+                this.props.actualizarPosicion({
+                    ...this.props.obj,
+                    posx: this.state.curpost.x,
+                    posy: this.state.curpost.y
                 })
-                // Animated.timing(this.state.pan, {
-                //     toValue: { x: 0, y: 0 },
-                //     duration: 100,
-                //     useNativeDriver: this.parametros.useNativeDriver
-                // }).start(() => {
-                //     this.state.pan.flattenOffset();
-                // });
-                // this.state.pan.flattenOffset();
-                // this.state.position.x=this.state.pan.x._value;
-                // this.state.position.y=this.state.pan.y._value;
-                // this.setState({...this.state});
-                // this.setState({ position: this.state.pan.getLayout() })
-                // this.state.pan.setValue({ x: 0, y: 0 })
-                // this.createPam()
+                this.state.pan.flattenOffset();
+                // this.setState({
+                //     ...this.state
+                // })
             },
+        });
+    }
+    move(data) {
+        this.timePanIn = new Date().getTime();
+        Animated.timing(this.state.pan, {
+            toValue: data,
+            duration: 100,
+            useNativeDriver: this.parametros.useNativeDriver
+        }).start(() => {
+            this.state.pan.setValue(data)
+            this.state.pan.flattenOffset();
+            this.setState({
+                curpost: {
+                    x: this.props.obj.posx,
+                    y: this.props.obj.posy
+                }
+            })
         });
     }
     onPress() {
         if (this.state.select == 0) {
             this.setState({ select: 1 })
-            // Animated.timing(this.state.select, {
-            //     toValue: this.state.select._value == 0 ? 1 : 0,
-            //     duration: 10,
-            //     useNativeDriver: this.parametros.useNativeDriver
-            // }).start(() => { });
         } else {
-            this.setState({ isEdit: !this.state.isEdit })
+            if (!this.state.isEdit) {
+                this.setState({ isEdit: true })
+            }
         }
     }
     getName() {
@@ -144,7 +142,7 @@ export default class FileDrag extends Component {
             return (
                 <TextInput style={{
                     width: "100%",
-                    fontSize: 12 * this.state.scale,
+                    fontSize: 8 * this.props.scale,
                     padding: 0,
                     flex: 1,
                     textAlign: "center",
@@ -165,33 +163,32 @@ export default class FileDrag extends Component {
                 />
             )
         } else {
-
+            var sec = this.props.obj.descripcion;
+            var dicant = 18;
+            if (!this.state.select && sec.length > dicant) {
+                sec = sec.substring(0, dicant).trim() + "..."
+            }
             return (
                 <Text style={{
                     height: "100%",
                     color: "#fff",
-                    fontSize: 12 * this.state.scale,
+                    fontSize: 8 * this.props.scale,
                     textAlign: "center",
-                    padding: 4 * this.state.scale,
                     textAlignVertical: "top",
                     flexWrap: "wrap"
-                }}> {this.props.obj.descripcion.split(".").map((sec, i) => {
-                    if (this.props.obj.descripcion.split(".").length - 1 == 0) {
-                        return sec;
-                    }
-                    if (this.props.obj.descripcion.split(".").length - 1 == i) {
-                        return "";
-                    }
-                    return sec;
-                })}</Text>
+                }
+                }> {sec}</Text >
             )
         }
 
     }
     getPosition() {
         return (
-            <Text style={{ width: "98%", color: "#fff", fontSize: 13*this.state.scale, textAlign: "center", flex: 1, maxHeight: 40 ,position:"absolute"}}>
-                {"x:" + this.state.curpost.x.toFixed(0) + "\ny:" + this.state.curpost.y.toFixed(0)}
+            <Text style={{ width: "100%", color: "#fff", fontSize: 8 * this.props.scale, textAlign: "center", flex: 1, maxHeight: 40, position: "absolute" }}>
+                {"cur x:" + this.state.curpost.x.toFixed(0) + " y:" + this.state.curpost.y.toFixed(0)} {"\n"}
+                {"obj x:" + this.props.obj.posx.toFixed(0) + " y:" + this.props.obj.posy.toFixed(0)}{"\n"}
+                {"pan x:" + (this.state.pan.x._value / this.props.scale).toFixed(0) + " y:" + (this.state.pan.y._value / this.props.scale).toFixed(0)}
+
             </Text>
         )
     }
@@ -206,7 +203,7 @@ export default class FileDrag extends Component {
         )
     }
     getPreview() {
-        return <FilePreview src={this.state.url} obj={this.props.obj} />
+        return <FilePreview src={AppParams.urlImages + this.props.obj.key} obj={this.props.obj} />
     }
     render() {
         if (!this.state.isLive) {
@@ -215,10 +212,14 @@ export default class FileDrag extends Component {
         if (!this.props.obj) {
             return <View />
         }
-        if (!this.state.isEdit) {
-            if (this.newName && this.newName != this.props.obj.descripcion) {
-                this.props.obj.descripcion = this.newName;
-                this.props.editarNombre(this.props.obj);
+        if (
+            (this.props.obj.posx + 0.0).toFixed(0) != this.state.curpost.x.toFixed(0)
+            || (this.props.obj.posy + 0.0).toFixed(0) != this.state.curpost.y.toFixed(0)
+        ) {
+            if (new Date().getTime() - this.timePanIn > 1000) {
+                var post = { x: this.props.obj.posx * this.props.scale, y: this.props.obj.posy * this.props.scale };
+                // console.log(post);
+                this.move(post);
             }
         }
         return (
@@ -226,16 +227,15 @@ export default class FileDrag extends Component {
             <Animated.View
                 {...this.panResponder.panHandlers}
                 style={{
-                    margin: 4,
-                    width: (90 * this.state.scale),
-                    height: (110 * this.state.scale),
+                    width: (90 * this.props.scale),
+                    height: (110 * this.props.scale),
                     position: "absolute",
                     top: 0,
                     left: 0,
                     // borderWidth: 1,
-                    borderRadius: 4 * this.state.scale,
+                    borderRadius: 4 * this.props.scale,
                     // borderColor: "#ddd",
-                    backgroundColor: (this.state.select == 0 ? "#00000000" : "#ffffff66"),
+                    backgroundColor: (this.state.select == 0 ? "#00000000" : "#4444ff88"),
                     transform: [
                         { translateX: this.state.pan.x },
                         { translateY: this.state.pan.y }
@@ -243,35 +243,32 @@ export default class FileDrag extends Component {
                 }} onLayout={(event) => {
                     this.setState({ position: event.nativeEvent.layout })
                 }}>
+
                 <TouchableDouble style={{
                     width: "100%",
                     height: "100%",
                     justifyContent: "center",
                     alignItems: "center",
-                }} onSinglePress={() => {
+                }} onSinglePress={async () => {
                     this.onPress()
-                }} onDoublePress={() => {
+                }} onDoublePress={async () => {
                     // alert(this.props.obj.tipo)
                     if (this.props.obj.tipo == 0) {
                         this.props.moveFolder(this.props.obj);
                     } else {
-                        if (Platform.OS == "web") {
-                            window.open(this.state.url)
-                        } else {
-                            Linking.openURL(this.state.url)
-                        }
+                        this.props.navigation.navigate("DescargaPage", this.props.obj)
                     }
                 }}
-                    onLongPress={() => {
+                    onLongPress={async () => {
                         this.verPerfil()
                     }}
                 >
                     <View style={{
                         width: "90%",
-                        height: 75 * this.state.scale,
-                        marginTop: 4 * this.state.scale,
-                        padding: 4 * this.state.scale,
-                        borderRadius: 8 * this.state.scale,
+                        height: 75 * this.props.scale,
+                        marginTop: 4 * this.props.scale,
+                        padding: 4 * this.props.scale,
+                        borderRadius: 8 * this.props.scale,
                         borderColor: "#ddd",
                         justifyContent: "center",
                         alignItems: "center",

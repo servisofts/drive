@@ -9,3 +9,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root'),
 );
+
+window.onhashchange = function() {
+  //blah blah blah
+  alert("asdas")
+ }

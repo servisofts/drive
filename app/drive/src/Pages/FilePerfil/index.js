@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+
 import BackgroundImage from '../../Component/BackgroundImage';
 import BarraSuperior from '../../Component/BarraSuperior';
-import FilePreview from '../CarpetasPage/ArchibosContainer/FilePreview';
 import AppParams from '../../Params';
 import Svg from '../../Svg';
+import SPopup from '../../Component/SPopup';
+import FilePreview from '../CarpetasPage/FilePreview';
 
-export default class FilePerfil extends Component {
+class FilePerfil extends Component {
 
     static navigationOptions = {
         headerShown: false,
@@ -27,6 +30,29 @@ export default class FilePerfil extends Component {
         return "0 Kb";
     }
     render() {
+        var Select = false;
+        var path = this.props.state.fileReducer.routes;
+        var data = this.props.state.fileReducer.data;
+        if (path.length > 0) {
+
+            path.map((dir, i) => {
+                data = data[dir.key]
+                if (data.data) {
+                    data = data.data;
+                }
+                Select = data;
+            })
+            if (!Select) {
+                return <View />
+            }
+        }else{
+            Select=data;
+        }
+        var curObj = Select[this.state.obj.key];
+        if (!curObj) {
+            this.props.navigation.goBack();
+            return <View />
+        }
 
         return (
             <View style={{
@@ -124,15 +150,17 @@ export default class FilePerfil extends Component {
                                 flexDirection: "row",
                             }}>
                                 <TouchableOpacity style={{
-                                    padding:4,
+                                    padding: 4,
+                                }} onPress={() => {
+                                    this._confirmarEliminar.setObj(this.state.obj)
                                 }}>
                                     <Svg resource={require('../../img/delete.svg')} style={{
                                         width: 50,
-                                        height:"100%",
+                                        height: "100%",
                                     }} />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{
-                                    padding:4,
+                                    padding: 4,
                                 }}>
                                     <Svg resource={require('../../img/shareFolder.svg')} style={{
                                         width: 50,
@@ -140,7 +168,9 @@ export default class FilePerfil extends Component {
                                     }} />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{
-                                    padding:4,
+                                    padding: 4,
+                                }} onPress={()=>{
+                                    this.props.navigation.navigate("DescargaPage", this.state.obj)
                                 }}>
                                     <Svg resource={require('../../img/download.svg')} style={{
                                         width: 50,
@@ -151,7 +181,65 @@ export default class FilePerfil extends Component {
                         </View>
                     </View>
                 </View>
+                <SPopup ref={(ref) => { this._confirmarEliminar = ref }}>
+                    <Text style={{
+                        color: "#fff",
+                        fontSize: 16,
+                        padding: 8,
+                        textAlign: "center",
+                        textAlignVertical: "center"
+                    }}>Esta seguro que desea enviar a papelera?</Text>
+                    <View style={{
+                        width: "100%",
+                        marginTop: 8,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "space-around"
+                        // backgroundColor:"#fff"
+                    }}>
+                        <TouchableOpacity style={{
+                            width: 100,
+                            height: 40,
+                            borderRadius: 8,
+                            backgroundColor: "#ff555588",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }} onPress={() => {
+                            var obj = { ...this.state.obj };
+                            delete obj["data"];
+                            obj.estado = 0;
+                            this.props.state.socketReducer.session[AppParams.socket.name].send({
+                                component: "file",
+                                type: "editar",
+                                data: obj,
+                                path: this.props.state.fileReducer.routes
+                            }, true);
+                            this._confirmarEliminar.setObj(false)
+                        }}>
+                            <Text style={{ color: "#fff" }}>Eliminar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            width: 100,
+                            height: 40,
+                            borderRadius: 8,
+                            backgroundColor: "#ffffff88",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }} onPress={() => {
+                            this._confirmarEliminar.setObj(false)
+                        }}>
+                            <Text style={{ color: "#fff" }}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </SPopup>
             </View>
         );
     }
 }
+
+
+const initStates = (state) => {
+    return { state }
+};
+export default connect(initStates)(FilePerfil);

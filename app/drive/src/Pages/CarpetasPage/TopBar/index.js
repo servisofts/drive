@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import BackPath from '../BackPath';
-import NuevaCarpeta from '../NuevaCarpeta';
-import RoutePath from '../RoutePath';
-import SubirArchibo from '../SubirArchibo';
-import ZoonFile from '../ZoonFile';
+import BackPath from './BackPath';
+import NuevaCarpeta from './NuevaCarpeta';
+import RoutePath from './RoutePath';
+import SubirArchibo from './SubirArchibo';
+import ZoonFile from './ZoonFile';
+import ModoVista from './ModoVista';
 
 export default class TopBar extends Component {
     constructor(props) {
@@ -28,10 +29,13 @@ export default class TopBar extends Component {
                         height: 40,
                     }}>
                     <BackPath />
-                    <RoutePath />
+                    {/* <RoutePath /> */}
                     <SubirArchibo />
                     <NuevaCarpeta />
-                    <ZoonFile/>
+                    <ModoVista {...this.props} vista={"lista"} />
+                    <ModoVista {...this.props} vista={"drag"} />
+                    <ZoonFile {...this.props} val={-0.1} />
+                    <ZoonFile {...this.props} val={0.1} />
 
                 </ScrollView>
             </View>

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ActionButtom from '../../Component/ActionButtom';
 import NaviDrawer from '../../Component/NaviDrawer';
 import STextImput from '../../Component/STextImput';
+import AppParams from '../../Params';
 import Svg from '../../Svg';
 // import RolDeUsuario from './RolDeUsuario';
 var _ref = {};
@@ -66,6 +67,12 @@ class UsuarioRegistroPage extends Component {
         // autoCapitalize: "none",
         style: styleImput
       }),
+      Password: new STextImput({
+        placeholder: "Password",
+        // defaultValue: this.data["Telefono"].dato,
+        // autoCapitalize: "none",
+        style: styleImput
+      }),
     }
   }
   componentDidMount() { // B
@@ -85,6 +92,22 @@ class UsuarioRegistroPage extends Component {
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "editar") {
       this.props.state.usuarioReducer.estado = "";
       this.props.navigation.goBack();
+    }
+
+    if (!this.props.state.cabeceraDatoReducer.data["registro_administrador"]) {
+      if (this.props.state.cabeceraDatoReducer.estado == "cargando") {
+        return <View />
+      }
+      if (this.props.state.cabeceraDatoReducer.estado == "error") {
+        return <View />
+      }
+      this.props.state.socketReducer.session[AppParams.socket.name].send({
+        component: "cabeceraDato",
+        type: "getDatoCabecera",
+        estado: "cargando",
+        cabecera: "registro_administrador"
+      }, true);
+      return <View />
     }
     return (
       <>
@@ -119,38 +142,39 @@ class UsuarioRegistroPage extends Component {
                   if (this.props.state.usuarioReducer.estado == "cargando") {
                     return;
                   }
+                  var cabeceras = this.props.state.cabeceraDatoReducer.data["registro_administrador"];
                   var isValid = true;
                   var objectResult = {};
+                  var arr = [];
+
                   Object.keys(this.imputs).map((key) => {
                     if (this.imputs[key].verify() == false) isValid = false;
                     objectResult[key] = this.imputs[key].getValue();
+                    var dato = false;
+                    cabeceras.map((cabe) => {
+                      if (cabe.dato.descripcion == key) {
+                        dato = cabe;
+                      }
+                    })
+
+                    arr.push({
+                      dato: dato,
+                      data: this.imputs[key].getValue()
+                    })
                   })
-                  // if (isValid) {
-                  //   var object = {};
-                  //   if (!this.data.key) {
-                  //     object = {
-                  //       component: "permisoPage",
-                  //       type: "registro",
-                  //       estado: "cargando",
-                  //       data: {
-                  //         ...objectResult
-                  //       },
-                  //     }
-                  //   } else {
-                  //     object = {
-                  //       component: "permisoPage",
-                  //       type: "editar",
-                  //       estado: "cargando",
-                  //       data: {
-                  //         ...this.data,
-                  //         ...objectResult
-                  //       }
-                  //     }
-                  //   }
-                  //   this.props.state.socketReducer.session["proyecto"].send(object, true);
-                  // }
-                  this.setState({ ...this.state });
-                  return;
+                  if (!isValid) {
+                    this.setState({ ...this.state });
+                    return;
+                  }
+                  var object = {
+                    component: "usuario",
+                    type: "registro",
+                    estado: "cargando",
+                    cabecera: "registro_administrador",
+                    data: arr,
+                  }
+                  // alert(JSON.stringify(object));
+                  this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
                 }}
               />
             </View>

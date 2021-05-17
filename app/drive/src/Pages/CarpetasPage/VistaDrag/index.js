@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, BackHandler, Platform, Dimensions, } from 'react-native';
 import { connect } from 'react-redux';
+import BackgroundImage from '../../../Component/BackgroundImage';
+import DropFileView, { uploadHttp } from '../../../Component/DropFileView';
 import SNestedScrollView from '../../../Component/SNestedScrollView';
 import AppParams from '../../../Params';
 import FileDrag from './FileDrag';
@@ -19,9 +21,9 @@ class ArchibosContainer extends Component {
         super(props);
         var ratio = (Dimensions.get("window").width / Dimensions.get("window").height);
         // var ratio = 0.5;
-        
+
         this.state = {
-            scale: ratio,
+            scale: this.props.scaleGlobal,
         };
     }
     backAction = () => {
@@ -34,6 +36,18 @@ class ArchibosContainer extends Component {
         console.log("ACTION BACK")
         return true;
     };
+
+    actualizarPosicion = (props) => {
+        var object = {
+            component: "file",
+            type: "editar",
+            estado: "cargando",
+            data: props,
+            path: this.props.state.fileReducer.routes
+        }
+        // alert(JSON.stringify(object));
+        this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+    }
     componentDidMount() {
         BackHandler.addEventListener("hardwareBackPress", this.backAction);
     }
@@ -112,6 +126,7 @@ class ArchibosContainer extends Component {
         if (Object.keys(dataFinal).length <= 0) {
             return <View />
         }
+        this.datafinal = dataFinal;
         var size = 110 * this.state.scale;
         var margin = 5 * this.state.scale;
         var i = 0;
@@ -124,21 +139,33 @@ class ArchibosContainer extends Component {
         // console.log(dataFinal)
         return Object.keys(dataFinal).map((key) => {
             var obj = dataFinal[key];
-            if (i % limit == 0) {
-                if (i != 0) {
-                    y += size + margin;
-                }
-                x = margin;
-            } else {
-                x += size;
+
+            // if (i % limit == 0) {
+            //     if (i != 0) {
+            //         y += size + margin;
+            //     }
+            //     x = margin;
+            // } else {
+            //     x += size;
+            // }
+            // i++;
+            // var post = { x: x, y: y };
+
+            // if (obj.posx && obj.posy) {
+            //     post = { x: obj.posx * this.state.scale, y: obj.posy * this.state.scale };
+            // }
+            var post = { x: 0, y: 0 };
+            if (obj.posx && obj.posy) {
+                post = { x: obj.posx * this.state.scale, y: obj.posy * this.state.scale };
             }
-            i++;
+
             return (<FileDrag ref={(ref) => {
                 this._fileDrag[key] = ref;
-            }} obj={obj} position={{ x, y }}
+            }} obj={obj} position={post}
                 editarNombre={(obj) => {
                     this.editarNombre(obj);
                 }}
+                actualizarPosicion={(obj) => { this.actualizarPosicion(obj) }}
                 layoutParent={this.state.dimensiones}
                 scale={this.state.scale}
                 navigation={this.props.navigation}
@@ -157,16 +184,16 @@ class ArchibosContainer extends Component {
     }
     onLayout(event) {
         this.state.dimensiones = event.nativeEvent.layout;
-        var ratio = (Dimensions.get("window").width / Dimensions.get("window").height);
         this.setState({
             dimensiones: this.state.dimensiones,
-            scale: ratio,
+            scale: this.state.scale,
         })
         if (!this.state.dimensiones) {
             return <View />
         }
 
     }
+
     render() {
         return (
             <View style={{
@@ -178,34 +205,69 @@ class ArchibosContainer extends Component {
                     height: "100%",
                     position: "absolute"
                 }}>
+                    <BackgroundImage
+                        source={this.props.bgimage}
+                    />
                     <SNestedScrollView
                         ref={(ref) => { this._scrollView = ref }}
                         style={{
                             //   backgroundColor:"#000"
                         }}
-                        width={800 * this.state.scale}
+                        width={this.props.stateParent.widthContainer * this.state.scale}
                         height={2000 * this.state.scale}
-                        backgroundImage={fondos[5]}
+                        // backgroundImage={fondos[5]}
                         onLayout={(event) => {
                             this.onLayout(event)
                         }}>
 
                         <TouchableWithoutFeedback onPress={() => {
+                            if (!this._fileDrag) {
+                                return <View />
+                            }
                             Object.keys(this._fileDrag).map((key) => {
-                                this._fileDrag[key].unSelect();
+                                var FileDrag = this._fileDrag[key];
+                                if (FileDrag) {
+                                    FileDrag.unSelect();
+                                }
+
                             })
                         }}>
-                            <View style={{
+                            <DropFileView style={{
                                 width: "100%",
                                 height: "100%",
+                                overflow: "hidden",
+                                // backgroundColor: "#00000022",
+                            }} onLayout={this.props.onLayout} onUpload={(files, position) => {
+                                var pos = {
+                                    x: position.x / this.state.scale,
+                                    y: position.y / this.state.scale,
+                                }
+                                var arrPos = [];
+                                for (let i = 0; i < files.files.length; i++) {
+                                    arrPos.push({
+                                        x: pos.x + (i * 10),
+                                        y: pos.y + (i * 10)
+                                    })
+                                }
+                                uploadHttp({
+                                    props: {
+                                        component: "file",
+                                        type: "subir",
+                                        estado: "cargando",
+                                        path: this.props.state.fileReducer.routes,
+                                        positions: arrPos
+                                    }, imput: files,
+                                }, (resp) => {
+
+                                })
                             }}>
                                 {this.getFiles()}
-                            </View>
+                            </DropFileView>
                         </TouchableWithoutFeedback>
 
                     </SNestedScrollView>
                 </View>
-            </View>
+            </View >
         );
     }
 }

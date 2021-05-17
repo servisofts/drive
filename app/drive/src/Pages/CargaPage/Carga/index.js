@@ -39,7 +39,7 @@ const Carga = (props) => {
                 props.navigation.replace("LoginPage");
                 ///no hay usuario
             } else {
-                props.navigation.replace("CarpetasPage");
+                props.navigation.replace("LoginPage");
                 ///existe usuario
             }
         }
@@ -52,7 +52,7 @@ const Carga = (props) => {
     }
     new SThread(3000, "hiloVerificarEntrada").start(() => {
         // props.navigation.replace("LoginPage");
-        props.navigation.replace("CarpetasPage");
+        props.navigation.replace("LoginPage");
     })
     return (
         <View style={{

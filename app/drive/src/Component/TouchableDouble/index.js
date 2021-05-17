@@ -21,8 +21,9 @@ export default class TouchableDouble extends Component<typeProps> {
         onSinglePress: () => { },
         onLongPress: () => { }
     }
+
     verify = async () => {
-        await delay(400)
+        await delay(300)
         if (this.press == 2) {
             this.props.onDoublePress()
         } else {
@@ -34,15 +35,17 @@ export default class TouchableDouble extends Component<typeProps> {
     render() {
         return (
             <TouchableOpacity {...this.props}
-                onLongPress={()=>{
+                activeOpacity={0.7}
+          
+                onLongPress={() => {
                     this.props.onLongPress();
-                }} 
-            onPress={() => {
-                if (this.press == 0) {
-                    this.verify();
-                }
-                this.press += 1;
-            }}>
+                }}
+                onPress={() => {
+                    if (this.press == 0) {
+                        this.verify();
+                    }
+                    this.press += 1;
+                }}>
                 {this.props.children}
             </TouchableOpacity>
         );

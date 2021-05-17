@@ -11,7 +11,7 @@ type Props = {
     porcentInicio: Number,
     duration: Number,
     width: Number,
-    onFinish:Function
+    onFinish: Function
 }
 class ProgressCircle extends Component<Props> {
 
@@ -19,7 +19,7 @@ class ProgressCircle extends Component<Props> {
         super(props);
         props = { ...this.defaultProps, ...props }
         this.state = {
-            dimension: { width: this.props.width, height:this.props.width },
+            dimension: { width: this.props.width, height: this.props.width },
             anim: new Animated.Value(this.props.porcentInicio / 100)
         };
     }
@@ -30,13 +30,16 @@ class ProgressCircle extends Component<Props> {
         porcentInicio: 0,
         duration: 5000,
         width: 100,
-        onFinish:()=>{}
+        onFinish: () => { }
+    }
+    animateTo(value, duration) {
+        Animated.timing(this.state.anim, {
+            toValue: value,
+            duration: !duration ? this.props.duration : duration,
+        }).start(this.props.onFinish);
     }
     componentDidMount() {
-        Animated.timing(this.state.anim, {
-            toValue: 1,
-            duration: this.props.duration,
-        }).start(this.props.onFinish);
+
     }
     render() {
         var scale = this.state.dimension.width - this.props.strokeWidth;
@@ -49,8 +52,11 @@ class ProgressCircle extends Component<Props> {
                 backgroundColor: "#fff",
                 justifyContent: "center",
                 alignItems: "center",
+                transform:[
+                    {rotateZ:"-90deg"}
+                ]
             }}>
-                <Svg width={this.state.dimension.width} height={this.state.dimension.width} fill="transparent" rotation={-90}>
+                <Svg width={this.state.dimension.width} height={this.state.dimension.width} fill="transparent" >
                     <AnimatedCircle
                         cx={this.state.dimension.width / 2}
                         cy={this.state.dimension.width / 2}
@@ -73,7 +79,10 @@ class ProgressCircle extends Component<Props> {
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: 1000,
-                    overflow: "hidden"
+                    overflow: "hidden",
+                    transform:[
+                        {rotateZ:"90deg"}
+                    ]
                 }}>
                     {this.props.children}
                 </View>

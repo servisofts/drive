@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import AppParams from '../../../Params';
-import Svg from '../../../Svg';
+import AppParams from '../../../../Params';
+import Svg from '../../../../Svg';
 
 class BackPath extends Component {
     constructor(props) {
@@ -42,7 +42,7 @@ class BackPath extends Component {
                     estado: "cargando",
                 })
             }}>
-                <Svg resource={require('../../../img/arrow.svg')}
+                <Svg resource={require('../../../../img/arrow.svg')}
                     style={{
                         width: "50%",
                         height: "50%",

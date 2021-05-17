@@ -3,8 +3,8 @@
         "name": "drive"
     },
     "storage": {
-        "urlLog": "proyecto_usuarioLog",
-        "deviceKey": "proyecto_deviceKey",
+        "urlLog": "drive_usuarioLog",
+        "deviceKey": "drive_deviceKey",
         "fbtoken": "FIREBASE_TOKEN"
     },
     "urlImages":"http://192.168.0.199:30017/"

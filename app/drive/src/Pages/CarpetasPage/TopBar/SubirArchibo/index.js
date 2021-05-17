@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import * as SFileImput from '../../../Component/SFileImput';
+import * as SFileImput from '../../../../Component/SFileImput';
 import { connect } from 'react-redux';
-import Svg from '../../../Svg';
+import Svg from '../../../../Svg';
 
-class ZoonFile extends Component {
+class SubirArchibo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +15,7 @@ class ZoonFile extends Component {
         return (
             <TouchableOpacity style={{
                 margin: 4,
-                width: 30,
+                width: 45,
                 height: 35,
                 // borderWidth: 1, 
                 // borderRadius: 8,
@@ -24,9 +24,19 @@ class ZoonFile extends Component {
                 justifyContent: "center",
                 alignItems: "center"
             }} onPress={() => {
-
+                SFileImput.choseFile({
+                    component: "file",
+                    type: "subir",
+                    estado: "cargando",
+                    path: this.props.state.fileReducer.routes
+                    // key: this.data.key
+                }, (resp) => {
+                    // fetch(urlImage);
+                    // var obj= JSON.parse(resp.data);
+                    // this.props.dispatch(obj)
+                });
             }}>
-                <Svg resource={require('../../../img/zoon.svg')} style={{
+                <Svg resource={require('../../../../img/upload_1.svg')} style={{
                     width: "100%",
                     height: "100%",
                 }} />
@@ -43,4 +53,4 @@ class ZoonFile extends Component {
 const initStates = (state) => {
     return { state }
 };
-export default connect(initStates)(ZoonFile);
+export default connect(initStates)(SubirArchibo);

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import * as SFileImput from '../../../Component/SFileImput';
 import { connect } from 'react-redux';
-import Svg from '../../../Svg';
+import Svg from '../../../../Svg';
 
-class SubirArchibo extends Component {
+class ZoonFile extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +14,7 @@ class SubirArchibo extends Component {
         return (
             <TouchableOpacity style={{
                 margin: 4,
-                width: 45,
+                width: 30,
                 height: 35,
                 // borderWidth: 1, 
                 // borderRadius: 8,
@@ -24,22 +23,22 @@ class SubirArchibo extends Component {
                 justifyContent: "center",
                 alignItems: "center"
             }} onPress={() => {
-                SFileImput.choseFile({
-                    component: "file",
-                    type: "subir",
-                    estado: "cargando",
-                    path: this.props.state.fileReducer.routes
-                    // key: this.data.key
-                }, (resp) => {
-                    // fetch(urlImage);
-                    // var obj= JSON.parse(resp.data);
-                    // this.props.dispatch(obj)
-                });
+
+                this.props.zoom(this.props.val);
+                // this.props.navigation.navigate("DescargaPage")
             }}>
-                <Svg resource={require('../../../img/upload_1.svg')} style={{
-                    width: "100%",
-                    height: "100%",
-                }} />
+                {this.props.val > 0 ? (
+                    <Svg resource={require('../../../../img/zoon.svg')} style={{
+                        width: "100%",
+                        height: "100%",
+                    }} />
+                ) : (
+                    <Svg resource={require('../../../../img/zoono.svg')} style={{
+                        width: "100%",
+                        height: "100%",
+                    }} />
+                )}
+
                 {/* <Text style={{
                     fontSize:10,    
                     color: "#aaa",
@@ -53,4 +52,4 @@ class SubirArchibo extends Component {
 const initStates = (state) => {
     return { state }
 };
-export default connect(initStates)(SubirArchibo);
+export default connect(initStates)(ZoonFile);

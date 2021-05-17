@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View, TextInput, Dimensions } from 'react-nativ
 import { connect } from 'react-redux';
 import NaviDrawer from '../../Component/NaviDrawer';
 import STextImput from '../../Component/STextImput';
+import AppParams from '../../Params';
 import Svg from '../../Svg';
 var _ref = {};
 class LoginPage extends Component {
@@ -14,7 +15,7 @@ class LoginPage extends Component {
     this.state = {};
     this.ImputUsuario = new STextImput({
       placeholder: "Usuario",
-      autoCapitalize:"none",
+      autoCapitalize: "none",
       style: {
         width: "80%",
         padding: 8,
@@ -50,7 +51,7 @@ class LoginPage extends Component {
       this.ImputPassword.setError();
     }
     if (this.props.state.usuarioReducer.usuarioLog) {
-      this.props.navigation.replace("InicioPage");
+      this.props.navigation.replace("CarpetasPage");
       return <View />
     }
 
@@ -82,8 +83,8 @@ class LoginPage extends Component {
             justifyContent: 'center',
           }}>
             <Text style={{
-              fontSize:16,
-              fontWeight:"bold",
+              fontSize: 16,
+              fontWeight: "bold",
             }}>Identificarse</Text>
             {this.ImputUsuario.getComponent()}
             {this.ImputPassword.getComponent()}
@@ -139,13 +140,28 @@ class LoginPage extends Component {
                   },
                 }
                 // alert(JSON.stringify(object));
-                this.props.state.socketReducer.session["proyecto"].send(object, true);
+                this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+                // this.props.state.socketReducer.session["proyecto"].send(object, true);
               }
               this.setState({ ...this.state });
               return;
             }}>
               <Text>Iniciar session</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={{
+              width: "40%",
+              padding: 8,
+              height: 50,
+              margin: 8,
+              borderWidth: 2,
+              borderColor: "#999",
+              borderRadius: 8,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }} onPress={() => { this.props.navigation.navigate("UsuarioRegistroPage") }}>
+              <Text>Registro</Text>
+            </TouchableOpacity>
+
           </View>
         </View>
         <NaviDrawer />

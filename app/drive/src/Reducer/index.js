@@ -9,8 +9,10 @@ import rolPermisoReducer from './rolPermisoReducer';
 import usuarioRolReducer from './usuarioRolReducer';
 import usuarioPageReducer from './usuarioPageReducer';
 import fileReducer from './fileReducer';
+import cabeceraDatoReducer from './cabeceraDatoReducer';
 
 export default combineReducers({
+    cabeceraDatoReducer,
     socketReducer,
     usuarioReducer,
     permisoReducer,

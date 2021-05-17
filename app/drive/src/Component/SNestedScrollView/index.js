@@ -36,7 +36,6 @@ export default class SNestedScrollView extends Component<TypeProps> {
             left: 0,
             position: "absolute",
             // opacity: 0.8,
-            // backgroundColor: "#fff",
             ...this.props.style,
         }}>
             <SImage source={this.props.backgroundImage} style={{
@@ -66,6 +65,8 @@ export default class SNestedScrollView extends Component<TypeProps> {
                     height: "100%",
                     // backgroundColor: "#000",
                 }}
+                    // disableScrollViewPanResponder={true}
+                    alwaysBounceHorizontal={false}
                     ref={(ref) => { this._scrollViewH = ref }}
                     horizontal={true}
                     contentContainerStyle={{
@@ -79,6 +80,7 @@ export default class SNestedScrollView extends Component<TypeProps> {
                             width: "100%",
                             height: "100%",
                         }}
+                        // disableScrollViewPanResponder={true}
                         nestedScrollEnabled={true}
                         contentContainerStyle={{
                             width: "100%",
@@ -90,9 +92,10 @@ export default class SNestedScrollView extends Component<TypeProps> {
 
                     >
                         <View style={{
-                            width: this.props.width,
+                            width: this.props.width - (Platform.OS == "web" ? 10 : 0),
                             height: this.props.height,
-                            overflow: "hidden"
+                            overflow: "hidden",
+                            backgroundColor: "#00000022",
                         }} onLayout={this.props.onLayout}>
                             {this.props.children}
                         </View>

@@ -8,15 +8,18 @@ import FilePerfil from './FilePerfil'
 import LobyPage from './LobyPage'
 import LobyTecnologiasPage from './LobyTecnologiasPage'
 import LobySobreNosotrosPage from './LobySobreNosotrosPage'
+import DescargaPage from './DescargaPage'
 
 
 import UsuarioPage from './UsuarioPage'
 import UsuarioRegistroPage from './UsuarioRegistroPage'
+import TestRNF from './TestRNF'
 
 
 
-export const getPages =() => {
+export const getPages = () => {
     return {
+        // TestRNF,
         CargaPage,
         LobyPage,
         LobyTecnologiasPage,
@@ -26,6 +29,7 @@ export const getPages =() => {
         UsuarioPage,
         UsuarioRegistroPage,
         CarpetasPage,
-        FilePerfil
+        FilePerfil,
+        DescargaPage
     }
 }

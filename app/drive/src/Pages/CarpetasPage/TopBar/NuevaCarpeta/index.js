@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import AppParams from '../../../Params';
-import Svg from '../../../Svg';
+import AppParams from '../../../../Params';
+import Svg from '../../../../Svg';
 
 class NuevaCarpeta extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class NuevaCarpeta extends Component {
                     }
                     this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
                 }}>
-                    <Svg resource={require('../../../img/extensionPack/addFolder.svg')} style={{
+                    <Svg resource={require('../../../../img/extensionPack/addFolder.svg')} style={{
                         width: "100%",
                         height: "100%",
                     }} />
