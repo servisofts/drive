@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
-type propsType={
-    
+type propsType = {
+
 }
 export default class SPopup extends Component<propsType> {
     constructor(props) {
@@ -35,17 +35,19 @@ export default class SPopup extends Component<propsType> {
                     }}>
                         <View style={{
                             width: "90%",
-                            height: "90%",
-                            maxWidth: 300,
-                            maxHeight: 200,
+                            // height: "90%",
+                            maxWidth: 500,
+                            minHeight: 200,
+                            maxHeight: 500,
                             backgroundColor: "#00000088",
                             borderRadius: 8,
                             justifyContent: "center",
                             alignItems: "center",
                             borderWidth: 1,
-                            borderColor: "#ffffff22"
+                            borderColor: "#ffffff22",
+                            ...this.props.style
                         }}>
-                           {this.props.children}
+                            {this.props.children}
 
                         </View>
                     </TouchableWithoutFeedback>

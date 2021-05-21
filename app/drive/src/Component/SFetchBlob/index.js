@@ -2,13 +2,17 @@ export default class SFetchBlob {
 
     constructor() {
     }
-    descargar = async (props,callback) => {
+    descargar = async (props, callback) => {
         console.log("INICIANDO DESCARGA....");
         var url = props.url;
         console.log(url);
         var myInit = {
-            method: 'GET',
-            // mode: 'no-cors',
+            method: 'POST',
+            mode:'cors',
+            // credentials: 'same-origin',
+            headers: {
+                'key_usuario': 'Basic ' + '123123123',
+            }
         };
         try {
             var myRequest = new Request(url, myInit);

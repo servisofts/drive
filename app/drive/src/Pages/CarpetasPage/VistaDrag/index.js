@@ -42,6 +42,8 @@ class ArchibosContainer extends Component {
             component: "file",
             type: "editar",
             estado: "cargando",
+            tipo_seguimiento: "cambiar_posicion",
+            key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
             data: props,
             path: this.props.state.fileReducer.routes
         }
@@ -71,7 +73,9 @@ class ArchibosContainer extends Component {
         var object = {
             component: "file",
             type: "editar",
+            tipo_seguimiento: "cambiar_nombre",
             path: this.props.state.fileReducer.routes,
+            key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
             data: obj,
             estado: "cargando",
         }
@@ -86,13 +90,13 @@ class ArchibosContainer extends Component {
         var dataFinal = {};
         var data = this.props.state.fileReducer.data;
         if (!data) {
-            if (this.props.state.fileReducer.estado == "cargando") {
-                return <View />
-            }
+            if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
+            if (this.props.state.fileReducer.estado == "error") { return <View /> }
             var object = {
                 component: "file",
                 type: "getAll",
                 estado: "cargando",
+                key_usuario: this.props.state.usuarioReducer.usuarioLog.key
             }
             // alert(JSON.stringify(object));
             this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
@@ -103,9 +107,8 @@ class ArchibosContainer extends Component {
             routes.map((curRoute, key1) => {
                 dataFinal = dataFinal[curRoute.key].data;
                 if (!dataFinal) {
-                    if (this.props.state.fileReducer.estado == "cargando") {
-                        return <View />
-                    }
+                    if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
+                    if (this.props.state.fileReducer.estado == "error") { return <View /> }
                     var object = {
                         component: "file",
                         type: "getAll",
@@ -174,6 +177,7 @@ class ArchibosContainer extends Component {
                     this.props.dispatch({
                         component: "file",
                         type: "moveFolder",
+                        key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                         data: obj,
                         estado: "cargando",
                     })
@@ -254,6 +258,7 @@ class ArchibosContainer extends Component {
                                         component: "file",
                                         type: "subir",
                                         estado: "cargando",
+                                        key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                                         path: this.props.state.fileReducer.routes,
                                         positions: arrPos
                                     }, imput: files,

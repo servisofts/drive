@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform, Text } from 'react-native';
 import Logo from '../img/logo.svg';
+import LogoB from '../img/logoblanco.svg';
 import See from '../img/see.svg';
 import Folder from '../img/ssfolder.svg';
 import EPUndefined from '../img/extensionPack/undefined.svg';
@@ -13,6 +14,8 @@ const Svg = (props) => {
     switch (props.name) {
         case "logo":
             return (Platform.OS == "web" ? <img style={props.style} src={Logo} /> : <Logo style={props.style} />);
+        case "logoBlanco":
+            return (Platform.OS == "web" ? <img style={props.style} src={LogoB} /> : <LogoB style={props.style} />);
         case "see":
             return (Platform.OS == "web" ? <img style={props.style} src={See} /> : <See style={props.style} />);
         case "folder":

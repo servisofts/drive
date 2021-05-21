@@ -39,5 +39,4 @@ export default (state, action) => {
 const cambio = (state, action) => {
     // fetch(action.url);
     state.IMAGES[action.url] = createImage(action.url,action.props)
-    // alert("cambio imagen");
 }

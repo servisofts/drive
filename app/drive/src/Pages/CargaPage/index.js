@@ -32,6 +32,7 @@ class CargaPage extends Component {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor:"#000"
       }}>
 
         <Animated.View
@@ -51,7 +52,7 @@ class CargaPage extends Component {
             },
           ]}
         >
-          <Svg name="logo"
+          <Svg name="logoBlanco"
             style={{
               width: (Dimensions.get("window").width+Dimensions.get("window").height)/2 * 0.4,
               height:(Dimensions.get("window").width+Dimensions.get("window").height)/2 * 0.4,

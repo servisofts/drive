@@ -12,7 +12,7 @@ export const uploadHttp = async ({ props, imput }, callback) => {
     var body = new FormData(form);
     var data = JSON.stringify(props);
     body.append('data', data);
-    
+
     let xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 

@@ -28,7 +28,8 @@ class SubirArchibo extends Component {
                     component: "file",
                     type: "subir",
                     estado: "cargando",
-                    path: this.props.state.fileReducer.routes
+                    path: this.props.state.fileReducer.routes,
+                    key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                     // key: this.data.key
                 }, (resp) => {
                     // fetch(urlImage);
@@ -36,9 +37,9 @@ class SubirArchibo extends Component {
                     // this.props.dispatch(obj)
                 });
             }}>
-                <Svg resource={require('../../../../img/upload_1.svg')} style={{
-                    width: "100%",
-                    height: "100%",
+                <Svg resource={require('../../../../img/upload.svg')} style={{
+                    width: 35,
+                    height: 35,
                 }} />
                 {/* <Text style={{
                     fontSize:10,    

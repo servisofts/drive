@@ -8,7 +8,8 @@ import Svg from '../../Svg';
 import DescargaProgres from './DescargaProgres';
 import SFetchBlob from '../../Component/SFetchBlob';
 import AppParams from '../../Params';
-export default class DescargaPage extends Component {
+import { connect } from 'react-redux';
+ class DescargaPage extends Component {
     static navigationOptions = {
         headerShown: false,
     }
@@ -63,7 +64,7 @@ export default class DescargaPage extends Component {
                         <DescargaProgres
                             descargar={() => {
                                 var url = this.state._url.getValue();
-                                new SFetchBlob().descargar({url:url,...this.props.navigation.state.params}, (progres) => {
+                                new SFetchBlob().descargar({ url: url, ...this.props.navigation.state.params, key_usuario:this.props.state.usuarioReducer.usuarioLog.key }, (progres) => {
                                     this._progress.animateTo(progres, 1);
                                 });
                             }}
@@ -77,3 +78,7 @@ export default class DescargaPage extends Component {
         );
     }
 }
+const initStates = (state) => {
+    return { state }
+};
+export default connect(initStates)(DescargaPage);

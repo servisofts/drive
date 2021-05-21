@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import AppParams from '../../Params';
 import Svg from '../../Svg';
+import SImage from '../SImage';
 
-export default class BarraSuperior extends Component {
+class BarraSuperior extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,12 +23,60 @@ export default class BarraSuperior extends Component {
         this.startAnimation();
     }
 
+    getUser() {
+        if (!this.props.state.usuarioReducer.usuarioLog) {
+            return <View />
+        }
+        return (<>
+            <View style={{
+                width: 50,
+                height: "100%",
+                justifyContent: "center",
+                borderBottomEndRadius: 30,
+                overflow: "hidden",
+                // alignItems:"center"
+                // backgroundColor: "#fff"
+            }}>
+                <TouchableOpacity style={{
+                    width: "100%",
+                    height: "100%",
+                    // backgroundColor: "#ffffff22",
+                }} onPress={() => {
+                    this.props.navigation.navigate("UsuarioPerfilPage")
+                }}>
+              
+                    {this.props.state.imageReducer.getImage(AppParams.urlImages + this.props.state.usuarioReducer.usuarioLog.key, {
+                        width: "100%",
+                        height: "100%",
+                    })}
+                    {/* <SImage source={require("../../img/postgres.png")} style={{
+                        width: "90%",
+                        height: "90%",
+                        resizeMode: "contain"
+                    }} /> */}
+
+                </TouchableOpacity>
+            </View>
+            <View style={{
+                position: "absolute",
+                bottom: 2,
+                right: 2,
+                width: 14,
+                height: 14,
+                borderRadius: 100,
+                backgroundColor: "#090"
+            }}>
+            </View>
+        </>
+        )
+    }
     render() {
         return (
             <Animated.View style={{
                 width: "100%",
                 height: 45,
                 flexDirection: "row",
+                backgroundColor: "#fff",
                 transform: [
                     {
                         translateX: this.state.anim.interpolate({
@@ -38,6 +89,11 @@ export default class BarraSuperior extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: "row",
+                    backgroundColor: "#000",
+                    borderBottomEndRadius: 30,
+                    borderWidth: 1,
+                    borderColor: "#000",
+                    // overflow: "hidden",
                 }}>
                     <TouchableOpacity style={{
                         width: 45,
@@ -56,10 +112,9 @@ export default class BarraSuperior extends Component {
                     </TouchableOpacity>
                     <View style={{
                         flex: 1,
-                        backgroundColor: "#000",
-                        borderBottomEndRadius: 30,
+
                         justifyContent: "center",
-                        alignItems: "center"
+                        // alignItems: "center"
                     }}>
                         <Text style={{
                             color: "#fff",
@@ -67,7 +122,11 @@ export default class BarraSuperior extends Component {
                             fontWeight: "bold"
                         }}>{this.props.title}</Text>
                     </View>
+                    {this.getUser()}
+
+
                 </View>
+
                 <View style={{
                     width: 130,
                     height: "100%",
@@ -83,3 +142,7 @@ export default class BarraSuperior extends Component {
         );
     }
 }
+const initStates = (state) => {
+    return { state }
+};
+export default connect(initStates)(BarraSuperior);

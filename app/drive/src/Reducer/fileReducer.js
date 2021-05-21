@@ -105,13 +105,13 @@ const editar = (state, action) => {
                 })
                 if (curData) {
                     curData.data[action.data.key] = action.data;
-                    if(curData.data[action.data.key].estado == 0){
+                    if (curData.data[action.data.key].estado == 0) {
                         delete curData.data[action.data.key];
                     }
                 }
             } else {
                 state.data[action.data.key] = action.data;
-                if(state.data[action.data.key].estado == 0){
+                if (state.data[action.data.key].estado == 0) {
                     delete state.data[action.data.key];
                 }
             }
@@ -138,7 +138,11 @@ const getAll = (state, action) => {
                 curData.data = {};
             }
         } else {
-            state.data = action.data;
+            if (!action.data) {
+                state.data = {};
+            } else {
+                state.data = action.data;
+            }
         }
     }
 }

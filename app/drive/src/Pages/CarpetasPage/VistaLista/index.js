@@ -112,6 +112,7 @@ class VistaLista extends Component {
         var data = this.props.state.fileReducer.data;
         if (!data) {
             if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
+            if (this.props.state.fileReducer.estado == "error") { return <View /> }
             this.props.state.socketReducer.session[AppParams.socket.name].send({
                 component: "file",
                 type: "getAll",
@@ -125,10 +126,12 @@ class VistaLista extends Component {
                 dataFinal = dataFinal[curRoute.key].data;
                 if (!dataFinal) {
                     if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
+                    if (this.props.state.fileReducer.estado == "error") { return <View /> }
                     this.props.state.socketReducer.session[AppParams.socket.name].send({
                         component: "file",
                         type: "getAll",
                         estado: "cargando",
+                        key_usuario:this.props.state.usuarioReducer.usuarioLog.key,
                         path: routes
                     }, true);
                 }

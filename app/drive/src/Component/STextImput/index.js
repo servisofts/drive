@@ -9,13 +9,13 @@ class STextImput {
     constructor(_props) {
         this.propiedades = _props;
         this.value = "";
-        if(_props.defaultValue){
+        if (_props.defaultValue) {
             this.value = _props.defaultValue;
         }
-        if(_props.value){
+        if (_props.value) {
             this.value = _props.value;
         }
-        
+
 
 
     }
@@ -23,7 +23,7 @@ class STextImput {
         return this.value;
     }
     setValue(value) {
-        this.value= value;
+        this.value = value;
     }
     setError() {
         if (!this.propsTemp.style) {
@@ -54,8 +54,10 @@ class STextImput {
     }
     getComponent() {
         return (<TextInput
+            placeholderTextColor={'#666'}
             onChangeText={(text) => {
                 this.value = text;
+                this.value= this.value.trim();
             }}
             {...this.propiedades}
         />)

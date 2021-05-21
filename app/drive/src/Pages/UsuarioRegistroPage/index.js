@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import ActionButtom from '../../Component/ActionButtom';
+import BarraSuperior from '../../Component/BarraSuperior';
 import NaviDrawer from '../../Component/NaviDrawer';
 import STextImput from '../../Component/STextImput';
 import AppParams from '../../Params';
@@ -12,7 +13,7 @@ class UsuarioRegistroPage extends Component {
   static navigationOptions = ({ navigation }) => {
     const key = navigation.getParam('key', false);
     return {
-      headerShown: true,
+      headerShown: false,
       title: (!key ? "Crear usuario" : "Editar usuario")
     }
   }
@@ -24,6 +25,7 @@ class UsuarioRegistroPage extends Component {
       padding: 8,
       height: 50,
       margin: 8,
+      color: "#fff",
       borderWidth: 2,
       borderColor: "#999",
       borderRadius: 8,
@@ -46,11 +48,14 @@ class UsuarioRegistroPage extends Component {
         placeholder: "Nombres",
         // defaultValue: this.data["Nombres"].dato,
         // autoCapitalize: "none",
+        
         style: styleImput
       }),
 
       Apellidos: new STextImput({
         placeholder: "Apellidos",
+        type:"correo",
+        
         // defaultValue: this.data["Apellidos"].dato,
         // autoCapitalize: "none",
         style: styleImput
@@ -59,6 +64,8 @@ class UsuarioRegistroPage extends Component {
         placeholder: "Correo",
         // defaultValue: this.data["Correo"].dato,
         // autoCapitalize: "none",
+        autoCapitalize:"none",
+        autoCompleteType:"email",
         style: styleImput
       }),
       Telefono: new STextImput({
@@ -69,6 +76,7 @@ class UsuarioRegistroPage extends Component {
       }),
       Password: new STextImput({
         placeholder: "Password",
+        secureTextEntry:true,
         // defaultValue: this.data["Telefono"].dato,
         // autoCapitalize: "none",
         style: styleImput
@@ -80,10 +88,10 @@ class UsuarioRegistroPage extends Component {
   }
 
   render() {
-
+    
     if (this.props.state.usuarioReducer.estado == "error") {
+      console.log("Error "+this.props.state.usuarioReducer.error);
       this.props.state.usuarioReducer.estado = "";
-      alert("error");
     }
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "registro") {
       this.props.state.usuarioReducer.estado = "";
@@ -93,7 +101,7 @@ class UsuarioRegistroPage extends Component {
       this.props.state.usuarioReducer.estado = "";
       this.props.navigation.goBack();
     }
-
+    
     if (!this.props.state.cabeceraDatoReducer.data["registro_administrador"]) {
       if (this.props.state.cabeceraDatoReducer.estado == "cargando") {
         return <View />
@@ -110,9 +118,22 @@ class UsuarioRegistroPage extends Component {
       return <View />
     }
     return (
-      <>
-        <ScrollView contentContainerStyle={{
-          alignItems: "center"
+      <View style={{
+        flex: 1,
+        height: "100%",
+      }}>
+        <BarraSuperior duration={500} title={"Registrate"} goBack={() => {
+          this.props.navigation.goBack();
+        }} {...this.props} />
+        <ScrollView style={{
+          width: "100%",
+          height: "100%"
+
+        }} contentContainerStyle={{
+          alignItems: "center",
+          flex: 1,
+          paddingTop: 100,
+          backgroundColor: "#000"
         }}>
           <View style={{
             width: "90%",
@@ -132,7 +153,7 @@ class UsuarioRegistroPage extends Component {
             </View>
             <View style={{
               flex: 1,
-              width: "100%",
+              width: "90%",
               maxWidth: 600,
               justifyContent: 'center',
               flexDirection: "row",
@@ -169,7 +190,9 @@ class UsuarioRegistroPage extends Component {
                   var object = {
                     component: "usuario",
                     type: "registro",
+                    version: "2.0",
                     estado: "cargando",
+
                     cabecera: "registro_administrador",
                     data: arr,
                   }
@@ -180,8 +203,7 @@ class UsuarioRegistroPage extends Component {
             </View>
           </View>
         </ScrollView>
-        {/* <NaviDrawer /> */}
-      </>
+      </View>
     );
   }
 }

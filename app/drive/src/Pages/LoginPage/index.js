@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput, Dimensions } from 'react-native';
+import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import NaviDrawer from '../../Component/NaviDrawer';
 import STextImput from '../../Component/STextImput';
 import AppParams from '../../Params';
 import Svg from '../../Svg';
@@ -13,31 +12,26 @@ class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    var style = {
+      width: "80%",
+      padding: 8,
+      height: 50,
+      color: "#fff",
+      margin: 8,
+      borderWidth: 1,
+      backgroundColor: "#ffffff22",
+      borderColor: "#444",
+      borderRadius: 8,
+    }
     this.ImputUsuario = new STextImput({
       placeholder: "Usuario",
       autoCapitalize: "none",
-      style: {
-        width: "80%",
-        padding: 8,
-        height: 50,
-        margin: 8,
-        borderWidth: 2,
-        borderColor: "#999",
-        borderRadius: 8,
-      }
+      style: style
     });
     this.ImputPassword = new STextImput({
       placeholder: "Password",
       secureTextEntry: true,
-      style: {
-        width: "80%",
-        padding: 8,
-        height: 50,
-        margin: 8,
-        borderWidth: 2,
-        borderColor: "#999",
-        borderRadius: 8,
-      }
+      style: style
     });
   }
   componentDidMount() { // B
@@ -56,27 +50,38 @@ class LoginPage extends Component {
     }
 
     return (
-      <>
+      <View style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
         <View style={{
           flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+          width: "100%",
+          backgroundColor: "#000",
+          // justifyContent: "center",
+          alignItems: "center"
+        }}
+        >
           <View style={{
-            flex: 1,
             width: "100%",
             alignItems: 'center',
-            justifyContent: 'center',
+            transform: [
+              { rotateX: "8deg" }
+            ]
+            // backgroundColor:"#000"
           }}>
-            <Svg name="logo"
+            <Svg name="logoBlanco"
               style={{
-                width: (Dimensions.get("window").width + Dimensions.get("window").height) / 2 * 0.4,
-                height: (Dimensions.get("window").width + Dimensions.get("window").height) / 2 * 0.4,
+                width: "70%",
+                maxWidth: 500,
+                height: 300,
+                fill: "#fff"
               }} />
           </View>
 
           <View style={{
-            flex: 2,
+            // backgroundColor:"#000"
             width: "100%",
             maxWidth: 600,
             alignItems: 'center',
@@ -84,45 +89,20 @@ class LoginPage extends Component {
           }}>
             <Text style={{
               fontSize: 16,
-              fontWeight: "bold",
-            }}>Identificarse</Text>
+              // fontWeight: "bold",
+              color: "#999"
+            }}>Iniciar session</Text>
             {this.ImputUsuario.getComponent()}
             {this.ImputPassword.getComponent()}
           </View>
           <View style={{
-            flex: 1,
             width: "100%",
             maxWidth: 600,
+            // backgroundColor:"#000",
             justifyContent: 'center',
             flexDirection: "row",
           }}>
-            {/* <TouchableOpacity style={{
-              width: "40%",
-              padding: 8,
-              height: 50,
-              margin: 8,
-              borderWidth: 2,
-              borderColor: "#999",
-              borderRadius: 8,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-              onPress={() => {
-
-              }}>
-              <Text>Registrarse</Text>
-            </TouchableOpacity> */}
-            <TouchableOpacity style={{
-              width: "40%",
-              padding: 8,
-              height: 50,
-              margin: 8,
-              borderWidth: 2,
-              borderColor: "#999",
-              borderRadius: 8,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }} onPress={() => {
+            <TouchableOpacity style={styles.BTN} onPress={() => {
               var isValid = true;
 
               if (this.ImputUsuario.verify() == false) isValid = false;
@@ -146,30 +126,37 @@ class LoginPage extends Component {
               this.setState({ ...this.state });
               return;
             }}>
-              <Text>Iniciar session</Text>
+              <Text style={{
+                color: "#999"
+              }}>Iniciar session</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
-              width: "40%",
-              padding: 8,
-              height: 50,
-              margin: 8,
-              borderWidth: 2,
-              borderColor: "#999",
-              borderRadius: 8,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }} onPress={() => { this.props.navigation.navigate("UsuarioRegistroPage") }}>
-              <Text>Registro</Text>
+            <TouchableOpacity style={styles.BTN} onPress={(evt) => {
+              this.props.navigation.navigate("UsuarioRegistroPage")
+            }}>
+              <Text style={{
+                color: "#999"
+              }}>Registro</Text>
             </TouchableOpacity>
 
           </View>
         </View>
-        <NaviDrawer />
-      </>
+      </View>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  BTN: {
+    width: "35%",
+    height: 40,
+    margin: 8,
+    borderWidth: 1,
+    borderColor: "#555",
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 const initStates = (state) => {
   return { state }
 };

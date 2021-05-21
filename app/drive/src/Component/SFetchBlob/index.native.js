@@ -30,6 +30,9 @@ export default class SFetchBlob {
         })
         RNFS.downloadFile({
             fromUrl: urlImage,
+            headers: {
+                'key_usuario': props.key_usuario,
+            },
             toFile: toPath,
             begin: () => {
                 console.log("begim");
@@ -43,7 +46,7 @@ export default class SFetchBlob {
         }).promise.then((r) => {
             console.log(r);
             callback(0)
-            FileViewer.open(toPath,{ showOpenWithDialog: true })
+            FileViewer.open(toPath, { showOpenWithDialog: true })
                 .then(() => {
                     // success
                 })

@@ -29,15 +29,16 @@ class NuevaCarpeta extends Component {
                         type: "registro",
                         estado: "cargando",
                         path: this.props.state.fileReducer.routes,
+                        key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                         data: {
                             descripcion: "Nueva carpeta."
                         }
                     }
                     this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
                 }}>
-                    <Svg resource={require('../../../../img/extensionPack/addFolder.svg')} style={{
-                        width: "100%",
-                        height: "100%",
+                    <Svg resource={require('../../../../img/addFolder.svg')} style={{
+                        width: 35,
+                        height: 35,
                     }} />
                     {/* <Text style={{
                         fontSize: 10,

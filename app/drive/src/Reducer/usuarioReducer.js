@@ -135,20 +135,10 @@ const getById = (state, action) => {
             state.data = {}
         }
         if (action.key == state.usuarioLog.key) {
-
-            if (action.data.length > 0) {
-                state.usuarioDatos = JSON.parse(action.data[0].data)
-                state.data[action.key] = JSON.parse(action.data[0].data);
-            } else {
-                state.usuarioDatos = true;
-                state.data[action.key] = true;
-            }
+            state.usuarioDatos = action.data;
+            state.data[action.key] = action.data;
         } else {
-            if (action.data.length > 0) {
-                state.data[action.key] = JSON.parse(action.data[0].data)
-            } else {
-                state.data[action.key] = true;
-            }
+            state.data[action.key]= action.data;
         }
     }
     // if(){

@@ -13,6 +13,9 @@ export const init = (Pages) => {
       defaultNavigationOptions: ({ navigation }) => ({
         headerTintColor: "#000",
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        cardStyle: {
+          backgroundColor: "#000"
+        }
       }),
     }
   );

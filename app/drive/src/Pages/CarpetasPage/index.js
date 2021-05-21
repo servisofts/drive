@@ -25,9 +25,13 @@ export default class CarpetasPage extends Component {
             scaleGlobal: scale,
             vista: "drag",
             reload: false,
+            title: "/",
         };
     }
 
+    setTitle = (text) => {
+
+    }
     getVista() {
         if (this.state.reload) {
             this.setState({ reload: false });
@@ -35,7 +39,7 @@ export default class CarpetasPage extends Component {
         }
         var bgimage = require("../../img/fondos/color/1.jpg");
         if (this.state.vista == "lista") {
-            return <VistaLista {...this.props} scaleGlobal={this.state.scaleGlobal} bgimage={bgimage} />
+            return <VistaLista {...this.props} setTitle={this.setTitle} scaleGlobal={this.state.scaleGlobal} bgimage={bgimage} />
         }
         return <ArchibosContainer {...this.props} stateParent={this.state} scaleGlobal={this.state.scaleGlobal} bgimage={bgimage} />
     }
@@ -47,7 +51,7 @@ export default class CarpetasPage extends Component {
                 flex: 1,
                 height: "100%",
             }}>
-                <BarraSuperior title={"Drive."} />
+                <BarraSuperior title={this.state.title} {...this.props}  />
                 <TopBar  {...this.props} changeVista={(vista) => {
                     this.setState({ vista: vista });
                 }} zoom={(val) => {

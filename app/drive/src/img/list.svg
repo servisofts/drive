@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.3 18.8">
+  <title>list</title>
+  <g>
+    <circle cx="1.9" cy="1.9" r="1.4" fill="#a5daf2" stroke="#a5daf2" stroke-miterlimit="10"/>
+    <line x1="6" y1="1.9" x2="25.8" y2="1.9" fill="#a5daf2" stroke="#a5daf2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
+    <line x1="6" y1="9.4" x2="25.8" y2="9.4" fill="#a5daf2" stroke="#a5daf2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
+    <line x1="6" y1="16.9" x2="25.8" y2="16.9" fill="#a5daf2" stroke="#a5daf2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
+    <circle cx="1.9" cy="9.4" r="1.4" fill="#a5daf2" stroke="#a5daf2" stroke-miterlimit="10"/>
+    <circle cx="1.9" cy="16.8" r="1.4" fill="#a5daf2" stroke="#a5daf2" stroke-miterlimit="10"/>
+  </g>
+</svg>

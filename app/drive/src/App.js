@@ -21,6 +21,7 @@ import * as SSNavigation from './SSNavigation';
 
 import AppParams from './Params/index.json'
 import BarraDeDesconeccion from './SSSocket/BarraDeDesconeccion';
+import DropDown from './Component/DropDown';
 const store = createStore(
   Reducer,
   {},
@@ -42,9 +43,16 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.scrollView}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}  backgroundColor={"#eee"}/>
+        <StatusBar barStyle={'light-content'} backgroundColor={"#000"} />
         <BarraDeDesconeccion socketName={AppParams.socket.name} color={"#000000"} visible={false} />
-        <Container />
+        <View style={{
+          flex: 1,
+          height: "100%",
+          backgroundColor: "#000"
+        }}>
+          <Container />
+          <DropDown />
+        </View>
       </SafeAreaView>
     </Provider>
 
@@ -56,7 +64,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: "#000",
-    maxHeight:"100%"
+    maxHeight: "100%"
   },
   container: {
     flex: 1,

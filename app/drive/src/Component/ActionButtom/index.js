@@ -6,13 +6,14 @@ const ActionButtom = (props) => {
             props.onPress();
         }}
             style={{
-                width: 100,
-                height: 50,
-                borderRadius: 10,
-                backgroundColor: "#ddd",
-                justifyContent: "center",
-                alignItems: "center",
-                margin: 4,
+                width: "35%",
+                height: 40,
+                margin: 8,
+                borderWidth: 1,
+                borderColor: "#555",
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
                 ...props.style
             }}>
             <Text style={{

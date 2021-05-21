@@ -8,6 +8,7 @@ import AppParams from '../../Params';
 import Svg from '../../Svg';
 import SPopup from '../../Component/SPopup';
 import FilePreview from '../CarpetasPage/FilePreview';
+import Compartir from './Compartir';
 
 class FilePerfil extends Component {
 
@@ -45,8 +46,8 @@ class FilePerfil extends Component {
             if (!Select) {
                 return <View />
             }
-        }else{
-            Select=data;
+        } else {
+            Select = data;
         }
         var curObj = Select[this.state.obj.key];
         if (!curObj) {
@@ -59,7 +60,7 @@ class FilePerfil extends Component {
                 width: "100%",
                 height: "100%",
             }}>
-                <BarraSuperior duration={500} title={"Ajuste de archibo"} goBack={() => {
+                <BarraSuperior duration={500} title={"Detalle"} navigation={this.props.navigation} goBack={() => {
                     this.props.navigation.goBack();
                 }} />
                 <View style={{
@@ -159,9 +160,13 @@ class FilePerfil extends Component {
                                         height: "100%",
                                     }} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    padding: 4,
-                                }}>
+                                <TouchableOpacity
+
+                                    style={{
+                                        padding: 4,
+                                    }} onPress={() => {
+                                        this._compartir.setObj(this.state.obj)
+                                    }}>
                                     <Svg resource={require('../../img/shareFolder.svg')} style={{
                                         width: 50,
                                         height: "100%",
@@ -169,7 +174,7 @@ class FilePerfil extends Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{
                                     padding: 4,
-                                }} onPress={()=>{
+                                }} onPress={() => {
                                     this.props.navigation.navigate("DescargaPage", this.state.obj)
                                 }}>
                                     <Svg resource={require('../../img/download.svg')} style={{
@@ -232,6 +237,13 @@ class FilePerfil extends Component {
                             <Text style={{ color: "#fff" }}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
+                </SPopup>
+                <SPopup ref={(ref) => { this._compartir = ref }} style={{
+                    width: "100%",
+                }}>
+                    <Compartir close={() => {
+                        this._compartir.setObj(false);
+                    }} />
                 </SPopup>
             </View>
         );
