@@ -1,0 +1,42 @@
+{
+    "ss": "servisofts.drive",
+    "socket_client": {
+        "servicio": {
+            "puerto": 10001,
+            "ip": "192.168.0.10",
+            "cert": {
+                "OU": "servicio",
+                "pem": "servicio.pem"
+            }
+        },
+        "reconectTime": 5000
+    },
+    "files":{
+        "url":"/u01/servisoftsFiles/drive/"
+    },
+    "data_base": {
+        "puerto": 5432,
+        "pass": "fullparts123.",
+        "ip": "192.168.0.10",
+        "bd_name": "servisofts.drive",
+        "user": "postgres"
+    },
+    "nombre": "drive",
+    "ssl": {
+        "pass_jks": "Servisofts123.",
+        "cert": {
+            "ST": "Av Banzer",
+            "C": "BO",
+            "E": "ricky.paz.d.97@gmail.com",
+            "OU": "drive",
+            "CN": "drive.servisofts.com",
+            "L": "Santa Cruz",
+            "O": "Servisofts SRL"
+        },
+        "nombre_jks": "servisofts"
+    },
+    "socket_server": {
+        "puerto": 10017,
+        "ip": "192.168.0.199"
+    }
+}
