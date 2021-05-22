@@ -151,10 +151,16 @@ class SessionWeb {
             this.socket.end();
         }
     }
+    hiloTimeOut = async (data) => {
+        await delay(3000)
+        data.estado = "timeout"
+        this.store.dispatch(data)
+    }
     send(mensaje, isDispatch) {
         // this.colaMensaje.setMensaje(mensaje);
         this.socket.send(JSON.stringify(mensaje) + "\n");
         if (isDispatch) this.store.dispatch(mensaje);
+        if (isDispatch) this.hiloTimeOut(mensaje);
     }
     getConfig() {
         return this.config;

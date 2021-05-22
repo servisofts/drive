@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Svg from '../../../../Svg';
 
-class ZoonFile extends Component {
+class Relaod extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,28 +22,18 @@ class ZoonFile extends Component {
                 justifyContent: "center",
                 alignItems: "center"
             }} onPress={() => {
-
-                this.props.zoom(this.props.val);
+                this.props.dispatch({
+                    component:"file",
+                    type:"reload",
+                })
                 // this.props.navigation.navigate("DescargaPage")
             }}>
-                {this.props.val > 0 ? (
-                    <Svg resource={require('../../../../img/zoon.svg')} style={{
-                        width: 28,
-                        height: 28,
-                    }} />
-                ) : (
-                    <Svg resource={require('../../../../img/zoono.svg')} style={{
-                        width: 28,
-                        height: 28,
-                    }} />
-                )}
 
-                {/* <Text style={{
-                    fontSize:10,    
-                    color: "#aaa",
-                    fontWeight: "bold",
-                    textAlign: "center"
-                }}> Subir archibo </Text> */}
+                <Svg resource={require('../../../../img/reload.svg')} style={{
+                    width: 28,
+                    height: 28,
+                }} />
+
             </TouchableOpacity>
         );
     }
@@ -51,4 +41,4 @@ class ZoonFile extends Component {
 const initStates = (state) => {
     return { state }
 };
-export default connect(initStates)(ZoonFile);
+export default connect(initStates)(Relaod);

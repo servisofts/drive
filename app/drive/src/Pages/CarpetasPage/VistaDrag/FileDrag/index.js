@@ -19,7 +19,7 @@ export default class FileDrag extends Component {
             curpost: { x: (props.position.x / this.props.scale), y: (props.position.y / this.props.scale) }
         }
 
-        this.timePanIn = new Date().getTime();
+        this.timePanIn =0;
         this.parametros = {
             useNativeDriver: (Platform.OS != "web"),
         }
@@ -47,7 +47,7 @@ export default class FileDrag extends Component {
     }
     createPam() {
         this.panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx!=0 || gestureState.dy!=0),
+            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx != 0 || gestureState.dy != 0),
             // onShouldBlockNativeResponder:(evt,gh)=>true,
             // onMoveShouldSetPanResponder: (evt, gestureState) => true,
             // onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
@@ -150,7 +150,15 @@ export default class FileDrag extends Component {
                     backgroundColor: "transparent"
                 }}
                     onBlur={() => {
-                        this.unSelect()
+                        if (this.newName) {
+                            this.newName.trim();
+                            this.unSelect()
+                        }
+                    }}
+                    onKeyPress={(evt) => {
+                        if (evt.nativeEvent.key == "Enter") {
+                            this.unSelect()
+                        }
                     }}
                     selectTextOnFocus={true}
                     multiline={true}
@@ -216,7 +224,7 @@ export default class FileDrag extends Component {
             (this.props.obj.posx + 0.0).toFixed(0) != this.state.curpost.x.toFixed(0)
             || (this.props.obj.posy + 0.0).toFixed(0) != this.state.curpost.y.toFixed(0)
         ) {
-            if (new Date().getTime() - this.timePanIn > 1000) {
+            if (new Date().getTime() - this.timePanIn > 500) {
                 var post = { x: this.props.obj.posx * this.props.scale, y: this.props.obj.posy * this.props.scale };
                 // console.log(post);
                 this.move(post);
@@ -272,7 +280,7 @@ export default class FileDrag extends Component {
                         borderColor: "#ddd",
                         justifyContent: "center",
                         alignItems: "center",
-                        overflow: "hidden"
+                        // overflow: "hidden"
                     }}>
                         {this.getPreview()}
                     </View>

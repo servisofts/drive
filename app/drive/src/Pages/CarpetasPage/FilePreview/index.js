@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import SImage from '../../../Component/SImage';
 import Svg from '../../../Svg';
+import SharePreview from './SharePreview';
 
 export default class FilePreview extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+
         };
 
     }
@@ -135,9 +136,11 @@ export default class FilePreview extends Component {
                 width: "100%",
                 height: "100%",
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
+                // backgroundColor:"#000"
             }}>
                 {this.getMimeType()}
+                <SharePreview file={this.props.obj} />
             </View>
         );
     }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Platform, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import BackgroundImage from '../../../Component/BackgroundImage';
 import DropFileView, { uploadHttp } from '../../../Component/DropFileView';
 import SOrdenador from '../../../Component/SOrdenador';
+import { getFilesInPath } from '../../../FileFunction';
 import AppParams from '../../../Params';
 import IntemLista from './IntemLista';
 
@@ -108,40 +109,12 @@ class VistaLista extends Component {
         </View>
     }
     getFiles() {
-        var dataFinal = {};
-        var data = this.props.state.fileReducer.data;
-        if (!data) {
-            if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
-            if (this.props.state.fileReducer.estado == "error") { return <View /> }
-            this.props.state.socketReducer.session[AppParams.socket.name].send({
-                component: "file",
-                type: "getAll",
-                estado: "cargando",
-            }, true);
-        }
-        dataFinal = data;
-        var routes = this.props.state.fileReducer.routes;
-        if (routes.length > 0) {
-            routes.map((curRoute, key1) => {
-                dataFinal = dataFinal[curRoute.key].data;
-                if (!dataFinal) {
-                    if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
-                    if (this.props.state.fileReducer.estado == "error") { return <View /> }
-                    this.props.state.socketReducer.session[AppParams.socket.name].send({
-                        component: "file",
-                        type: "getAll",
-                        estado: "cargando",
-                        key_usuario:this.props.state.usuarioReducer.usuarioLog.key,
-                        path: routes
-                    }, true);
-                }
-            })
-        }
+        var dataFinal = getFilesInPath(this.props);
         if (!dataFinal) {
-            return <View />
+            return <ActivityIndicator color={"#fff"} />
         }
         if (Object.keys(dataFinal).length <= 0) {
-            return <View />
+            return <Text>Vacio</Text>
         }
 
         this._files = {};

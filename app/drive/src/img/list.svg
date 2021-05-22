@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.3 18.8">
-  <title>list</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 163.9 137">
+  <title>list_1</title>
   <g>
-    <circle cx="1.9" cy="1.9" r="1.4" fill="#a5daf2" stroke="#a5daf2" stroke-miterlimit="10"/>
-    <line x1="6" y1="1.9" x2="25.8" y2="1.9" fill="#a5daf2" stroke="#a5daf2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
-    <line x1="6" y1="9.4" x2="25.8" y2="9.4" fill="#a5daf2" stroke="#a5daf2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
-    <line x1="6" y1="16.9" x2="25.8" y2="16.9" fill="#a5daf2" stroke="#a5daf2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
-    <circle cx="1.9" cy="9.4" r="1.4" fill="#a5daf2" stroke="#a5daf2" stroke-miterlimit="10"/>
-    <circle cx="1.9" cy="16.8" r="1.4" fill="#a5daf2" stroke="#a5daf2" stroke-miterlimit="10"/>
+    <circle cx="10.6" cy="10.6" r="7.8" fill="#a6daf1" stroke="#a6daf1" stroke-miterlimit="10" stroke-width="5.6"/>
+    <line x1="44.6" y1="10.6" x2="155.5" y2="10.6" fill="none" stroke="#a6daf1" stroke-linecap="round" stroke-miterlimit="10" stroke-width="16.81"/>
+    <line x1="44.6" y1="68.6" x2="155.5" y2="68.6" fill="none" stroke="#a6daf1" stroke-linecap="round" stroke-miterlimit="10" stroke-width="16.81"/>
+    <line x1="44.6" y1="126.9" x2="155.5" y2="126.9" fill="none" stroke="#a6daf1" stroke-linecap="round" stroke-miterlimit="10" stroke-width="16.81"/>
+    <circle cx="10.6" cy="68.6" r="7.8" fill="#a6daf1" stroke="#a6daf1" stroke-miterlimit="10" stroke-width="5.6"/>
+    <circle cx="10.6" cy="126.4" r="7.8" fill="#a6daf1" stroke="#a6daf1" stroke-miterlimit="10" stroke-width="5.6"/>
   </g>
 </svg>

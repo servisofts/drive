@@ -8,8 +8,9 @@ import imageReducer from './imageReducer';
 import rolPermisoReducer from './rolPermisoReducer';
 import usuarioRolReducer from './usuarioRolReducer';
 import usuarioPageReducer from './usuarioPageReducer';
-import fileReducer from './fileReducer';
 import cabeceraDatoReducer from './cabeceraDatoReducer';
+import fileReducer from './fileReducer';
+import fileSeguimiento from './fileSeguimiento';
 
 export default combineReducers({
     cabeceraDatoReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     rolPermisoReducer,
     usuarioRolReducer,
     usuarioPageReducer,
-    fileReducer
+    fileReducer,
+    fileSeguimiento
 });

@@ -9,6 +9,8 @@ import Svg from '../../Svg';
 import SPopup from '../../Component/SPopup';
 import FilePreview from '../CarpetasPage/FilePreview';
 import Compartir from './Compartir';
+import Seguimiento from './Seguimiento';
+import Ventanas from '../../Component/Ventanas';
 
 class FilePerfil extends Component {
 
@@ -54,6 +56,7 @@ class FilePerfil extends Component {
             this.props.navigation.goBack();
             return <View />
         }
+
 
         return (
             <View style={{
@@ -184,6 +187,11 @@ class FilePerfil extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        <Ventanas ref={(ref) => { this.ventanas = ref }} default={"Seguimiento"} ventanas={{
+                            Seguimiento: <Seguimiento file={curObj} />,
+                            Usuarios: <Seguimiento file={curObj} />
+                        }} />
+
                     </View>
                 </View>
                 <SPopup ref={(ref) => { this._confirmarEliminar = ref }}>
@@ -218,6 +226,8 @@ class FilePerfil extends Component {
                                 component: "file",
                                 type: "editar",
                                 data: obj,
+                                tipo_seguimiento: "enviar_papelera",
+                                key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                                 path: this.props.state.fileReducer.routes
                             }, true);
                             this._confirmarEliminar.setObj(false)
@@ -237,13 +247,17 @@ class FilePerfil extends Component {
                             <Text style={{ color: "#fff" }}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
+
                 </SPopup>
                 <SPopup ref={(ref) => { this._compartir = ref }} style={{
-                    width: "100%",
+                    width: "94%",
+                    height: 400,
                 }}>
-                    <Compartir close={() => {
-                        this._compartir.setObj(false);
-                    }} />
+                    <Compartir
+                        file={curObj}
+                        close={() => {
+                            this._compartir.setObj(false);
+                        }} />
                 </SPopup>
             </View>
         );

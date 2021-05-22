@@ -8,6 +8,7 @@ const initialState = {
     usuarioLog: false,
     sessiones: {},
     lastSend: new Date(),
+    data:{}
 }
 
 export default (state, action) => {
@@ -55,6 +56,9 @@ export default (state, action) => {
                 break;
             case "getAll":
                 getAll(state, action);
+                break;
+            case "buscar":
+                buscar(state, action);
                 break;
         }
         state.type = action.type;
@@ -138,7 +142,7 @@ const getById = (state, action) => {
             state.usuarioDatos = action.data;
             state.data[action.key] = action.data;
         } else {
-            state.data[action.key]= action.data;
+            state.data[action.key] = action.data;
         }
     }
     // if(){
@@ -174,8 +178,9 @@ const registro = (state, action) => {
         state.errorRegistro = action.error
     }
     if (action.estado === "exito") {
-        state.usuarioLog = action.data
-        SSStorage.setItem(AppParams.storage.urlLog, JSON.stringify(action.data));
+        state.usuarioLog = action.data.datos
+        
+        SSStorage.setItem(AppParams.storage.urlLog, JSON.stringify(action.data.datos));
     }
 }
 const registroFacebook = (state, action) => {
@@ -223,4 +228,11 @@ const cambiarPassByCodigo = (state, action) => {
     if (action.estado === "error") {
         state.errorEmailRecuperado = action.error
     }
+}
+const buscar = (state, action) => {
+    state.estadoBuscar = action.estado
+    if (action.estado === "exito") {
+        state.dataBuscar = action.data;
+    }
+
 }

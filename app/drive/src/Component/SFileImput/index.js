@@ -11,6 +11,7 @@ export const choseFile = (props, callback) => {
         // x.setAttribute("type", "file");
         // x.setAttribute("name", "file");
         // x.setAttribute("accept", "*");
+ 
         form.appendChild(imput);
 
         var body = new FormData(form);

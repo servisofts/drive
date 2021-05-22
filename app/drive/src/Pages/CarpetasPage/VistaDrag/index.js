@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, BackHandler, Platform, Dimensions, } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, BackHandler, Platform, Dimensions, ActivityIndicator, } from 'react-native';
 import { connect } from 'react-redux';
 import BackgroundImage from '../../../Component/BackgroundImage';
 import DropFileView, { uploadHttp } from '../../../Component/DropFileView';
 import SNestedScrollView from '../../../Component/SNestedScrollView';
+import { getFilesInPath, getPosicionDisponible } from '../../../FileFunction';
 import AppParams from '../../../Params';
 import FileDrag from './FileDrag';
 
@@ -87,47 +88,13 @@ class ArchibosContainer extends Component {
             return <View />
         }
         // console.log(this.state.dimensiones)
-        var dataFinal = {};
-        var data = this.props.state.fileReducer.data;
-        if (!data) {
-            if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
-            if (this.props.state.fileReducer.estado == "error") { return <View /> }
-            var object = {
-                component: "file",
-                type: "getAll",
-                estado: "cargando",
-                key_usuario: this.props.state.usuarioReducer.usuarioLog.key
-            }
-            // alert(JSON.stringify(object));
-            this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
-        }
-        dataFinal = data;
-        var routes = this.props.state.fileReducer.routes;
-        if (routes.length > 0) {
-            routes.map((curRoute, key1) => {
-                dataFinal = dataFinal[curRoute.key].data;
-                if (!dataFinal) {
-                    if (this.props.state.fileReducer.estado == "cargando") { return <View /> }
-                    if (this.props.state.fileReducer.estado == "error") { return <View /> }
-                    var object = {
-                        component: "file",
-                        type: "getAll",
-                        estado: "cargando",
-                        path: routes
-                    }
-                    // alert(JSON.stringify(object));
-                    this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
-                }
-
-            })
-
-        }
+        var dataFinal = getFilesInPath(this.props);
 
         if (!dataFinal) {
-            return <View />
+            return <ActivityIndicator color={"#fff"} />
         }
         if (Object.keys(dataFinal).length <= 0) {
-            return <View />
+            return <Text>Vacio</Text>
         }
         this.datafinal = dataFinal;
         var size = 110 * this.state.scale;
@@ -218,7 +185,7 @@ class ArchibosContainer extends Component {
                             //   backgroundColor:"#000"
                         }}
                         width={this.props.stateParent.widthContainer * this.state.scale}
-                        height={2000 * this.state.scale}
+                        height={this.props.stateParent.heightContainer * this.state.scale}
                         // backgroundImage={fondos[5]}
                         onLayout={(event) => {
                             this.onLayout(event)
@@ -243,15 +210,22 @@ class ArchibosContainer extends Component {
                                 // backgroundColor: "#00000022",
                             }} onLayout={this.props.onLayout} onUpload={(files, position) => {
                                 var pos = {
-                                    x: position.x / this.state.scale,
-                                    y: position.y / this.state.scale,
+                                    x: (position.x / this.state.scale) - 55,
+                                    y: (position.y / this.state.scale) - 55,
                                 }
                                 var arrPos = [];
+                                var curFile = getFilesInPath(this.props);
                                 for (let i = 0; i < files.files.length; i++) {
-                                    arrPos.push({
-                                        x: pos.x + (i * 10),
-                                        y: pos.y + (i * 10)
-                                    })
+                                    var posicion = getPosicionDisponible({
+                                        curFile, props: {
+                                            ...this.props.stateParent,
+                                            x: pos.x,
+                                            y: pos.y
+                                        }
+                                    });
+                                    arrPos.push({...posicion});
+                                    posicion.x+=100;
+                                    pos = posicion;
                                 }
                                 uploadHttp({
                                     props: {

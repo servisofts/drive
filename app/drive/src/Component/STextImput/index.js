@@ -52,12 +52,16 @@ class STextImput {
         }
         return this.value;
     }
+    focus() {
+        this._ref.focus();
+    }
     getComponent() {
         return (<TextInput
+            ref={(ref) => this._ref = ref}
             placeholderTextColor={'#666'}
             onChangeText={(text) => {
                 this.value = text;
-                this.value= this.value.trim();
+                this.value = this.value.trim();
             }}
             {...this.propiedades}
         />)

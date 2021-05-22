@@ -26,7 +26,7 @@ export default class SPopup extends Component<propsType> {
                     width: "100%",
                     height: "100%",
                     position: "absolute",
-                    backgroundColor: "#00000099",
+                    backgroundColor: "#ccccccdd",
                     justifyContent: "center",
                     alignItems: "center"
                 }}>

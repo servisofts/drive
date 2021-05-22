@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import STextImput from '../../Component/STextImput';
 import AppParams from '../../Params';
@@ -26,18 +26,59 @@ class LoginPage extends Component {
     this.ImputUsuario = new STextImput({
       placeholder: "Usuario",
       autoCapitalize: "none",
-      style: style
-    });
+      style: style,
+      autoFocus: true,
+      onSubmitEditing: () => {
+        this.ImputPassword.focus();
+      },
+      onKeyPress: (evt) => {
+        if (evt.key === "Enter") {
+          this.ImputPassword.focus();
+        }
+      }
+    })
     this.ImputPassword = new STextImput({
       placeholder: "Password",
       secureTextEntry: true,
-      style: style
+      style: style,
+      onSubmitEditing: () => {
+        this.send()
+
+      },
+      onKeyPress: (evt) => {
+        if (evt.key === "Enter") {
+          this.send()
+        }
+      }
     });
   }
   componentDidMount() { // B
 
   }
+  send() {
+    var isValid = true;
 
+    if (this.ImputUsuario.verify() == false) isValid = false;
+    if (this.ImputPassword.verify() == false) isValid = false;
+    if (!isValid) {
+      // alert("faltan datos")
+    } else {
+      var object = {
+        component: "usuario",
+        type: "login",
+        estado: "cargando",
+        data: {
+          usr: this.ImputUsuario.getValue(),
+          pass: this.ImputPassword.getValue(),
+        },
+      }
+      // alert(JSON.stringify(object));
+      this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+      // this.props.state.socketReducer.session["proyecto"].send(object, true);
+    }
+    this.setState({ ...this.state });
+    return;
+  }
   render() {
 
     if (this.props.state.usuarioReducer.estado == "error") {
@@ -50,18 +91,20 @@ class LoginPage extends Component {
     }
 
     return (
-      <View style={{
+      <KeyboardAvoidingView enabled behavior={Platform.OS === 'ios' ? 'padding' : null} style={{
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <View style={{
+        <ScrollView bounces={false} style={{
           flex: 1,
           width: "100%",
           backgroundColor: "#000",
           // justifyContent: "center",
-          alignItems: "center"
         }}
+          contentContainerStyle={{
+            alignItems: "center"
+          }}
         >
           <View style={{
             width: "100%",
@@ -103,32 +146,11 @@ class LoginPage extends Component {
             flexDirection: "row",
           }}>
             <TouchableOpacity style={styles.BTN} onPress={() => {
-              var isValid = true;
-
-              if (this.ImputUsuario.verify() == false) isValid = false;
-              if (this.ImputPassword.verify() == false) isValid = false;
-              if (!isValid) {
-                // alert("faltan datos")
-              } else {
-                var object = {
-                  component: "usuario",
-                  type: "login",
-                  estado: "cargando",
-                  data: {
-                    usr: this.ImputUsuario.getValue(),
-                    pass: this.ImputPassword.getValue(),
-                  },
-                }
-                // alert(JSON.stringify(object));
-                this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
-                // this.props.state.socketReducer.session["proyecto"].send(object, true);
-              }
-              this.setState({ ...this.state });
-              return;
+              this.send()
             }}>
               <Text style={{
                 color: "#999"
-              }}>Iniciar session</Text>
+              }}>{this.props.state.usuarioReducer.estado != "cargando" ? "Login" : <ActivityIndicator color={"#fff"}/>}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.BTN} onPress={(evt) => {
               this.props.navigation.navigate("UsuarioRegistroPage")
@@ -139,8 +161,8 @@ class LoginPage extends Component {
             </TouchableOpacity>
 
           </View>
-        </View>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

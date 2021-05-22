@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Animated, TouchableWithoutFeedback } from 'react-native';
 
 var INSTANCE = false;
+var OPEN = false;
 export const openDropDown = ({
     top,
     left,
@@ -23,6 +24,14 @@ export const openDropDown = ({
         });
     }
 }
+export const closeDropDown = () => {
+    if (!OPEN) {
+        return false;
+
+    }
+    INSTANCE.close();
+    return true;
+}
 
 export default class DropDown extends Component {
     constructor(props) {
@@ -34,6 +43,7 @@ export default class DropDown extends Component {
         };
     }
     open(props) {
+        OPEN = this;
         this.setState({ props: props })
         Animated.timing(this.state.anim, {
             toValue: 1,
@@ -46,6 +56,7 @@ export default class DropDown extends Component {
             duration: 300,
         }).start(() => {
             this.setState({ props: false })
+            OPEN = false;
 
         })
 
@@ -80,7 +91,7 @@ export default class DropDown extends Component {
                         height: "100%",
                         // backgroundColor:"#000"
                     }}>
-                        {this.state.props.childrens}
+                        <this.state.props.childrens close={() => this.close()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Animated.View>

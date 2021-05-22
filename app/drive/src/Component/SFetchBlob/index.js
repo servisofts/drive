@@ -7,11 +7,12 @@ export default class SFetchBlob {
         var url = props.url;
         console.log(url);
         var myInit = {
-            method: 'POST',
-            mode:'cors',
-            // credentials: 'same-origin',
+            method: 'GET',
+            cache: "no-cache",
             headers: {
-                'key_usuario': 'Basic ' + '123123123',
+                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                // "Access-Control-Allow-Headers": "http://localhost:3000",
+                "key_usuario":props.key_usuario,
             }
         };
         try {

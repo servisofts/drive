@@ -27,10 +27,10 @@ class ModoVista extends Component {
                     
                     this.props.changeVista(this.props.vista);
                 }}>
-                    <Svg resource={require('../../../../img/extensionPack/addFolder.svg')} style={{
+                    <Svg resource={require('../../../../img/list.svg')} style={{
                         width: "100%",
                         height: "100%",
-                    }} />
+                    }} />   
                     <Text style={{
                         position:"absolute",
                         fontSize: 10,

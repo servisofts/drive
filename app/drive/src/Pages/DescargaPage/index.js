@@ -65,6 +65,7 @@ import { connect } from 'react-redux';
                             descargar={() => {
                                 var url = this.state._url.getValue();
                                 new SFetchBlob().descargar({ url: url, ...this.props.navigation.state.params, key_usuario:this.props.state.usuarioReducer.usuarioLog.key }, (progres) => {
+                                    // console.log(progres)
                                     this._progress.animateTo(progres, 1);
                                 });
                             }}

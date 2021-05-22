@@ -101,7 +101,7 @@ export default class IntemLista extends Component<type> {
         if (this.props.data.fecha_on == "now()") {
             this.props.data.fecha_on = new Date();
         }
-        var fecha = new Date(this.props.data.fecha_on);
+        var fecha = moment(this.props.data.fecha_on);
         var fm = moment(fecha);
         return fm.fromNow()
     }

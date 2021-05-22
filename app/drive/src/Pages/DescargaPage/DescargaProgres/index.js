@@ -33,7 +33,7 @@ export default class DescargaProgres extends Component {
                 }} />
             </TouchableOpacity>)
         } else {
-            var porcent = (1 - this.state.curPorcent)*100;
+            var porcent = (1 - this.state.curPorcent) * 100;
             return (<TouchableOpacity style={{
                 width: 300,
                 height: 300,
@@ -43,9 +43,9 @@ export default class DescargaProgres extends Component {
                 justifyContent: "center",
                 alignItems: "center"
             }} onPress={() => {
-                
+
             }}>
-                <Text style={{fontSize:45, color:"#fff"}}>{porcent.toFixed(0)+"%" }</Text>
+                <Text style={{ fontSize: 45, color: "#fff" }}>{porcent.toFixed(0) + "%"}</Text>
             </TouchableOpacity>)
         }
     }

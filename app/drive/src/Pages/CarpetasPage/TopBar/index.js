@@ -9,6 +9,7 @@ import ZoonFile from './ZoonFile';
 // import CerrarSession from './CerrarSession';
 import { openDropDown } from '../../../Component/DropDown';
 import Vistas from './Vistas';
+import Reload from './Reload';
 export default class TopBar extends Component {
     constructor(props) {
         super(props);
@@ -23,14 +24,17 @@ export default class TopBar extends Component {
                 height: 40,
                 flexDirection: "row"
             }}>
-                <BackPath />
+                {/* <BackPath /> */}
                 {/* <RoutePath /> */}
-                <SubirArchibo />
-                <NuevaCarpeta />
-              
+                <NuevaCarpeta {...this.props}/>
+                <SubirArchibo {...this.props} />
+
+
                 <Vistas  {...this.props} />
                 <ZoonFile {...this.props} val={-0.1} />
                 <ZoonFile {...this.props} val={0.1} />
+
+                <Reload/>
                 {/* <CerrarSession {...this.props} /> */}
 
             </View>

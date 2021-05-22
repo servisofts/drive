@@ -29,6 +29,9 @@ export default (state, action) => {
             case "anular":
                 anular(state, action);
                 break;
+            case "reload":
+                reload(state, action);
+                break;
         }
         state.type = action.type;
         state.lastSend = new Date();
@@ -146,6 +149,15 @@ const getAll = (state, action) => {
         }
     }
 }
+
+// const getByKey = (staet, action) => {
+//     state.estado = action.estado
+//     if (action.estado === "exito") {
+//         if (state.data) {
+//             delete state.data[action.key];
+//         }
+//     }
+// }
 const moveFolder = (state, action) => {
     if (state.routes[state.routes.length - 1]) {
         if (state.routes[state.routes.length - 1].key == action.data.key) {
@@ -162,6 +174,7 @@ const backFolder = (state, action) => {
     }
 }
 
+
 const anular = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
@@ -169,4 +182,9 @@ const anular = (state, action) => {
             delete state.data[action.key];
         }
     }
+}
+
+const reload = (state, action) => {
+    state.routes = [];
+    state.data = false;
 }

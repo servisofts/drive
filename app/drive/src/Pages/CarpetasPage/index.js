@@ -4,8 +4,9 @@ import BarraSuperior from '../../Component/BarraSuperior';
 import ArchibosContainer from './VistaDrag';
 import TopBar from './TopBar';
 import VistaLista from './VistaLista';
+import { connect } from 'react-redux';
 
-export default class CarpetasPage extends Component {
+class CarpetasPage extends Component {
     static navigationOptions = {
         headerShown: false,
     }
@@ -22,6 +23,7 @@ export default class CarpetasPage extends Component {
 
         this.state = {
             widthContainer: widthContainer,
+            heightContainer: 2000,
             scaleGlobal: scale,
             vista: "drag",
             reload: false,
@@ -45,14 +47,24 @@ export default class CarpetasPage extends Component {
     }
     render() {
 
+        var Barra = <BarraSuperior  navigation={this.props.navigation}/>
+        if (this.props.state.fileReducer.routes.length) {
+            Barra = <BarraSuperior navigation={this.props.navigation} goBack={() => {
+                this.props.dispatch({
+                    component: "file",
+                    type: "backFolder",
+                    estado: "cargando",
+                })
+            }} />
+        }
 
         return (
             <View style={{
                 flex: 1,
                 height: "100%",
             }}>
-                <BarraSuperior title={this.state.title} {...this.props}  />
-                <TopBar  {...this.props} changeVista={(vista) => {
+                {Barra}
+                <TopBar  {...this.props} stateParent={this.state} changeVista={(vista) => {
                     this.setState({ vista: vista });
                 }} zoom={(val) => {
                     this.setState({ scaleGlobal: this.state.scaleGlobal + val, reload: true });
@@ -62,3 +74,7 @@ export default class CarpetasPage extends Component {
         );
     }
 }
+const initStates = (state) => {
+    return { state }
+};
+export default connect(initStates)(CarpetasPage);

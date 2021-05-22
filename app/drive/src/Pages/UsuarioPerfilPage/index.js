@@ -23,6 +23,7 @@ class UsuarioPerfil extends Component {
     }
     getPerfil() {
         var usuario = this.props.state.usuarioReducer.usuarioLog
+        // alert(JSON.stringify(usuario));
         var usrD = this.props.state.usuarioReducer.usuarioDatos;
         if (!usrD) {
             if (this.props.state.usuarioReducer.estado == "cargando") {
@@ -40,6 +41,7 @@ class UsuarioPerfil extends Component {
             this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
             return <ActivityIndicator color={"#fff"} />
         }
+        
         return (
             <View style={{
                 width: "95%",

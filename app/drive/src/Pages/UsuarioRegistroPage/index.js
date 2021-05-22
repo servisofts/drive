@@ -48,14 +48,14 @@ class UsuarioRegistroPage extends Component {
         placeholder: "Nombres",
         // defaultValue: this.data["Nombres"].dato,
         // autoCapitalize: "none",
-        
+
         style: styleImput
       }),
 
       Apellidos: new STextImput({
         placeholder: "Apellidos",
-        type:"correo",
-        
+        type: "correo",
+
         // defaultValue: this.data["Apellidos"].dato,
         // autoCapitalize: "none",
         style: styleImput
@@ -64,8 +64,8 @@ class UsuarioRegistroPage extends Component {
         placeholder: "Correo",
         // defaultValue: this.data["Correo"].dato,
         // autoCapitalize: "none",
-        autoCapitalize:"none",
-        autoCompleteType:"email",
+        autoCapitalize: "none",
+        autoCompleteType: "email",
         style: styleImput
       }),
       Telefono: new STextImput({
@@ -76,7 +76,7 @@ class UsuarioRegistroPage extends Component {
       }),
       Password: new STextImput({
         placeholder: "Password",
-        secureTextEntry:true,
+        secureTextEntry: true,
         // defaultValue: this.data["Telefono"].dato,
         // autoCapitalize: "none",
         style: styleImput
@@ -88,9 +88,9 @@ class UsuarioRegistroPage extends Component {
   }
 
   render() {
-    
+
     if (this.props.state.usuarioReducer.estado == "error") {
-      console.log("Error "+this.props.state.usuarioReducer.error);
+      console.log("Error " + this.props.state.usuarioReducer.error);
       this.props.state.usuarioReducer.estado = "";
     }
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "registro") {
@@ -101,7 +101,7 @@ class UsuarioRegistroPage extends Component {
       this.props.state.usuarioReducer.estado = "";
       this.props.navigation.goBack();
     }
-    
+
     if (!this.props.state.cabeceraDatoReducer.data["registro_administrador"]) {
       if (this.props.state.cabeceraDatoReducer.estado == "cargando") {
         return <View />
