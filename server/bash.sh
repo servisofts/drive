@@ -1,0 +1,1 @@
+ scp ./server.jar root@glupapp.com:/u01/servicios/glup/  
