@@ -8,13 +8,17 @@ import imageReducer from './imageReducer';
 import rolPermisoReducer from './rolPermisoReducer';
 import usuarioRolReducer from './usuarioRolReducer';
 import usuarioPageReducer from './usuarioPageReducer';
-import fileReducer from './fileReducer';
 import cabeceraDatoReducer from './cabeceraDatoReducer';
+import fileReducer from './fileReducer';
+import fileSeguimiento from './fileSeguimiento';
+import observadorPermisoReducer from './observadorPermisoReducer';
+import observadorReducer from './observadorReducer';
 
 export default combineReducers({
     cabeceraDatoReducer,
     socketReducer,
     usuarioReducer,
+    observadorReducer,
     permisoReducer,
     permisoPageReducer,
     imageReducer,
@@ -22,5 +26,7 @@ export default combineReducers({
     rolPermisoReducer,
     usuarioRolReducer,
     usuarioPageReducer,
-    fileReducer
+    fileReducer,
+    fileSeguimiento,
+    observadorPermisoReducer
 });

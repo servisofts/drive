@@ -25,6 +25,8 @@ class CerrarSession extends Component {
             }} onPress={() => {
                 SSStorage.removeItem(AppParams.storage.urlLog);
                 this.props.state.usuarioReducer.usuarioLog = false;
+                this.props.state.usuarioReducer.usuarioDatos = false;
+                this.props.state.fileReducer.data= false;
                 this.props.navigation.replace("CargaPage")
             }}>
                 <Text style={{

@@ -14,6 +14,7 @@ import DescargaPage from './DescargaPage'
 import UsuarioPage from './UsuarioPage'
 import UsuarioPerfilPage from './UsuarioPerfilPage'
 import UsuarioRegistroPage from './UsuarioRegistroPage'
+import CompartidosPage from './CompartidosPage'
 import TestRNF from './TestRNF'
 
 
@@ -32,6 +33,7 @@ export const getPages = () => {
         UsuarioRegistroPage,
         CarpetasPage,
         FilePerfil,
-        DescargaPage
+        DescargaPage,
+        CompartidosPage
     }
 }

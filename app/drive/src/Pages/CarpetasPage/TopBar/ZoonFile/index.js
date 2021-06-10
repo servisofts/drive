@@ -13,9 +13,8 @@ class ZoonFile extends Component {
     render() {
         return (
             <TouchableOpacity style={{
-                margin: 4,
-                width: 30,
-                height: 35,
+                width: 43,
+                height: 43,
                 // borderWidth: 1, 
                 // borderRadius: 8,
                 // backgroundColor:"#000",
@@ -29,13 +28,13 @@ class ZoonFile extends Component {
             }}>
                 {this.props.val > 0 ? (
                     <Svg resource={require('../../../../img/zoon.svg')} style={{
-                        width: "100%",
-                        height: "100%",
+                        width: 28,
+                        height: 28,
                     }} />
                 ) : (
                     <Svg resource={require('../../../../img/zoono.svg')} style={{
-                        width: "100%",
-                        height: "100%",
+                        width: 28,
+                        height: 28,
                     }} />
                 )}
 

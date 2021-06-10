@@ -11,6 +11,7 @@ class BarraSuperior extends Component {
         this.state = {
             anim: new Animated.Value(0),
         };
+
     }
 
     startAnimation() {
@@ -20,6 +21,7 @@ class BarraSuperior extends Component {
         }).start();
     }
     componentDidMount() {
+
         this.startAnimation();
     }
 
@@ -44,7 +46,7 @@ class BarraSuperior extends Component {
                 }} onPress={() => {
                     this.props.navigation.navigate("UsuarioPerfilPage")
                 }}>
-              
+
                     {this.props.state.imageReducer.getImage(AppParams.urlImages + this.props.state.usuarioReducer.usuarioLog.key, {
                         width: "100%",
                         height: "100%",
@@ -69,6 +71,38 @@ class BarraSuperior extends Component {
             </View>
         </>
         )
+    }
+    getTitle() {
+        var text = this.props.state.fileReducer.activeRoot.descripcion
+        if (this.props.title) {
+            text = this.props.title;
+        } else {
+            if (this.props.state.fileReducer.routes) {
+                var size = this.props.state.fileReducer.routes.length
+                this.props.state.fileReducer.routes.map((obj, key) => {
+                    if (size - (key + 1) > 0) {
+                        // if (size > 2) {
+                        //     if (key < 1) {
+                        //         text += obj.descripcion.substring(0, 5) + "..."
+                        //     }else{
+                        text += "."
+                        //     }
+                        // } else {
+                        //     text += obj.descripcion.substring(0, 5) + "..."
+                        // }
+                        text += "/"
+                    } else {
+                        text += obj.descripcion
+                    }
+
+                });
+            }
+        }
+        return (<Text style={{
+            color: "#fff",
+            fontSize: 12,
+            fontWeight: "bold"
+        }}>{text}</Text>)
     }
     render() {
         return (
@@ -116,28 +150,27 @@ class BarraSuperior extends Component {
                         justifyContent: "center",
                         // alignItems: "center"
                     }}>
-                        <Text style={{
-                            color: "#fff",
-                            fontSize: 16,
-                            fontWeight: "bold"
-                        }}>{this.props.title}</Text>
+                        {this.getTitle()}
+
                     </View>
                     {this.getUser()}
 
 
                 </View>
 
-                <View style={{
+                <TouchableOpacity style={{
                     width: 130,
                     height: "100%",
                     padding: 4,
+                }} onPress={() => {
+                    this.props.navigation.navigate("InicioPage")
                 }}>
                     <Svg name="logo" style={{
                         with: "100%",
                         height: "100%",
                         fill: "#000"
                     }} />
-                </View>
+                </TouchableOpacity>
             </Animated.View>
         );
     }

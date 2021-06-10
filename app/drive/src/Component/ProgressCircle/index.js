@@ -33,10 +33,16 @@ class ProgressCircle extends Component<Props> {
         onFinish: () => { }
     }
     animateTo(value, duration) {
+        
         Animated.timing(this.state.anim, {
             toValue: value,
             duration: !duration ? this.props.duration : duration,
-        }).start(this.props.onFinish);
+            // useNativeDriver:true,
+        }).start(()=>{
+            this.props.onFinish()
+            this.state.anim.setValue(value);
+        });
+        
     }
     componentDidMount() {
 
@@ -52,8 +58,8 @@ class ProgressCircle extends Component<Props> {
                 backgroundColor: "#fff",
                 justifyContent: "center",
                 alignItems: "center",
-                transform:[
-                    {rotateZ:"-90deg"}
+                transform: [
+                    { rotateZ: "-90deg" }
                 ]
             }}>
                 <Svg width={this.state.dimension.width} height={this.state.dimension.width} fill="transparent" >
@@ -80,8 +86,8 @@ class ProgressCircle extends Component<Props> {
                     alignItems: "center",
                     borderRadius: 1000,
                     overflow: "hidden",
-                    transform:[
-                        {rotateZ:"90deg"}
+                    transform: [
+                        { rotateZ: "90deg" }
                     ]
                 }}>
                     {this.props.children}

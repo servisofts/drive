@@ -10,7 +10,3 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
-window.onhashchange = function() {
-  //blah blah blah
-  alert("asdas")
- }

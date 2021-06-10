@@ -22,6 +22,8 @@ import * as SSNavigation from './SSNavigation';
 import AppParams from './Params/index.json'
 import BarraDeDesconeccion from './SSSocket/BarraDeDesconeccion';
 import DropDown from './Component/DropDown';
+import SPopup from './SPopup';
+import SResponsive from './SResponsive';
 const store = createStore(
   Reducer,
   {},
@@ -45,14 +47,11 @@ const App = () => {
       <SafeAreaView style={styles.scrollView}>
         <StatusBar barStyle={'light-content'} backgroundColor={"#000"} />
         <BarraDeDesconeccion socketName={AppParams.socket.name} color={"#000000"} visible={false} />
-        <View style={{
-          flex: 1,
-          height: "100%",
-          backgroundColor: "#000"
-        }}>
-          <Container />
+        <SResponsive>
+          <Container uriPrefix={"ssdrive://ssdrive/"} />
           <DropDown />
-        </View>
+          <SPopup />
+        </SResponsive>
       </SafeAreaView>
     </Provider>
 

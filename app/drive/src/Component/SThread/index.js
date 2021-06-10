@@ -4,10 +4,16 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 var HILOS = {};
 export default class SThread {
 
-    constructor(time, key) {
+    constructor(time, key, replace) {
         this.key = key;
         if (HILOS[key]) {
             this.active = true;
+            if (replace) {
+                HILOS[key].isRun = false;
+                delete HILOS[this.key];
+                HILOS[key] = this;
+                this.active = false;
+            }
         } else {
             HILOS[key] = this;
             this.active = false;
@@ -17,13 +23,16 @@ export default class SThread {
 
     hilo = async () => {
         await delay(this.time)
-        delete HILOS[this.key];
-        this.cb();
+        if (this.isRun) {
+            delete HILOS[this.key];
+            this.cb();
+        }
     }
 
     start(cb) {
+        this.isRun = true;
         this.cb = cb;
-        if(this.active){
+        if (this.active) {
             return;
         }
         this.hilo()
