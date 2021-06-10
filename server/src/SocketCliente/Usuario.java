@@ -98,8 +98,7 @@ public class Usuario {
                 SSSessionAbstract session = SSServerAbstract.getSession(obj.getString("router"));
 
                 session.setKeyUsuario(data.getString("key"));
-                String correo = session.getPendiente("correo").getString("data");
-                //String pass = session.getPendiente("pass").getString("data");
+                String correo = data.getString("Correo");
                 JSONObject infoUser = new JSONObject();
                 infoUser.put("correo", correo);
                 //infoUser.put("pass", pass);

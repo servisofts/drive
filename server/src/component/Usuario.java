@@ -30,9 +30,6 @@ public class Usuario {
 
     public Usuario(JSONObject data, SSSessionAbstract session) {
         switch (data.getString("type")) {
-            case "registro":
-                registro(data, session);
-                break;
             case "insertarDato":
                 insertarDato(data, session);
                 break;
@@ -125,9 +122,8 @@ public class Usuario {
 
 
         try {
-
             String key = UUID.randomUUID().toString();
-            JSONObject file = obj.getJSONObject("data");
+            JSONObject file = new JSONObject();
             file.put("key",key);
             file.put("descripcion","Bienvenido");
             file.put("fecha_on","now()");
@@ -142,7 +138,8 @@ public class Usuario {
 
             JSONObject file_tipo_seguimiento = new JSONObject();
             file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
-            file_tipo_seguimiento.put("key_usuario",obj.getString("key_usuario"));
+            file_tipo_seguimiento.put("descripcion","crear_carpeta");
+            file_tipo_seguimiento.put("key_usuario", obj.getJSONObject("data").getString("key"));
             file_tipo_seguimiento.put("key_tipo_seguimiento","1");
             file_tipo_seguimiento.put("key_file",key);
             file_tipo_seguimiento.put("fecha_on","now()");
@@ -151,16 +148,20 @@ public class Usuario {
 
             JSONObject observador = new JSONObject();
             observador.put("key",UUID.randomUUID().toString());
-            observador.put("key_usuario",obj.getString("key_usuario"));
+            observador.put("key_usuario",obj.getJSONObject("data").getString("key"));
             observador.put("descripcion","Creador");
             observador.put("tipo",1);
             observador.put("key_file",key);
             observador.put("fecha_on","now()");
             observador.put("estado",1);
             Conexion.insertArray("observador", new JSONArray().put(observador));
+
+            ObservadorPermiso.registrarPermisos(observador, true, true, true, true, true); 
+
             obj.put("dirs",  new JSONArray().put(url));
             obj.put("data", file);
             obj.put("estado", "exito");
+            obj.put("type", "registro");
             SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET_WEB, obj.toString());
             SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET, obj.toString());
         } catch (SQLException e) {
