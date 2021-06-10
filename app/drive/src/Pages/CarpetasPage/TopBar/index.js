@@ -18,6 +18,20 @@ export default class TopBar extends Component {
     }
 
     render() {
+        if (this.props.state.fileReducer.activeRoot.key == "trash") {
+            return (
+                <View style={{
+                    width: "100%",
+                    height: 40,
+                    flexDirection: "row"
+                }}>
+                    <Vistas  {...this.props} />
+                    <ZoonFile {...this.props} val={-0.1} />
+                    <ZoonFile {...this.props} val={0.1} />
+                    <Reload />
+                </View>
+            );
+        }
         return (
             <View style={{
                 width: "100%",
@@ -26,15 +40,12 @@ export default class TopBar extends Component {
             }}>
                 {/* <BackPath /> */}
                 {/* <RoutePath /> */}
-                <NuevaCarpeta {...this.props}/>
+                <NuevaCarpeta {...this.props} />
                 <SubirArchibo {...this.props} />
-
-
                 <Vistas  {...this.props} />
                 <ZoonFile {...this.props} val={-0.1} />
                 <ZoonFile {...this.props} val={0.1} />
-
-                <Reload/>
+                <Reload />
                 {/* <CerrarSession {...this.props} /> */}
 
             </View>

@@ -103,6 +103,7 @@ const BarraDeDesconeccion = (props) => {
     if (!props.visible) {
         return <View />
     }
+    return <View />
     return (
         <>
             <View style={{

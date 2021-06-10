@@ -14,7 +14,7 @@ class SharePreview extends Component {
         if (this.props.file.tipo_observador != 2) {
             return <View />
         }
-        console.log(this.props.file)
+        // console.log(this.props.file)
         return (
             <View style={{
                 position: "absolute",

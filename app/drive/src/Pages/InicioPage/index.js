@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import BackgroundImage from '../../Component/BackgroundImage';
+import BarraSuperior from '../../Component/BarraSuperior';
+import DeleteBtn from '../../Component/DeleteBtn';
 import NaviDrawer from '../../Component/NaviDrawer';
 import NaviDrawerButtom from '../../Component/NaviDrawer/NaviDrawerButtom';
+import SSCrollView from '../../Component/SScrollView';
 import * as SSNavigation from '../../SSNavigation'
 import Svg from '../../Svg';
+import Accesos from './Accesos';
 
 
 class InicioPage extends Component {
   static navigationOptions = {
-    headerShown: true,
+    headerShown: false,
   }
   constructor(props) {
     super(props);
@@ -19,48 +25,46 @@ class InicioPage extends Component {
   }
 
   render() {
+
+    if (!this.props.state.usuarioReducer.usuarioLog) {
+      this.props.navigation.replace("LoginPage");
+      return <View />
+    }
     return (<>
       <View style={{
         flex: 1,
         width: "100%",
         height: "100%",
-        justifyContent: "center",
-        alignItems: "center"
-        // backgroundColor:"#000",
+        alignItems: "center",
+        // backgroundColor: "#222",
       }}>
-        <View style={{
-          width: "90%",
-          margin: 16,
-          height: 200,
-          backgroundColor: "#fff"
-        }}>
-
-        </View>
-        <Svg name="logo"
-          style={{
-            width: 200,
-            height: 200,
-          }} />
-
+        <BackgroundImage source={(require("../../img/fondos/background.png"))} />
+        <BarraSuperior title={"Inicio"} navigation={this.props.navigation} />
 
         <View style={{
-          margin: 16,
-          width: "90%",
-          height: 200,
-          backgroundColor: "#fff"
+          flex: 1,
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center"
         }}>
-
+          <SSCrollView>
+            <Accesos navigation={this.props.navigation} />
+          </SSCrollView>
         </View>
+
         {/* <Text>{JSON.stringify(this.props)}</Text> */}
-        <NaviDrawerButtom open={() => {
+        {/* <NaviDrawerButtom open={() => {
           this.state.naviDrawer.open();
-        }} />
+        }} /> */}
       </View>
-      <NaviDrawer ref={(ref) => {
+      {/* <NaviDrawer ref={(ref) => {
         this.state.naviDrawer = ref;
-      }} navigation={this.props.navigation} />
+      }} navigation={this.props.navigation} /> */}
     </>
     );
   }
 }
-export default InicioPage;
+const initStates = (state) => {
+  return { state }
+};
+export default connect(initStates)(InicioPage);

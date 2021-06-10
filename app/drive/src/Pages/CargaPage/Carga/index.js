@@ -24,40 +24,43 @@ const Carga = (props) => {
                 props.state.usuarioReducer.usuarioCargado = true;
                 if (!value) {
                     props.state.usuarioReducer.usuarioLog = false;
-                    return;
+                    return "cargando...";
                 }
                 if (value.length <= 0) {
                     props.state.usuarioReducer.usuarioLog = false;
-                    return;
+                    return "cargando...";
                 }
                 props.state.usuarioReducer.usuarioLog = JSON.parse(value)
-                return;
+                return "cargando...";
             });
             return "Buscando usuario...";
-        } else {
-            if (!props.state.usuarioReducer.usuarioLog) {
-                props.navigation.replace("LoginPage");
-                ///no hay usuario
-            } else {
-                props.navigation.replace("LoginPage");
-                ///existe usuario
-            }
         }
         return "Cargando...";
     }
     var mensajeTemp = getMensaje();
     if (mensajeTemp != mensaje) {
+
         setMensaje(mensajeTemp);
         return <View />;
     }
     new SThread(3000, "hiloVerificarEntrada").start(() => {
-        // props.navigation.replace("LoginPage");
-        props.navigation.replace("LoginPage");
+        if (!props.state.usuarioReducer.usuarioLog) {
+            console.log("Login")
+            // props.navigation.replace("TestPage");
+            props.navigation.replace("LoginPage");
+            ///no hay usuario
+        } else {
+            console.log("Inicio")
+            props.navigation.replace("InicioPage");
+        }
     })
     return (
         <View style={{
+            marginTop: 30,
         }}>
-            <Text>{mensaje}</Text>
+            <Text style={{
+                color: "#666"
+            }}>{mensaje}</Text>
         </View>
     );
 }

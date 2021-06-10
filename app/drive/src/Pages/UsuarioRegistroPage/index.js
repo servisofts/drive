@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import ActionButtom from '../../Component/ActionButtom';
+import BackgroundImage from '../../Component/BackgroundImage';
 import BarraSuperior from '../../Component/BarraSuperior';
 import NaviDrawer from '../../Component/NaviDrawer';
+// import SFotoPicker from '../../Component/SFotoPicker';
+import { choseFile } from '../../Component/SImageImput';
+import SSCrollView from '../../Component/SScrollView';
 import STextImput from '../../Component/STextImput';
 import AppParams from '../../Params';
+import { SPopupOpen } from '../../SPopup';
+import STheme from '../../STheme';
 import Svg from '../../Svg';
-// import RolDeUsuario from './RolDeUsuario';
+import RolDeUsuario from './RolDeUsuario';
 var _ref = {};
 class UsuarioRegistroPage extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -22,22 +28,22 @@ class UsuarioRegistroPage extends Component {
     this.state = {};
     var styleImput = {
       width: "80%",
-      padding: 8,
       height: 50,
-      margin: 8,
-      color: "#fff",
-      borderWidth: 2,
+      borderWidth: 1,
       borderColor: "#999",
-      borderRadius: 8,
+      margin: 8,
+      borderRadius: 4,
+      padding: 8,
+      color:"#fff",
     }
-
+    this.cabecera = "registro_administrador"
     var key = this.props.navigation.getParam("key", false);
     this.TextButom = "CREAR";
     this.data = {};
     if (key) {
       this.TextButom = "EDITAR";
-      this.data = this.props.state.usuarioReducer.data[key];
-      this.data.key = key;
+      this.data = this.props.state.usuarioReducer.data[this.cabecera][key];
+      // this.data.key = key;
       if (!this.data) {
         alert("NO HAY DATA");
       }
@@ -46,38 +52,33 @@ class UsuarioRegistroPage extends Component {
     this.imputs = {
       Nombres: new STextImput({
         placeholder: "Nombres",
-        // defaultValue: this.data["Nombres"].dato,
+        defaultValue: this.data["Nombres"],
         // autoCapitalize: "none",
-
         style: styleImput
       }),
 
       Apellidos: new STextImput({
         placeholder: "Apellidos",
-        type: "correo",
-
-        // defaultValue: this.data["Apellidos"].dato,
+        defaultValue: this.data["Apellidos"],
         // autoCapitalize: "none",
         style: styleImput
       }),
       Correo: new STextImput({
         placeholder: "Correo",
-        // defaultValue: this.data["Correo"].dato,
+        defaultValue: this.data["Correo"],
         // autoCapitalize: "none",
-        autoCapitalize: "none",
-        autoCompleteType: "email",
         style: styleImput
       }),
       Telefono: new STextImput({
         placeholder: "Telefono",
-        // defaultValue: this.data["Telefono"].dato,
+        type: "Phone",
+        defaultValue: this.data["Telefono"],
         // autoCapitalize: "none",
         style: styleImput
       }),
       Password: new STextImput({
         placeholder: "Password",
-        secureTextEntry: true,
-        // defaultValue: this.data["Telefono"].dato,
+        defaultValue: this.data["Password"],
         // autoCapitalize: "none",
         style: styleImput
       }),
@@ -88,13 +89,30 @@ class UsuarioRegistroPage extends Component {
   }
 
   render() {
-
-    if (this.props.state.usuarioReducer.estado == "error") {
-      console.log("Error " + this.props.state.usuarioReducer.error);
+    if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "registro") {
       this.props.state.usuarioReducer.estado = "";
+      // alert()
+      var close = SPopupOpen(<View key={"errorUsuario"} style={{
+        width: "100%",
+        height: 200,
+        backgroundColor: "#fff",
+        borderRadius: 8,
+      }}>
+        <Text>Usted es este usuario?</Text>
+        <Text>{JSON.stringify(this.props.state.usuarioReducer.error)}</Text>
+        <TouchableOpacity onPress={() => {
+          close()
+        }} style={{
+          width: 100,
+          height: 50,
+          backgroundColor: "#660000"
+        }}>
+        </TouchableOpacity>
+      </View>);
     }
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "registro") {
       this.props.state.usuarioReducer.estado = "";
+      // this.data = this.props.state.usuarioReducer.lastRegister;
       this.props.navigation.goBack();
     }
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "editar") {
@@ -102,107 +120,130 @@ class UsuarioRegistroPage extends Component {
       this.props.navigation.goBack();
     }
 
-    if (!this.props.state.cabeceraDatoReducer.data["registro_administrador"]) {
-      if (this.props.state.cabeceraDatoReducer.estado == "cargando") {
-        return <View />
-      }
-      if (this.props.state.cabeceraDatoReducer.estado == "error") {
-        return <View />
-      }
-      this.props.state.socketReducer.session[AppParams.socket.name].send({
-        component: "cabeceraDato",
-        type: "getDatoCabecera",
-        estado: "cargando",
-        cabecera: "registro_administrador"
-      }, true);
-      return <View />
-    }
+
     return (
       <View style={{
+        width: "100%",
         flex: 1,
-        height: "100%",
       }}>
-        <BarraSuperior duration={500} title={"Registrate"} goBack={() => {
-          this.props.navigation.goBack();
-        }} {...this.props} />
-        <ScrollView style={{
-          width: "100%",
-          height: "100%"
+        <BackgroundImage />
 
-        }} contentContainerStyle={{
-          alignItems: "center",
+        <BarraSuperior title={(this.data ? "Registro" : "Editar") + " de usuario"} navigation={this.props.navigation}
+          goBack={() => {
+            this.props.navigation.goBack();
+          }}
+        />
+        <View style={{
           flex: 1,
-          paddingTop: 100,
-          backgroundColor: "#000"
+          width: "100%",
         }}>
-          <View style={{
-            width: "90%",
-            maxWidth: 600,
-            alignItems: 'center',
-            justifyContent: 'center',
+          <SSCrollView contentContainerStyle={{
+            alignItems: "center"
           }}>
             <View style={{
-              width: "100%",
-              maxWidth: 600,
-              alignItems: 'center',
-              // justifyContent: 'center',
-            }}>
-              {Object.keys(this.imputs).map((key) => {
-                return this.imputs[key].getComponent();
-              })}
-            </View>
-            <View style={{
-              flex: 1,
               width: "90%",
               maxWidth: 600,
+              alignItems: 'center',
               justifyContent: 'center',
-              flexDirection: "row",
             }}>
-              <ActionButtom label={this.props.state.usuarioReducer.estado == "cargando" ? "cargando" : this.TextButom}
-                onPress={() => {
-                  if (this.props.state.usuarioReducer.estado == "cargando") {
-                    return;
-                  }
-                  var cabeceras = this.props.state.cabeceraDatoReducer.data["registro_administrador"];
-                  var isValid = true;
-                  var objectResult = {};
-                  var arr = [];
-
-                  Object.keys(this.imputs).map((key) => {
-                    if (this.imputs[key].verify() == false) isValid = false;
-                    objectResult[key] = this.imputs[key].getValue();
-                    var dato = false;
-                    cabeceras.map((cabe) => {
-                      if (cabe.dato.descripcion == key) {
-                        dato = cabe;
-                      }
-                    })
-
-                    arr.push({
-                      dato: dato,
-                      data: this.imputs[key].getValue()
-                    })
-                  })
-                  if (!isValid) {
-                    this.setState({ ...this.state });
-                    return;
-                  }
-                  var object = {
-                    component: "usuario",
-                    type: "registro",
-                    version: "2.0",
-                    estado: "cargando",
-
-                    cabecera: "registro_administrador",
-                    data: arr,
-                  }
-                  // alert(JSON.stringify(object));
-                  this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+              <View style={{
+                width: "100%",
+                maxWidth: 600,
+                alignItems: 'center',
+                // justifyContent: 'center',
+              }}>
+                {/* <SFotoPicker style={{
+                  width: 180,
+                  height: 180
                 }}
-              />
+                  data={{
+                    component: "proyecto",
+                    key: (!this.data ? "" : this.data.key),
+                    url: AppParams.servicios["proyecto"] + "usuario_",
+                  }} /> */}
+
+                <TouchableOpacity style={{
+                  width: 180,
+                  height: 180,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: STheme.color.card,
+                  borderRadius: 8,
+                  marginBottom: 16,
+                  overflow: 'hidden',
+                }} onPress={() => {
+                  choseFile({
+                    servicio: "drive",
+                    component: "usuario",
+                    type: "subirFoto",
+                    estado: "cargando",
+                    key: (!this.data ? "" : this.data.key),
+                    key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+                  }, (resp) => {
+                    this.props.dispatch({
+                      component: "image",
+                      type: "cambio",
+                      url: AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key),
+                    })
+                    // this.state.repaint = new Date().getTime()
+                    // this.setState({ ...this.state });
+                  });
+                }}>
+                  {this.props.state.imageReducer.getImage(AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key), {
+                    width: "100%",
+                    height: "100%",
+                  })}
+                </TouchableOpacity>
+                {Object.keys(this.imputs).map((key) => {
+                  return this.imputs[key].getComponent();
+                })}
+              </View>
+              <View style={{
+                flex: 1,
+                width: "100%",
+                maxWidth: 600,
+                justifyContent: 'center',
+                flexDirection: "row",
+              }}>
+                <ActionButtom label={(!this.data ? "REGISTRAR" : "EDITAR")} label={this.props.state.usuarioReducer.estado == "cargando" ? "cargando" : this.TextButom}
+                  onPress={() => {
+                    // if (this.props.state.usuarioReducer.estado == "cargando") {
+                    //   return;
+                    // }
+                    var isValid = true;
+                    var objectResult = {};
+                    var arr = [];
+                    Object.keys(this.imputs).map((key) => {
+                      if (this.imputs[key].verify() == false) isValid = false;
+                      objectResult[key] = this.imputs[key].getValue();
+                      var dato = false;
+                    })
+                    if (!isValid) {
+                      this.setState({ ...this.state });
+                      return;
+                    }
+                    var object = {
+                      component: "usuario",
+                      type: this.data ? "registro" : "editar",
+                      version: "2.0",
+                      // key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+                      estado: "cargando",
+                      cabecera: "registro_administrador",
+                      data: {
+                        ...this.data,
+                        ...objectResult
+                      },
+                    }
+                    // alert(JSON.stringify(object));
+                    this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+                    return;
+                  }}
+                />
+              </View>
             </View>
-          </View>
-        </ScrollView>
+            {/* <RolDeUsuario data={this.data} /> */}
+          </SSCrollView>
+        </View>
       </View>
     );
   }

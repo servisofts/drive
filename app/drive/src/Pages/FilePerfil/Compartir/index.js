@@ -64,7 +64,7 @@ class Compartir extends Component {
                 return <TouchableOpacity style={{
                     width: "100%",
                     height: 40,
-                    backgroundColor: "#ffffffcc",
+                    backgroundColor: "#00000022",
                     margin: 2,
                     borderRadius: 4,
                 }} onPress={() => {
@@ -95,8 +95,12 @@ class Compartir extends Component {
                             borderRadius: 4,
                             marginStart: 8,
                         }}>
-                            <Text>{obj["Correo"]}</Text>
-                            <Text>{obj["Telefono"]}</Text>
+                            <Text style={{
+                                color:"#fff"
+                            }}>{obj["Correo"]}</Text>
+                            <Text style={{
+                                color:"#fff"
+                            }}>{obj["Telefono"]}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -117,90 +121,91 @@ class Compartir extends Component {
     }
     render() {
         return (
-            <>
+            <View style={{
+                width: "100%",
+                maxWidth: 600,
+                height: "100%",
+                height: 400,
+                alignItems: "center",
+                padding: 8,
+                borderRadius:8,
+                backgroundColor: "#222222ee",
+            }}>
+                <Text style={{
+                    color: "#fff",
+                    fontSize: 16,
+                    padding: 8,
+                    textAlign: "center",
+                    textAlignVertical: "center"
+                }}>Compartir</Text>
+
                 <View style={{
                     width: "100%",
-                    height: "100%",
-                    height: 400,
+                    height: 50,
+                    justifyContent: "center",
                     alignItems: "center",
-                    padding: 8,
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    // padding: 4,
+                    // backgroundColor:"#fff"
                 }}>
-                    <Text style={{
-                        color: "#fff",
-                        fontSize: 16,
-                        padding: 8,
-                        textAlign: "center",
-                        textAlignVertical: "center"
-                    }}>Compartir</Text>
+                    <TextInput
+                        style={{
+                            width: "100%",
+                            height: 50,
+                            backgroundColor: "#ffffffcc",
+                            borderRadius: 4,
+                            padding: 4,
+                            textAlign: "center",
+                        }}
+                        onKeyPress={(evt) => {
+                            if (evt.key === "Enter") {
+                                this.send()
+                            }
+                        }}
+                        onChangeText={(text) => {
+                            this.text = text;
 
-                    <View style={{
-                        width: "100%",
-                        height: 50,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        // padding: 4,
-                        // backgroundColor:"#fff"
-                    }}>
-                        <TextInput
-                            style={{
-                                width: "100%",
-                                height: 50,
-                                backgroundColor: "#ffffffcc",
-                                borderRadius: 4,
-                                padding: 4,
-                                textAlign: "center",
-                            }}
-                            onKeyPress={(evt) => {
-                                if (evt.key === "Enter") {
-                                    this.send()
+                            new SThread(300, "changeBusquedaCompartir", true).start(() => {
+                                if (!text) {
+                                    this.props.state.usuarioReducer.dataBuscar = false;
+                                    this.setState({ ...this.state })
+                                    return;
                                 }
-                            }}
-                            onChangeText={(text) => {
-                                this.text = text;
+                                this.send();
 
-                                new SThread(300, "changeBusquedaCompartir", true).start(() => {
-                                    if (!text) {
-                                        this.props.state.usuarioReducer.dataBuscar = false;
-                                        this.setState({ ...this.state })
-                                        return;
-                                    }
-                                    this.send();
+                            })
 
-                                })
-
-                            }} placeholder={"Ingresa el correo o el numero de telefono."} />
-                    </View>
-                    {this.getSujest()}
-
-                    <View style={{
-                        width: "100%",
-                        height: 45,
-                        marginTop: 8,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        justifyContent: "space-around"
-                        // backgroundColor:"#fff"
-                    }}>
-                        <TouchableOpacity style={{
-                            width: 100,
-                            height: 40,
-                            borderRadius: 8,
-                            backgroundColor: "#ff555588",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }} onPress={() => {
-
-                            this.props.close();
-                        }}>
-                            <Text style={{ color: "#fff" }}>Cerrar</Text>
-                        </TouchableOpacity>
-                        {/* {this.getSend()} */}
-                    </View>
+                        }} placeholder={"Ingresa el correo o el numero de telefono."} />
                 </View>
-            </>
+                {this.getSujest()}
+
+                <View style={{
+                    width: "100%",
+                    height: 45,
+                    marginTop: 8,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "space-around"
+                    // backgroundColor:"#fff"
+                }}>
+                    <TouchableOpacity style={{
+                        width: 100,
+                        height: 40,
+                        borderRadius: 8,
+                        backgroundColor: "#ff555588",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }} onPress={() => {
+
+                        this.props.close();
+                    }}>
+                        <Text style={{ color: "#fff" }}>Cerrar</Text>
+                    </TouchableOpacity>
+                    {/* {this.getSend()} */}
+                </View>
+            </View>
         );
     }
 }

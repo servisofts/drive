@@ -203,7 +203,7 @@ class SessionWeb {
         }
     }
     ping() {
-        if (!this.isActivo()) {
+        if (!this.isActivo() || !this.send) {
             Log("No se puede hacer ping socket cerrado.")
             return false;
         }

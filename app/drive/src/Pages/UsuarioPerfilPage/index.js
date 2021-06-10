@@ -23,25 +23,6 @@ class UsuarioPerfil extends Component {
     }
     getPerfil() {
         var usuario = this.props.state.usuarioReducer.usuarioLog
-        // alert(JSON.stringify(usuario));
-        var usrD = this.props.state.usuarioReducer.usuarioDatos;
-        if (!usrD) {
-            if (this.props.state.usuarioReducer.estado == "cargando") {
-                return <ActivityIndicator color={"#fff"} />
-            }
-            var object = {
-                component: "usuario",
-                type: "getById",
-                version: "2.0",
-                estado: "cargando",
-                cabecera: "registro_administrador",
-                key: usuario.key
-            }
-            // alert(JSON.stringify(object));
-            this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
-            return <ActivityIndicator color={"#fff"} />
-        }
-        
         return (
             <View style={{
                 width: "95%",
@@ -106,7 +87,7 @@ class UsuarioPerfil extends Component {
                             fontSize: 20,
                             fontWeight: "bold",
                             color: "#fff"
-                        }}>{usrD.datos["Nombres"] + " " + usrD.datos["Apellidos"]} </Text>
+                        }}>{usuario.Nombres + " " + usuario.Apellidos} </Text>
                     </View>
                     <View style={{
                         width: "95%",
@@ -116,17 +97,17 @@ class UsuarioPerfil extends Component {
                             width: "90%",
                             fontSize: 14,
                             color: "#bbb"
-                        }}>{usrD.datos["Correo"]} </Text>
+                        }}>{usuario.Correo} </Text>
                         <Text style={{
                             width: "90%",
                             fontSize: 14,
                             color: "#bbb"
-                        }}>{usrD.datos["Telefono"]} </Text>
-                        <Text style={{
+                        }}>{usuario.Telefono} </Text>
+                        {/* <Text style={{
                             width: "90%",
                             fontSize: 10,
                             color: "#bbb"
-                        }}>Fecha de registro: {moment(new Date(usrD.fecha_on)).format("DD/MM/YYYY")} </Text>
+                        }}>Fecha de registro: {moment(new Date(usrD.fecha_on)).format("DD/MM/YYYY")} </Text> */}
                     </View>
                 </View>
             </View>

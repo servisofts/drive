@@ -11,11 +11,14 @@ import usuarioPageReducer from './usuarioPageReducer';
 import cabeceraDatoReducer from './cabeceraDatoReducer';
 import fileReducer from './fileReducer';
 import fileSeguimiento from './fileSeguimiento';
+import observadorPermisoReducer from './observadorPermisoReducer';
+import observadorReducer from './observadorReducer';
 
 export default combineReducers({
     cabeceraDatoReducer,
     socketReducer,
     usuarioReducer,
+    observadorReducer,
     permisoReducer,
     permisoPageReducer,
     imageReducer,
@@ -24,5 +27,6 @@ export default combineReducers({
     usuarioRolReducer,
     usuarioPageReducer,
     fileReducer,
-    fileSeguimiento
+    fileSeguimiento,
+    observadorPermisoReducer
 });

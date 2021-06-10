@@ -47,8 +47,8 @@ class CarpetasPage extends Component {
     }
     render() {
 
-        var Barra = <BarraSuperior  navigation={this.props.navigation}/>
-        if (this.props.state.fileReducer.routes.length) {
+        var Barra = <BarraSuperior goBack={() => { this.props.navigation.goBack() }} navigation={this.props.navigation} />
+        if (this.props.state.fileReducer.routes.length > 0) {
             Barra = <BarraSuperior navigation={this.props.navigation} goBack={() => {
                 this.props.dispatch({
                     component: "file",

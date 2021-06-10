@@ -1,5 +1,23 @@
 const initialState = {
     estado: "Not Found",
+    root: {
+        "raiz": {
+            key: "raiz",
+            descripcion: "/"
+        },
+        "shared": {
+            key: "shared",
+            descripcion: "Compartido"
+        },
+        "trash": {
+            key: "trash",
+            descripcion: "Papelera"
+        }
+    },
+    trash: {
+
+    },
+    activeRoot: false,
     data: false,
     routes: []
 }
@@ -19,6 +37,9 @@ export default (state, action) => {
                 break;
             case "getAll":
                 getAll(state, action);
+                break;
+            case "getAllPapelera":
+                getAllPapelera(state, action);
                 break;
             case "moveFolder":
                 moveFolder(state, action);
@@ -95,30 +116,55 @@ const subir = (state, action) => {
 const editar = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
-        if (state.data) {
-            if (action.path.length > 0) {
-                var curData = state;
-                action.path.map((obj, key) => {
+        if (state.activeRoot.key == "trash") {
+            if (state.trash.data) {
+                if (action.path.length > 0) {
+                    var curData = state;
+                    action.path.map((obj, key) => {
+                        if (curData) {
+                            curData = curData.data[obj.key];
+                            if (!curData.data) {
+                                curData.data = {}
+                            }
+                        }
+                    })
                     if (curData) {
-                        curData = curData.data[obj.key];
-                        if (!curData.data) {
-                            curData.data = {}
+                        curData.data[action.data.key] = action.data;
+                        if (curData.data[action.data.key].estado == 0) {
+                            delete curData.data[action.data.key];
                         }
                     }
-                })
-                if (curData) {
-                    curData.data[action.data.key] = action.data;
-                    if (curData.data[action.data.key].estado == 0) {
-                        delete curData.data[action.data.key];
-                    }
+                } else {
+                    state.trash.data[action.data.key] = action.data;
                 }
-            } else {
-                state.data[action.data.key] = action.data;
-                if (state.data[action.data.key].estado == 0) {
-                    delete state.data[action.data.key];
+            }
+        } else {
+            if (state.data) {
+                if (action.path.length > 0) {
+                    var curData = state;
+                    action.path.map((obj, key) => {
+                        if (curData) {
+                            curData = curData.data[obj.key];
+                            if (!curData.data) {
+                                curData.data = {}
+                            }
+                        }
+                    })
+                    if (curData) {
+                        curData.data[action.data.key] = action.data;
+                        if (curData.data[action.data.key].estado == 0) {
+                            delete curData.data[action.data.key];
+                        }
+                    }
+                } else {
+                    state.data[action.data.key] = action.data;
+                    if (state.data[action.data.key].estado == 0) {
+                        delete state.data[action.data.key];
+                    }
                 }
             }
         }
+
         state.lastEdit = action.data;
     }
 }
@@ -149,7 +195,33 @@ const getAll = (state, action) => {
         }
     }
 }
-
+const getAllPapelera = (state, action) => {
+    state.estado = action.estado
+    if (action.estado === "exito") {
+        if (action.path) {
+            var curData = state.trash;
+            action.path.map((obj, key) => {
+                if (curData) {
+                    curData = curData.data[obj.key];
+                    if (!curData.data) {
+                        curData.data = {}
+                    }
+                }
+            })
+            if (action.data) {
+                curData.data = action.data;
+            } else {
+                curData.data = {};
+            }
+        } else {
+            if (!action.data) {
+                state.trash.data = {};
+            } else {
+                state.trash.data = action.data;
+            }
+        }
+    }
+}
 // const getByKey = (staet, action) => {
 //     state.estado = action.estado
 //     if (action.estado === "exito") {
@@ -187,4 +259,5 @@ const anular = (state, action) => {
 const reload = (state, action) => {
     state.routes = [];
     state.data = false;
+    state.trash = {};
 }

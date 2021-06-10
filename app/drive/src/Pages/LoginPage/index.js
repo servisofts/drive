@@ -24,7 +24,7 @@ class LoginPage extends Component {
       borderRadius: 8,
     }
     this.ImputUsuario = new STextImput({
-      placeholder: "Usuario",
+      placeholder: "Correo o telefono",
       autoCapitalize: "none",
       style: style,
       autoFocus: true,
@@ -65,11 +65,12 @@ class LoginPage extends Component {
     } else {
       var object = {
         component: "usuario",
+        version: "2.0",
         type: "login",
         estado: "cargando",
         data: {
-          usr: this.ImputUsuario.getValue(),
-          pass: this.ImputPassword.getValue(),
+          usuario: this.ImputUsuario.getValue(),
+          password: this.ImputPassword.getValue(),
         },
       }
       // alert(JSON.stringify(object));
@@ -81,7 +82,7 @@ class LoginPage extends Component {
   }
   render() {
 
-    if (this.props.state.usuarioReducer.estado == "error") {
+    if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "login") {
       this.props.state.usuarioReducer.estado = "";
       this.ImputPassword.setError();
     }
@@ -150,7 +151,7 @@ class LoginPage extends Component {
             }}>
               <Text style={{
                 color: "#999"
-              }}>{this.props.state.usuarioReducer.estado != "cargando" ? "Login" : <ActivityIndicator color={"#fff"}/>}</Text>
+              }}>{this.props.state.usuarioReducer.estado != "cargando" ? "Login" : <ActivityIndicator color={"#fff"} />}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.BTN} onPress={(evt) => {
               this.props.navigation.navigate("UsuarioRegistroPage")

@@ -19,7 +19,7 @@ class Ventanas extends Component {
     change(props) {
         this.state.ventana = props;
         var encontro = false;
-        this.setState({ventana:props})
+        this.setState({ ventana: props })
         Object.keys(this.props.ventanas).map((key) => {
             if (key == props) {
                 encontro = true;
@@ -87,11 +87,11 @@ class Ventanas extends Component {
         }
         return (<View style={{
             width: "100%",
-            height: "100%",
+            height:400,
             justifyContent: "center",
             alignItems: "center",
+            overflow: "hidden",
         }}>
-
             {getVentanas()}
             <View style={{
                 position: "absolute",

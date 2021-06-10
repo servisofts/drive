@@ -11,7 +11,7 @@ class BarraSuperior extends Component {
         this.state = {
             anim: new Animated.Value(0),
         };
-  
+
     }
 
     startAnimation() {
@@ -21,7 +21,7 @@ class BarraSuperior extends Component {
         }).start();
     }
     componentDidMount() {
-     
+
         this.startAnimation();
     }
 
@@ -73,7 +73,7 @@ class BarraSuperior extends Component {
         )
     }
     getTitle() {
-        var text = "/"
+        var text = this.props.state.fileReducer.activeRoot.descripcion
         if (this.props.title) {
             text = this.props.title;
         } else {
@@ -158,17 +158,19 @@ class BarraSuperior extends Component {
 
                 </View>
 
-                <View style={{
+                <TouchableOpacity style={{
                     width: 130,
                     height: "100%",
                     padding: 4,
+                }} onPress={() => {
+                    this.props.navigation.navigate("InicioPage")
                 }}>
                     <Svg name="logo" style={{
                         with: "100%",
                         height: "100%",
                         fill: "#000"
                     }} />
-                </View>
+                </TouchableOpacity>
             </Animated.View>
         );
     }

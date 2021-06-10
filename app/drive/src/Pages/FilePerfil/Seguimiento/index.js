@@ -43,7 +43,9 @@ class Seguimiento extends Component {
         }, true);
     }
     getUsuario(key) {
-        var usr = this.props.state.usuarioReducer.data[key];
+        var cabecera = this.props.state.usuarioReducer.data["registro_administrador"];
+        if(!cabecera) cabecera={};
+        var usr = cabecera[key];
         if (!usr) {
             if (this.props.state.usuarioReducer.estado == "cargando") {
                 return false
@@ -54,6 +56,7 @@ class Seguimiento extends Component {
                 version: "2.0",
                 estado: "cargando",
                 cabecera: "registro_administrador",
+                key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                 key: key
             }
             // alert(JSON.stringify(object));
@@ -95,14 +98,14 @@ class Seguimiento extends Component {
                 case "cambiar_nombre":
                     var data = JSON.parse(obj.data);
                     var newName = data.descripcion;
-                    texto = "Cambio el nombre a \""+newName+"\"";
+                    texto = "Cambio el nombre a \"" + newName + "\"";
                     break;
                 case "compartir":
                     var usrShare = this.getUsuario(obj.key_ref);
                     if (!usrShare) {
                         return <ActivityIndicator color={"#fff"} />
                     }
-                    texto = "Compartio a \"" + usrShare.datos["Correo"] + "\"";
+                    texto = "Compartio a \"" + usrShare["Correo"] + "\"";
                     break;
                 case "ver_file":
                     texto = "Descargo el archivo";
@@ -157,7 +160,7 @@ class Seguimiento extends Component {
                             <Text style={{
                                 color: "#fff",
                                 padding: 4,
-                            }}>{usr.datos["Nombres"]}</Text>
+                            }}>{usr["Nombres"]}</Text>
                         </View>
                         <View style={{
                             flex: 3,
