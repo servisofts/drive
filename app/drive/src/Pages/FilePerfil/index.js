@@ -196,7 +196,7 @@ class FilePerfil extends Component {
                                                         key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                                                         path: this.props.state.fileReducer.routes
                                                     }, true);
-                                                    this._confirmarEliminar.setObj(false)
+                                                    // this._confirmarEliminar.setObj(false)
                                                 }}>
                                                     <Text style={{ color: "#fff" }}>Eliminar</Text>
                                                 </TouchableOpacity>
@@ -208,7 +208,7 @@ class FilePerfil extends Component {
                                                     justifyContent: "center",
                                                     alignItems: "center"
                                                 }} onPress={() => {
-                                                    this._confirmarEliminar.setObj(false)
+                                                    // this._confirmarEliminar.setObj(false)
                                                 }}>
                                                     <Text style={{ color: "#fff" }}>Cancelar</Text>
                                                 </TouchableOpacity>
@@ -216,7 +216,7 @@ class FilePerfil extends Component {
                                         </View>
                                         );
                                     }}>
-                                        <Svg resource={require('../../img/delete.svg')} style={{
+                                        <Svg resource={require('../../img/papelera.svg')} style={{
                                             width: 50,
                                             height: "100%",
                                         }} />
@@ -234,7 +234,7 @@ class FilePerfil extends Component {
                                                 }} />)
                                             // this._compartir.setObj(this.state.obj)
                                         }}>
-                                        <Svg resource={require('../../img/shareFolder.svg')} style={{
+                                        <Svg resource={require('../../img/shared.svg')} style={{
                                             width: 50,
                                             height: "100%",
                                         }} />

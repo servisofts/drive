@@ -55,7 +55,7 @@ class ProgressCircle extends Component<Props> {
                 width: this.state.dimension.width,
                 height: this.state.dimension.width,
                 borderRadius: 1000,
-                backgroundColor: "#fff",
+                // backgroundColor: "#fff",
                 justifyContent: "center",
                 alignItems: "center",
                 transform: [
@@ -74,7 +74,7 @@ class ProgressCircle extends Component<Props> {
                         strokeDasharray={scale * Math.PI}
                         strokeDashoffset={this.state.anim.interpolate({
                             inputRange: [0, 1],
-                            outputRange: [((scale * 0.001) * Math.PI), ((scale * 1) * Math.PI)]
+                            outputRange: [((scale * 0.00) * Math.PI), ((scale * 1) * Math.PI)]
                         })}
                         strokeWidth={this.props.strokeWidth} />
                 </Svg>

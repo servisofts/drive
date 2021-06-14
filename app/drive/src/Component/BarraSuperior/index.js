@@ -92,7 +92,7 @@ class BarraSuperior extends Component {
                         // }
                         text += "/"
                     } else {
-                        text += obj.descripcion
+                        text += obj.descripcion+"/"
                     }
 
                 });

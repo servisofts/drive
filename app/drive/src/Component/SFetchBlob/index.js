@@ -1,3 +1,5 @@
+import FetchFunction from "./FetchFunction";
+
 export default class SFetchBlob {
 
     constructor() {
@@ -12,7 +14,7 @@ export default class SFetchBlob {
             headers: {
                 'Access-Control-Allow-Origin': 'http://localhost:3000',
                 // "Access-Control-Allow-Headers": "http://localhost:3000",
-                "key_usuario":props.key_usuario,
+                "key_usuario": props.key_usuario,
             }
         };
         try {
@@ -21,6 +23,8 @@ export default class SFetchBlob {
             const reader = response.body.getReader();
             const contentLength = +response.headers.get('Content-Length');
             // console.log(contentLength)
+            var lastP = false;
+
             let receivedLength = 0; // received that many bytes at the moment
             let chunks = []; // array of received binary chunks (comprises the body)
             while (true) {
@@ -30,7 +34,25 @@ export default class SFetchBlob {
                 }
                 chunks.push(value);
                 receivedLength += value.length;
-                callback(1 - (receivedLength / contentLength))
+                var resp = FetchFunction.progresFormat(contentLength, receivedLength);
+
+                if (lastP) {
+                    var time = resp.time - lastP.time;
+                    if (time > 250 || !lastP.velocity) {
+                        var bytes = resp.received.byte - lastP.received.byte
+                        var bxs = bytes / (time / 1000);
+                        var timeInfo = FetchFunction.formatByte(bxs);
+                        resp.velocity = timeInfo.val + "/s";
+                        lastP = resp;
+                    } else {
+                        resp.velocity = lastP.velocity
+                    }
+                } else {
+                    lastP = resp;
+                    resp.velocity = 0;
+                }
+
+                callback(resp)
                 // console.log(`Received ${receivedLength} of ${contentLength}`)
             }
             let chunksAll = new Uint8Array(receivedLength); // (4.1)

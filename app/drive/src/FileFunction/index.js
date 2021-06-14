@@ -53,8 +53,9 @@ export const getFilesInPathShared = (props, activeRoot) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        if (obj.tipo_observador == 2) {
-            if (obj.key_usuario_compartio == activeRoot.usr.key) {
+        console.log("asdasdasdasd")
+        if (obj.observadores.includes(props.state.usuarioReducer.usuarioLog.key)) {
+            if (obj.key_creador != props.state.usuarioReducer.usuarioLog.key) {
                 objFinal[key] = obj;
             }
         }
@@ -127,7 +128,8 @@ export const getFilesInPathRoot = (props) => {
                     component: "file",
                     type: "getAll",
                     estado: "cargando",
-                    path: routes
+                    path: routes,
+                    key_usuario: props.state.usuarioReducer.usuarioLog.key,
                 }
                 // alert(JSON.stringify(object));
                 props.state.socketReducer.session[AppParams.socket.name].send(object, true);
@@ -141,13 +143,15 @@ export const getFilesInPathRoot = (props) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        if (obj.tipo_observador != 2) {
+        if (obj.key_creador == props.state.usuarioReducer.usuarioLog.key) {
             objFinal[key] = obj;
         }
+        // console.log(obj)
+        // console.log(obj.observadores)
+        // objFinal[key] = obj;
     })
     return objFinal;
 }
-
 
 export const getPosicionDisponible = ({ curFile, props }) => {
     var widthContainer = props.widthContainer;

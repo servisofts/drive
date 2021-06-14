@@ -1,5 +1,6 @@
 import { Linking, Platform } from "react-native";
 import FileViewer from 'react-native-file-viewer';
+import FetchFunction from "./FetchFunction";
 var RNFS = require("react-native-fs");
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -28,6 +29,8 @@ export default class SFetchBlob {
             console.log("Asdasdsa");
             console.log(err)
         })
+        var lastP = false;
+
         RNFS.downloadFile({
             fromUrl: urlImage,
             headers: {
@@ -36,16 +39,31 @@ export default class SFetchBlob {
             toFile: toPath,
             begin: () => {
                 console.log("begim");
-
-                callback(0.999)
+                var resp = FetchFunction.progresFormat(1, 0);
             },
             progress: (evt) => {
-                callback(1 - (evt.bytesWritten / evt.contentLength))
+                var resp = FetchFunction.progresFormat(evt.contentLength, evt.bytesWritten);
+                if (lastP) {
+                    var time = resp.time - lastP.time;
+                    if (time > 250 || !lastP.velocity) {
+                        var bytes = resp.received.byte - lastP.received.byte
+                        var bxs = bytes / (time / 1000);
+                        var timeInfo = FetchFunction.formatByte(bxs);
+                        resp.velocity = timeInfo.val + "/s";
+                        lastP = resp;
+                    } else {
+                        resp.velocity = lastP.velocity
+                    }
+                } else {
+                    lastP = resp;
+                    resp.velocity = 0;
+                }
+                callback(resp)
             },
 
         }).promise.then((r) => {
             console.log(r);
-            callback(0)
+            // callback(0)
             FileViewer.open(toPath, { showOpenWithDialog: true })
                 .then(() => {
                     // success

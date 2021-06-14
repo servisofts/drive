@@ -140,7 +140,7 @@ const editar = (state, action) => {
             }
         } else {
             if (state.data) {
-                if (action.path.length > 0) {
+                if (action.path && action.path.length > 0) {
                     var curData = state;
                     action.path.map((obj, key) => {
                         if (curData) {

@@ -70,7 +70,6 @@ class Ventanas extends Component {
             return Object.keys(this.props.ventanas).map((key) => {
                 return (
                     <Animated.View style={{
-                        position: "absolute",
                         top: 0,
                         left: 0,
                         width: "100%",
@@ -87,11 +86,10 @@ class Ventanas extends Component {
         }
         return (<View style={{
             width: "100%",
-            height:400,
             justifyContent: "center",
             alignItems: "center",
             overflow: "hidden",
-        }}>
+        }} >
             {getVentanas()}
             <View style={{
                 position: "absolute",

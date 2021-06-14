@@ -9,33 +9,39 @@ export const choseFile = (props, callback) => {
         takePhotoButtonTitle: "Tomar Foto...",
         chooseFromLibraryButtonTitle: "Elegir de la Biblioteca...",
         allowEditing: true,
-        mediaType: 'foto',
+        mediaType: 'photo',
         cancelButtonTitle: "Cancelar",
         storageOptions: {
             skipBackup: true,
-            path: 'image',
+            // path: 'image',
+            privateDirectory: true
         },
     };
     ImagePicker.showImagePicker(options, response => {
         if (response.didCancel) {
+            console.log("upload")
             return {}
         } else if (response.error) {
+            console.log(response.error)
             return {}
         } else if (response.customButton) {
+            console.log("upload")
             return {}
         } else {
             // alert("");
+            console.log("upload")
             ImageResizer.createResizedImage("data:image/jpeg;base64," + response.data, 400, 400, 'PNG', 100).then((uri) => {
                 UploadFile({
                     data: uri,
                     type: "image/png",
                     name: "img.png",
                     obj: props
-                },callback);
+                }, callback);
             }).catch(err => {
+                console.log("upload")
                 callback({
-                    estado:"error",
-                    error:err
+                    estado: "error",
+                    error: err
                 })
             });
 
@@ -58,15 +64,15 @@ const UploadFile = (props, callback) => {
     body.append('file', photo);
     let xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
-    xhr.open('POST', AppParams.urlImages+"multipart");
+    xhr.open('POST', AppParams.urlImages + "multipart");
     xhr.setRequestHeader("Content-Type", "multipart/form-data");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.onreadystatechange = function () { // Call a function when the state changes.
         if (this.readyState === XMLHttpRequest.DONE) {
             var objJson = xhr.responseText;
             callback({
-                estado:"exito",
-                data:objJson
+                estado: "exito",
+                data: objJson
             })
         }
     }

@@ -42,6 +42,7 @@ class Usuarios extends Component {
     getUsuario(key) {
         var cabecera = this.props.state.usuarioReducer.data["registro_administrador"];
         if (!cabecera) cabecera = {};
+        if (!key) { return false }
         var usr = cabecera[key];
         if (!usr) {
             if (this.props.state.usuarioReducer.estado == "cargando") {
