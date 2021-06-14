@@ -3,6 +3,7 @@ package component;
 import org.json.JSONObject;
 
 import Server.SSSAbstract.SSSessionAbstract;
+import SocketCliente.SocketCliete;
 import util.console;
 
 public class Manejador {
@@ -37,12 +38,46 @@ public class Manejador {
                     new SFile(data, session);
                     break;
                 }
-                
-                default:
+                case "fileSeguimiento": {
+                    new FileSeguimiento(data, session);
                     break;
+                }
+                case "observadorPermiso": {
+                    new ObservadorPermiso(data, session);
+                    break;
+                }
+                case "observador": {
+                    new Observador(data, session);
+                    break;
+                }
+                default:
+                    redirect(data, session);
             }
         } else {
             data.put("error", "No existe el componente");
+        }
+    }
+
+    private void redirect(JSONObject data, SSSessionAbstract session){
+        switch(data.getString("component")){
+            case "rol":
+                SocketCliete.send("roles_permisos", data, session);
+            break;
+            case "page":
+                SocketCliete.send("roles_permisos", data, session);
+            break;
+            case "permiso":
+                SocketCliete.send("roles_permisos", data, session);
+            break;
+            case "rolPermiso":
+                SocketCliete.send("roles_permisos", data, session);
+            break;
+            case "usuarioRol":
+                SocketCliete.send("roles_permisos", data, session);
+            break;
+            case "usuarioPage":
+                SocketCliete.send("roles_permisos", data, session);
+            break;
         }
     }
 }

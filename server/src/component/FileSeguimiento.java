@@ -2,12 +2,8 @@ package component;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 import conexion.*;
-
 import SocketCliente.SocketCliete;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,9 +12,9 @@ import Config.Config;
 import Server.SSSAbstract.SSServerAbstract;
 import Server.SSSAbstract.SSSessionAbstract;
 
-public class SFile {
+public class FileSeguimiento {
 
-    public SFile(JSONObject data, SSSessionAbstract session) {
+    public FileSeguimiento(JSONObject data, SSSessionAbstract session) {
         switch (data.getString("type")) {
             case "getAll":
                 getAll(data, session);
@@ -29,14 +25,14 @@ public class SFile {
             case "registro":
                 registro(data, session);
             break;
-            case "compartir":
-                compartir(data, session);
-            break;
             case "editar":
                 editar(data, session);
             break;
             case "anular":
                 anular(data, session);
+            break;
+            case "compartir":
+                compartir(data, session);
             break;
             case "subir":
                 subir(data, session);
@@ -75,10 +71,7 @@ public class SFile {
 
     public void getByKey(JSONObject obj, SSSessionAbstract session) {
         try {
-            String consulta =  "select file_get_by_key('"+obj.getJSONArray("path")
-                .getJSONObject(obj
-                .getJSONArray("path").length()-1)
-                .getString("key")+"') as json";
+            String consulta =  "select file_get_historico_compartir('"+obj.getString("key_file")+"','"+obj.getJSONArray("tipos").toString()+"') as json";
                 JSONObject file = Conexion.ejecutarConsultaObject(consulta);
                 obj.put("data", file);
                 obj.put("estado", "exito");
@@ -88,15 +81,6 @@ public class SFile {
             e.printStackTrace();
         }
 
-    }
-
-    public static JSONObject getByKey(String key_file) {
-        try {
-            String consulta =  "select file_get_by_key('"+key_file+"') as json";
-            return Conexion.ejecutarConsultaObject(consulta);    
-        } catch (SQLException e) {
-            return null;
-        }
     }
 
     public void registro(JSONObject obj, SSSessionAbstract session) {
@@ -153,10 +137,6 @@ public class SFile {
             observador.put("estado",1);
             Conexion.insertArray("observador", new JSONArray().put(observador));
 
-            Observador.registrarPermisos(observador, true, true, true, true, true);
-
-
-
             obj.put("data", file);
             obj.put("estado", "exito");
             SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario"));
@@ -175,81 +155,23 @@ public class SFile {
             obj.put("data", file);
             obj.put("estado", "exito");
             
-            
+
+            JSONObject file_tipo_seguimiento = new JSONObject();
+            file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
+            file_tipo_seguimiento.put("descripcion",obj.getString("tipo_seguimiento"));
+            file_tipo_seguimiento.put("data",file.toString());
+            file_tipo_seguimiento.put("key_tipo_seguimiento","2");
+            file_tipo_seguimiento.put("key_usuario",obj.getString("key_usuario"));
+            file_tipo_seguimiento.put("key_file",file.getString("key"));
+            file_tipo_seguimiento.put("fecha","now()");
+            file_tipo_seguimiento.put("estado",1);
+
+            Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
 
             String consulta =  "select get_observadores('"+file.getString("key")+"') as json";
             JSONArray observadores = Conexion.ejecutarConsultaArray(consulta);
 
             SSServerAbstract.sendUsers(obj.toString(), observadores);
-        } catch (SQLException e) {
-            obj.put("estado", "error");
-            obj.put("error", e.getLocalizedMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void compartir(JSONObject obj, SSSessionAbstract session) {
-        try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
-            String fecha_on = formatter.format(new Date());
-
-            JSONObject observador = new JSONObject();
-            observador.put("key",UUID.randomUUID().toString());
-            observador.put("key_usuario",obj.getString("key_usuario_to"));
-            observador.put("key_usuario_compartio",obj.getString("key_usuario"));
-            observador.put("descripcion","invitado");
-            observador.put("tipo",2);
-            observador.put("key_file",obj.getString("key_file"));
-            observador.put("fecha_on",fecha_on);
-            observador.put("estado",1);
-            Conexion.insertArray("observador", new JSONArray().put(observador));
-
-            Observador.registrarPermisos(observador, true, false, false, false, false);
-
-            JSONObject file_tipo_seguimiento = new JSONObject();
-            file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
-            file_tipo_seguimiento.put("descripcion","compartir");
-            file_tipo_seguimiento.put("data",obj.toString());
-            file_tipo_seguimiento.put("key_tipo_seguimiento","2");
-            file_tipo_seguimiento.put("key_usuario",obj.getString("key_usuario"));
-            file_tipo_seguimiento.put("key_file",obj.getString("key_file"));
-            file_tipo_seguimiento.put("fecha",fecha_on);
-            file_tipo_seguimiento.put("estado",1);
-            file_tipo_seguimiento.put("key_ref",obj.getString("key_usuario_to"));
-            Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
-
-            obj.put("component", "observadorPermiso");
-            obj.put("type", "registro");
-            obj.put("estado", "exito");
-            obj.put("data", ObservadorPermiso.getByKey(observador));
-
-            JSONObject observadores = Observador.getByKeyFile(obj.getString("key_file"));
-
-            JSONObject send_seguimiento = new JSONObject();
-            send_seguimiento.put("component", "fileSeguimiento");
-            send_seguimiento.put("type", "registro");
-            send_seguimiento.put("estado", "exito");
-            send_seguimiento.put("key_file", obj.getString("key_file"));
-            send_seguimiento.put("data", file_tipo_seguimiento);
-
-            JSONObject _observador = new JSONObject();
-            for (int i = 0; i < JSONObject.getNames(observadores).length; i++) {
-                _observador = observadores.getJSONObject(JSONObject.getNames(observadores)[i]);
-                if(!_observador.getString("key_usuario").equals(obj.getString("key_usuario"))){
-                    SSServerAbstract.sendUser(obj.toString(), _observador.getString("key_usuario"));
-                }
-                SSServerAbstract.sendUser(send_seguimiento.toString(), _observador.getString("key_usuario"));
-            }
-
-            JSONObject _file = SFile.getByKey(obj.getString("key_file"));
-            JSONObject send_file = new JSONObject();
-            send_file.put("component", "file");
-            send_file.put("type", "editar");
-            send_file.put("estado", "exito");
-            send_file.put("data", _file);
-            SSServerAbstract.sendUser(send_file.toString(), obj.getString("key_usuario_to"));
-
-            //SSServerAbstract.sendUsers(obj.toString(), observador);
         } catch (SQLException e) {
             obj.put("estado", "error");
             obj.put("error", e.getLocalizedMessage());
@@ -265,6 +187,42 @@ public class SFile {
             obj.put("estado", "exito");
             SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET_WEB, obj.toString());
             SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET, obj.toString());
+        } catch (SQLException e) {
+            obj.put("estado", "error");
+            obj.put("error", e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void compartir(JSONObject obj, SSSessionAbstract session) {
+        try {
+
+            
+
+            JSONObject observador = new JSONObject();
+            observador.put("key",UUID.randomUUID().toString());
+            observador.put("key_usuario",obj.getString("key_usuario_to"));
+            observador.put("descripcion","Creador");
+            observador.put("tipo",2);
+            observador.put("key_file",obj.getString("key_file"));
+            observador.put("fecha_on","now()");
+            observador.put("estado",1);
+            Conexion.insertArray("observador", new JSONArray().put(observador));
+
+            JSONObject file_tipo_seguimiento = new JSONObject();
+            file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
+            file_tipo_seguimiento.put("descripcion","compartir");
+            file_tipo_seguimiento.put("data",obj.toString());
+            file_tipo_seguimiento.put("key_tipo_seguimiento","3");
+            file_tipo_seguimiento.put("key_usuario",obj.getString("key_usuario"));
+            file_tipo_seguimiento.put("key_file",obj.getString("key_file"));
+            file_tipo_seguimiento.put("fecha","now()");
+            file_tipo_seguimiento.put("estado",1);
+            Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
+
+            obj.put("estado", "exito");
+            SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario"));
+            SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario_to"));
         } catch (SQLException e) {
             obj.put("estado", "error");
             obj.put("error", e.getLocalizedMessage());

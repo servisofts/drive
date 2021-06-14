@@ -190,6 +190,7 @@ public class ServerHttp {
             String consulta = "select get_file_path_invertido('"+path+"') as json";
             JSONArray files = Conexion.ejecutarConsultaArray(consulta);
             if(files.length()>0){
+            
                 consulta = "select get_file_key_creador('"+path+"') as json";
                 PreparedStatement ps = Conexion.preparedStatement(consulta);
                 ResultSet rs = ps.executeQuery();
@@ -204,16 +205,19 @@ public class ServerHttp {
                     ruta += "/"+key_file;
                 }
 
-                JSONObject file_tipo_seguimiento = new JSONObject();
-                file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
-                file_tipo_seguimiento.put("key_tipo_seguimiento","2");
-                file_tipo_seguimiento.put("descripcion","ver_file");
-                file_tipo_seguimiento.put("data",ruta);
-                file_tipo_seguimiento.put("key_usuario",key_usuario);
-                file_tipo_seguimiento.put("key_file",key_file);
-                file_tipo_seguimiento.put("fecha_on","now()");
-                file_tipo_seguimiento.put("estado",1);
-
+                if(key_usuario.length()>0){
+                    JSONObject file_tipo_seguimiento = new JSONObject();
+                    file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
+                    file_tipo_seguimiento.put("key_tipo_seguimiento","2");
+                    file_tipo_seguimiento.put("descripcion","ver_file");
+                    file_tipo_seguimiento.put("data",ruta);
+                    file_tipo_seguimiento.put("key_usuario",key_usuario);
+                    file_tipo_seguimiento.put("key_file",key_file);
+                    file_tipo_seguimiento.put("fecha","now()");
+                    file_tipo_seguimiento.put("estado",1);
+                    Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
+                }
+            
             }else{
                 ruta += "usuario/"+path;
             }
