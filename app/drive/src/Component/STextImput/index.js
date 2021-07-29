@@ -56,6 +56,14 @@ class STextImput extends Component {
             ...this.propiedades.style,
             borderColor: "#ff0000"
         }
+        if (!this.propsTemp.style) {
+            this.propsTemp.style = this.propiedades.style;
+        }
+        this.propiedades.style = {
+            ...this.propiedades.style,
+            borderColor: "#660000",
+            borderWidth:1,
+        }
         return false;
     }
     verify() {
