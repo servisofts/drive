@@ -115,7 +115,7 @@ class Accesos extends Component {
                 height: "100%",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                // justifyContent: "space-around",
+                // justifyContent: "center",
                 alignItems: "flex-start"
             }}>
                 {/* {this.getListaPaginas()} */}
@@ -147,7 +147,7 @@ class Accesos extends Component {
                     label={"Notificaciones"}
                     icon={<Svg resource={require("../../../img/notify.svg")} style={{ fill: "#fff" }} />}
                     onPress={() => {
-                        this.props.navigation.navigate("NotificacionesPage");
+                        this.props.navigation.navigate("NotificacionPage");
                     }}
                 />
                 <BtnAcceso

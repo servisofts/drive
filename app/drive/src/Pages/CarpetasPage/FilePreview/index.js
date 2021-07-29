@@ -34,15 +34,16 @@ export default class FilePreview extends Component {
             return <View style={{
                 width: "100%",
                 height: "100%",
-                borderWidth: 2,
+                // borderWidth: 2,
                 borderColor: "#999",
-                backgroundColor: "#fff",
+                backgroundColor: "#00000022",
                 borderRadius: 4,
 
             }}><SImage source={{ uri: this.props.src }} style={{
                 width: "100%",
                 height: "100%",
-                resizeMode: "contain"
+                resizeMode: "contain",
+                objectFit:"contain"
             }} />
             </View>;
         }

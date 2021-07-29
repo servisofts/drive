@@ -8,7 +8,7 @@ export default class Vistas extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            vista: "drag"
+            vista: props.stateParent.vista
         };
         this.iconLista = require('../../../../img/list.svg');
         this.iconDrag = require('../../../../img/drag.svg');

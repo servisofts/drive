@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Platform, ActivityIndicator, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import BackgroundImage from '../../../Component/BackgroundImage';
 import DropFileView, { uploadHttp } from '../../../Component/DropFileView';
@@ -7,6 +7,7 @@ import SOrdenador from '../../../Component/SOrdenador';
 import { getFilesInPath } from '../../../FileFunction';
 import AppParams from '../../../Params';
 import IntemLista from './IntemLista';
+import SSCrollView from '../../../Component/SScrollView';
 
 class VistaLista extends Component {
     constructor(props) {
@@ -141,7 +142,7 @@ class VistaLista extends Component {
                 scale={this.state.scale}
                 header={this.state.header}
                 data={dataFinal[key]}
-                background={(i % 2 == 0 ? ("#000000" + (Platform.OS == "web" ? "22" : "44")) : ("#666666") + (Platform.OS == "web" ? "66" : "44"))}
+                background={(i % 2 == 0 ? ("#000000" + (Platform.OS == "web" ? "22" : "44")) : ("#444444") + (Platform.OS == "web" ? "66" : "44"))}
                 navigation={this.props.navigation}
                 editarNombre={(obj) => {
                     this.editarNombre(obj);
@@ -197,64 +198,66 @@ class VistaLista extends Component {
                 />
                 {this.getHeader()}
 
-                <TouchableOpacity style={{
-                    width: "100%",
-                    flex: 1,
-                }}
-                    activeOpacity={1}
-                    onPress={() => {
-                        Object.keys(this._files).map((keyRef) => {
-                            if (this._files[keyRef]) {
-                                this._files[keyRef].setSelect(false)
-                            }
-
-                        })
-                    }}
-                >
-                    <ScrollView style={{
+                <TouchableWithoutFeedback onPress={() => {
+                    console.log("asdasd");
+                    Object.keys(this._files).map((keyRef) => {
+                        if (this._files[keyRef]) {
+                            this._files[keyRef].setSelect(false)
+                        }
+                    })
+                }}>
+                    <View style={{
                         width: "100%",
-                        height: 1,
-                    }} contentContainerStyle={{
-                        paddingTop: 10,
-                        paddingBottom: 20,
-                    }}>
-                        <TouchableWithoutFeedback style={{
-                        }} onPress={() => { }}>
-                            <DropFileView style={{
+                        flex: 1,
+                    }}
+                    >
+                        <View style={{
+                            width: "100%",
+                            height: "100%"
+                        }}>
+                            <SSCrollView style={{
                                 width: "100%",
                                 height: "100%",
-                                overflow: "hidden",
-                                // backgroundColor: "#00000022",
-                            }} onUpload={(files, position) => {
-                                var pos = {
-                                    x: position.x / this.state.scale,
-                                    y: position.y / this.state.scale,
-                                }
-                                var arrPos = [];
-                                for (let i = 0; i < files.files.length; i++) {
-                                    arrPos.push({
-                                        x: pos.x + (i * 10),
-                                        y: pos.y + (i * 10)
-                                    })
-                                }
-                                uploadHttp({
-                                    props: {
-                                        component: "file",
-                                        type: "subir",
-                                        estado: "cargando",
-                                        path: this.props.state.fileReducer.routes,
-                                        positions: arrPos
-                                    }, imput: files,
-                                }, (resp) => {
-
-                                })
+                            }} contentContainerStyle={{
+                                minHeight: "100%",
+                                // backgroundColor: "#fff"
                             }}>
-                                {this.getFiles()}
+                                <DropFileView onLayout={this.props.onLayout} onUpload={(files, position) => {
+                                    var pos = {
+                                        x: position.x / this.state.scale,
+                                        y: position.y / this.state.scale,
+                                    }
+                                    var arrPos = [];
+                                    for (let i = 0; i < files.files.length; i++) {
+                                        arrPos.push({
+                                            x: pos.x + (i * 10),
+                                            y: pos.y + (i * 10)
+                                        })
+                                    }
+                                    uploadHttp({
+                                        props: {
+                                            component: "file",
+                                            type: "subir",
+                                            estado: "cargando",
+                                            path: this.props.state.fileReducer.routes,
+                                            positions: arrPos,
+                                            key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+                                        }, imput: files,
+                                    }, (resp) => {
 
-                            </DropFileView>
-                        </TouchableWithoutFeedback>
-                    </ScrollView>
-                </TouchableOpacity>
+                                    })
+                                }}>
+                                    {this.getFiles()}
+                                    {/* <View style={{
+                                height: 200,
+                            }}>
+
+                            </View> */}
+                                </DropFileView>
+                            </SSCrollView>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
         );
     }

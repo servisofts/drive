@@ -25,7 +25,7 @@ class CarpetasPage extends Component {
             widthContainer: widthContainer,
             heightContainer: 2000,
             scaleGlobal: scale,
-            vista: "drag",
+            vista: "lista",
             reload: false,
             title: "/",
         };

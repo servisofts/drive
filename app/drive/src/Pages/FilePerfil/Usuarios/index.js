@@ -144,12 +144,7 @@ class Usuarios extends Component {
                 borderRadius: 8,
                 marginTop: 4,
             }}>
-                <ScrollView style={{
-                    width: "100%",
-                    flex: 1,
-                }}>
-                    {Lista}
-                </ScrollView>
+                {Lista}
             </View>
         );
     }

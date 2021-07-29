@@ -48,15 +48,18 @@ class ListaObservadores extends Component {
     }
     render() {
         var data = this.props.state.observadorReducer.data;
+       
         if (!data) {
             if (this.props.state.observadorReducer.estado == "cargando") { return <ActivityIndicator color={"#fff"} /> }
             if (this.props.state.observadorReducer.estado == "error") { return <ActivityIndicator color={"#fff"} /> }
             this.sendServer()
             return <ActivityIndicator color={"#fff"} />
         }
-
+        
         return Object.keys(data).map((key) => {
             var obj = data[key];
+            // alert(key);
+            // console.log(root);
             var usr = this.getUsuario(key);
             if (!usr) {
                 return <ActivityIndicator color={"#fff"} />

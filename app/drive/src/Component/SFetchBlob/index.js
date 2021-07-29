@@ -6,16 +6,15 @@ export default class SFetchBlob {
     }
     descargar = async (props, callback) => {
         console.log("INICIANDO DESCARGA....");
-        var url = props.url;
+        var url = props.url+"?key_usuario="+props.key_usuario;
         console.log(url);
         var myInit = {
             method: 'GET',
             cache: "no-cache",
-            headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                // "Access-Control-Allow-Headers": "http://localhost:3000",
-                "key_usuario": props.key_usuario,
-            }
+            // headers: {
+            //     "Access-Control-Allow-Headers": "https://drive.servisofts.com",
+            //     "key_usuario": props.key_usuario,
+            // }
         };
         try {
             var myRequest = new Request(url, myInit);
@@ -67,7 +66,12 @@ export default class SFetchBlob {
             a.style.display = 'none';
             a.href = uri;
             var arrUr = props.descripcion.split("/");
-            var name = arrUr[arrUr.length - 1]
+            var name = "";
+            if (props.tipo == 0) {
+                name = arrUr[arrUr.length - 1] + ".zip";
+            } else {
+                name = arrUr[arrUr.length - 1]
+            }
             a.download = name;
             document.body.appendChild(a);
             a.click();

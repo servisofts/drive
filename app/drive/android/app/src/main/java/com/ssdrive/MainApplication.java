@@ -1,7 +1,9 @@
-package com.drive;
+package com.ssdrive;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.ssdrive.BuildConfig;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.rnfs.RNFSPackage;

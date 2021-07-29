@@ -11,11 +11,11 @@ class SharePreview extends Component {
     }
 
     render() {
+
         if (this.props.file.key_creador == this.props.state.usuarioReducer.usuarioLog.key) {
             return <View />
-
         }
-        // console.log(this.props.file)
+        console.log(this.props.file)
         return (
             <View style={{
                 position: "absolute",

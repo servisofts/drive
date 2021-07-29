@@ -87,7 +87,7 @@ class LoginPage extends Component {
       this.ImputPassword.setError();
     }
     if (this.props.state.usuarioReducer.usuarioLog) {
-      this.props.navigation.replace("CarpetasPage");
+      this.props.navigation.replace("InicioPage");
       return <View />
     }
 

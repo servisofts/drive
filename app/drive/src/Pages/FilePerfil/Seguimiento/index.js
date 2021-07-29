@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import SSCrollView from '../../../Component/SScrollView';
 import AppParams from '../../../Params';
 
 class Seguimiento extends Component {
@@ -44,7 +45,7 @@ class Seguimiento extends Component {
     }
     getUsuario(key) {
         var cabecera = this.props.state.usuarioReducer.data["registro_administrador"];
-        if(!cabecera) cabecera={};
+        if (!cabecera) cabecera = {};
         var usr = cabecera[key];
         if (!usr) {
             if (this.props.state.usuarioReducer.estado == "cargando") {
@@ -124,8 +125,9 @@ class Seguimiento extends Component {
             return <View style={{
                 width: "100%",
                 height: 50,
-                backgroundColor: "#ffffff22",
-                margin: 4,
+                backgroundColor: "#44444444",
+                marginTop: 4,
+                marginBottom: 4,
                 borderRadius: 4,
                 justifyContent: "center",
                 alignItems: "center",
@@ -141,7 +143,7 @@ class Seguimiento extends Component {
                     <View style={{
                         width: 40,
                         height: 40,
-                        backgroundColor: "#fff",
+                        backgroundColor: "#ffffff22",
                         borderRadius: 4,
                         overflow: 'hidden',
                     }}>
@@ -182,17 +184,9 @@ class Seguimiento extends Component {
         return (
             <View style={{
                 width: "95%",
-                flex: 1,
-                // backgroundColor: "#ffffff44",
-                borderRadius: 8,
-                marginTop: 4,
+                height: "100%",
             }}>
-                <ScrollView style={{
-                    width: "100%",
-                    flex: 1,
-                }}>
-                    {Lista}
-                </ScrollView>
+                {Lista}
             </View>
         );
     }

@@ -1,4 +1,4 @@
-package com.drive;
+package com.ssdrive;
 
 import com.facebook.react.ReactActivity;
 

@@ -15,6 +15,7 @@ export const getFilesInPath = (props) => {
 export const getFilesInPathShared = (props, activeRoot) => {
     var dataFinal = false;
     var data = props.state.fileReducer.data;
+    var root = props.state.fileReducer.activeRoot;
     if (!data) {
         if (props.state.fileReducer.estado == "cargando") { return false }
         if (props.state.fileReducer.estado == "error") { return false }
@@ -53,10 +54,11 @@ export const getFilesInPathShared = (props, activeRoot) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        console.log("asdasdasdasd")
         if (obj.observadores.includes(props.state.usuarioReducer.usuarioLog.key)) {
             if (obj.key_creador != props.state.usuarioReducer.usuarioLog.key) {
-                objFinal[key] = obj;
+                if (obj.key_creador == root.usr.key) {
+                    objFinal[key] = obj;
+                }
             }
         }
     })

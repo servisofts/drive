@@ -89,6 +89,9 @@ class Ventanas extends Component {
             justifyContent: "center",
             alignItems: "center",
             overflow: "hidden",
+            height:"100%",
+            // position: "absolute",
+
         }} >
             {getVentanas()}
             <View style={{

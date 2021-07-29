@@ -21,10 +21,21 @@ export default class SFetchBlob {
             pathDirectori = RNFS.DocumentDirectoryPath;
         }
         var path = pathDirectori + '/Servisofts/Drive';
-        var urlImage = props.url + "." + (name.split(".")[1]);
+        var list = name.split(".");
+        var extencion = list[list.length - 1];
+        console.log(props)
+        var name = "";
+        if (props.tipo == 0) {
+            extencion = "zip"
+            name = props.descripcion + ".zip";
+        } else {
+            name = props.descripcion;
+        }
+        var urlImage = props.url + "." + extencion;
         console.log(urlImage)
-        var toPath = path + "/" + props.descripcion
+        var toPath = path + "/" + name
         console.log(toPath);
+        urlImage=urlImage+"?key_usuario="+props.key_usuario;
         await RNFS.mkdir(path, {}).catch((err) => {
             console.log("Asdasdsa");
             console.log(err)
@@ -33,9 +44,10 @@ export default class SFetchBlob {
 
         RNFS.downloadFile({
             fromUrl: urlImage,
-            headers: {
-                'key_usuario': props.key_usuario,
-            },
+            // headers: {
+            //     // "Access-Control-Allow-Origin":"*",
+            //     'key_usuario': props.key_usuario,
+            // },
             toFile: toPath,
             begin: () => {
                 console.log("begim");
