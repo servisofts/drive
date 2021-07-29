@@ -162,42 +162,7 @@ class UsuarioRegistroPage extends Component {
                     url: AppParams.servicios["proyecto"] + "usuario_",
                   }} /> */}
 
-                <TouchableOpacity style={{
-                  width: 180,
-                  height: 180,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: STheme.color.card,
-                  borderRadius: 8,
-                  marginBottom: 16,
-                  overflow: 'hidden',
-                }} onPress={() => {
-                  try {
-                    choseFile({
-                      servicio: "drive",
-                      component: "usuario",
-                      type: "subirFoto",
-                      estado: "cargando",
-                      key: (!this.data ? "" : this.data.key),
-                      key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
-                    }, (resp) => {
-                      this.props.dispatch({
-                        component: "image",
-                        type: "cambio",
-                        url: AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key),
-                      })
-                      // this.state.repaint = new Date().getTime()
-                      // this.setState({ ...this.state });
-                    });
-                  } catch (error) {
-                    console.log(error);
-                  }
-                }}>
-                  {this.props.state.imageReducer.getImage(AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key), {
-                    width: "100%",
-                    height: "100%",
-                  })}
-                </TouchableOpacity>
+                
                 {Object.keys(this.imputs).map((key) => {
                   return this.imputs[key].getComponent();
                 })}

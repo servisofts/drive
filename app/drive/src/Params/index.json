@@ -8,10 +8,10 @@
         "fbtoken": "FIREBASE_TOKEN"
     },
     "_urlImages": "https://drive.servisofts.com/images/",
-    "urlImages": "http://192.168.0.11:30017/",
+    "urlImages": "http://192.168.0.17:30017/",
     "servicios": {
-        "drive": "http://192.168.0.11:30017/",
+        "drive": "http://192.168.0.17:30017/",
         "_drive": "https://drive.servisofts.com/images/",
-        "roles_permisos": "http://192.168.0.11:30016/"
+        "roles_permisos": "http://192.168.0.17:30016/"
     }
 }

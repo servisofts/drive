@@ -19,6 +19,7 @@ import TestRNF from './TestRNF'
 import NotificacionPage from './NotificacionPage'
 import AjustesPage from './AjustesPage'
 
+import SComponent from '../SComponent/Pages';
 
 
 export const getPages = () => {
@@ -38,6 +39,8 @@ export const getPages = () => {
         DescargaPage,
         CompartidosPage,
         NotificacionPage,
-        AjustesPage
+        AjustesPage,
+        ...SComponent,
+
     }
 }

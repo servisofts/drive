@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import * as SSStorage from '../../../SSStorage';
 import AppParams from '../../../Params/index.json'
-import SThread from '../../../Component/SThread';
+import { SThread } from '../../../SComponent';
 var lastSend = 0;
 
 const Carga = (props) => {
-    const [mensaje, setMensaje] = React.useState("");
-    const [redirect, setRedirect] = React.useState(false);
+    const [mensaje, setMensaje] = useState("");
     const getMensaje = () => {
         if (!props.navigation) {
             return "No se encontro navegacion.";
@@ -21,34 +20,31 @@ const Carga = (props) => {
         }
         if (!props.state.usuarioReducer.usuarioCargado) {
             SSStorage.getItem(AppParams.storage.urlLog, (value) => {
-                props.state.usuarioReducer.usuarioCargado = true;
                 if (!value) {
                     props.state.usuarioReducer.usuarioLog = false;
-                    return "cargando...";
+                    return
                 }
                 if (value.length <= 0) {
                     props.state.usuarioReducer.usuarioLog = false;
-                    return "cargando...";
+                    return;
                 }
                 props.state.usuarioReducer.usuarioLog = JSON.parse(value)
-                return "cargando...";
+                return;
             });
+            props.state.usuarioReducer.usuarioCargado = true;
             return "Buscando usuario...";
         }
         return "Cargando...";
     }
     var mensajeTemp = getMensaje();
     if (mensajeTemp != mensaje) {
-
         setMensaje(mensajeTemp);
         return <View />;
     }
-    new SThread(3000, "hiloVerificarEntrada").start(() => {
+    new SThread(2500, "hiloVerificarEntrada", true).start(() => {
+        console.log(props.navigation);
         if (!props.state.usuarioReducer.usuarioLog) {
-            console.log("Login")
-            // props.navigation.replace("TestPage");
             props.navigation.replace("LoginPage");
-            ///no hay usuario
         } else {
             console.log("Inicio")
             props.navigation.replace("InicioPage");

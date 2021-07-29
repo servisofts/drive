@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import { openDropDown, closeDropDown } from '../../../../Component/DropDown';
+import { openDropDown, closeDropDown } from '../../../../SComponent';
 import Svg from '../../../../Svg';
 import ModoVista from '../ModoVista';
 
