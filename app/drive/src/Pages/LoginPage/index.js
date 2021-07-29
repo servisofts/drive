@@ -85,6 +85,7 @@ class LoginPage extends Component {
     if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "login") {
       this.props.state.usuarioReducer.estado = "";
       this.ImputPassword.setError();
+      this.setState({ ...this.state });
     }
     if (this.props.state.usuarioReducer.usuarioLog) {
       this.props.navigation.replace("InicioPage");

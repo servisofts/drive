@@ -147,7 +147,7 @@ class STextImput extends Component {
                 this.setState({ value: text })
                 this.value = text;
                 this.value = this.value.trim();
-                if (this.propiedades.type == "Monto") {
+                if (this.propiedades.type === "Monto") {
                     const clean = text.replace(/[^0-9]/g, '');
                     this.value = clean
                     // this.verify();

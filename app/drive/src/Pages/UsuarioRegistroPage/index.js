@@ -172,22 +172,26 @@ class UsuarioRegistroPage extends Component {
                   marginBottom: 16,
                   overflow: 'hidden',
                 }} onPress={() => {
-                  choseFile({
-                    servicio: "drive",
-                    component: "usuario",
-                    type: "subirFoto",
-                    estado: "cargando",
-                    key: (!this.data ? "" : this.data.key),
-                    key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
-                  }, (resp) => {
-                    this.props.dispatch({
-                      component: "image",
-                      type: "cambio",
-                      url: AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key),
-                    })
-                    // this.state.repaint = new Date().getTime()
-                    // this.setState({ ...this.state });
-                  });
+                  try {
+                    choseFile({
+                      servicio: "drive",
+                      component: "usuario",
+                      type: "subirFoto",
+                      estado: "cargando",
+                      key: (!this.data ? "" : this.data.key),
+                      key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+                    }, (resp) => {
+                      this.props.dispatch({
+                        component: "image",
+                        type: "cambio",
+                        url: AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key),
+                      })
+                      // this.state.repaint = new Date().getTime()
+                      // this.setState({ ...this.state });
+                    });
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}>
                   {this.props.state.imageReducer.getImage(AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key), {
                     width: "100%",
