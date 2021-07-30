@@ -3,7 +3,7 @@
  */
 
 import { AppRegistry ,LogBox} from "react-native";
-import App from "./src/App";
+import App from "./src/App-v1";
 import { name as appName } from "./app.json";
 
 console.disableYellowBox = true;
