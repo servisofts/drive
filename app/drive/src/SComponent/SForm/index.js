@@ -16,9 +16,7 @@ export type SFromProps = {
     inputProps: TypeInputProps,
     inputs: InputsTp,
     onSubmit: Function,
-    submitProps: {
-        label: String,
-    },
+    onSubmitName: String,
 }
 export default class SForm extends Component<SFromProps> {
     constructor(props) {
@@ -34,17 +32,11 @@ export default class SForm extends Component<SFromProps> {
     }
     getButtom() {
         if (!this.props.onSubmit) return <View />
-        var label = "REGISTRAR"
-        if (this.props.submitProps) {
-            if (this.props.submitProps.label) {
-                label = this.props.submitProps.label;
-            }
-        }
+        if (!this.props.onSubmitName) return <View />
         return <SButtom
             props={{
                 type: "danger",
                 col: "xs-12 md-6",
-                variant:"confirm",
                 // customStyle: "primary",
             }} onPress={() => {
                 var data = {};
@@ -60,7 +52,7 @@ export default class SForm extends Component<SFromProps> {
                     this.props.onSubmit(data);
                 }
             }}>
-            {label}
+            {this.props.onSubmitName}
         </SButtom>
     }
     getInputs() {
@@ -73,10 +65,14 @@ export default class SForm extends Component<SFromProps> {
             return <SInput
                 ref={(ref) => { this._ref[key] = ref }}
                 placeholder={inputProps.label}
+                {...inputProps}
                 props={{
                     ...this.props.inputProps,
                     ...inputProps
-                }} />
+                }}
+                //defaultValue={(inputProps.defaultValue) ? inputProps.defaultValue : ""}
+                defaultValue={inputProps.defaultValue}
+            />
         })
     }
 
@@ -95,5 +91,6 @@ export default class SForm extends Component<SFromProps> {
 SForm.defaultProps = {
     props: {
 
-    }
+    },
+    onSubmitName: "Registro"
 }

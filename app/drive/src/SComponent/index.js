@@ -22,6 +22,7 @@ import SForm from './SForm'
 import SIcon from './SIcon';
 import SActivityIndicator from './SActivityIndicator';
 import DropDown, {closeDropDown, openDropDown} from './DropDown';
+
 export {
     SActivityIndicator,
     SDate,
@@ -44,12 +45,10 @@ export {
     SImage,
     SBackground,
     STable,
-    SIcon,
     SForm,
-    DropDown,
+    SIcon,
     closeDropDown,
-    openDropDown
-    
+    openDropDown,
 }
 export class SComponentClass extends Component {
     constructor(props) {

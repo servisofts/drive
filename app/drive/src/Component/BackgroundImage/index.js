@@ -11,9 +11,9 @@ export default class BackgroundImage extends Component<type> {
         };
     }
     getBackground = () => {
-        if (!this.props.source) {
-            return <View />
-        }
+        // if (!this.props.source) {
+        //     return <View />
+        // }
         return <View style={{
             width: "100%",
             height: "100%",
@@ -32,7 +32,7 @@ export default class BackgroundImage extends Component<type> {
                 opacity: 0.7,
 
             }}  />
-            {/* <View style={{
+            <View style={{
                 width: "100%",
                 height: "100%",
                 top: 0,
@@ -43,13 +43,13 @@ export default class BackgroundImage extends Component<type> {
                 backgroundColor: "#00000099"
             }}>
 
-            </View> */}
+            </View>
         </View>
     }
     render() {
-        if (!this.props.source) {
-            return <View />
-        }
+        // if (!this.props.source) {
+        //     return <View />
+        // }
         return this.getBackground()
     }
 }

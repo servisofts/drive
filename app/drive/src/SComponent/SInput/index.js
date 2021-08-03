@@ -137,7 +137,7 @@ export class SInput extends Component<IProps> {
             }
         }
         if (valueFilter) {
-            if (valueFilter != this.state.lastError) {
+            if (valueFilter) {
                 this.verify();
             }
         }
@@ -172,6 +172,7 @@ export class SInput extends Component<IProps> {
                 }} style={{ flex: 1, height: "100%" }}>
                     {this.getIcon()}
                     <TextInput
+                   
                         value={valueFilter}
                         {...type.props}
                         {...this.props}

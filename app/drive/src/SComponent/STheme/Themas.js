@@ -20,15 +20,15 @@ const Themas = {
         backgroundColor: "#000000",
         colorTextPrimary: "#ffffff",
         colorDanger: "#C31C37",
-        colorOpaque: "#aaaaaa"
+        colorOpaque: "#444444"
     },
     dark: {
-        colorPrimary: "#000000",
-        colorSecondary: "#ffffff",
+        colorPrimary: "#ffffff",
+        colorSecondary: "#000000",
         colorTextPrimary: "#ffffff",
-        backgroundColor: "#dddddd",
+        backgroundColor: "#ffffff",
         colorDanger: "#C31C37",
-        colorOpaque: "#884444"
+        colorOpaque: "#444444"
 
     }
 };

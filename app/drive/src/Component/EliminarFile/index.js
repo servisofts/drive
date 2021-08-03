@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import AppParams from '../../Params';
-import { SPopupClose } from '../../SPopup';
+import { SView, SPopupClose } from '../../SComponent';
 
 class EliminarFile extends Component {
     constructor(props) {
@@ -12,15 +12,19 @@ class EliminarFile extends Component {
     }
     render() {
         return (
-            <View style={{
-                width: "90%",
-                maxWidth: 600,
-                height: 200,
-                backgroundColor: "#ffffff22",
-                borderRadius: 8,
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
+            <SView
+                props={{
+                    withoutFeedback: true
+                }}
+                style={{
+                    width: "90%",
+                    maxWidth: 600,
+                    height: 200,
+                    backgroundColor: "#00000a",
+                    borderRadius: 8,
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
                 <Text style={{
                     color: "#fff",
                     fontSize: 18,
@@ -75,7 +79,7 @@ class EliminarFile extends Component {
                         <Text style={{ color: "#fff" }}>Cancelar</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </SView>
         );
     }
 }

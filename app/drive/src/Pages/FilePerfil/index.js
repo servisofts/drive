@@ -6,7 +6,7 @@ import BackgroundImage from '../../Component/BackgroundImage';
 import BarraSuperior from '../../Component/BarraSuperior';
 import AppParams from '../../Params';
 import Svg from '../../Svg';
-import { SPopupClose, SPopupOpen } from '../../SPopup';
+import { SPopupClose, SPopupOpen } from '../../SComponent'
 import FilePreview from '../CarpetasPage/FilePreview';
 import Compartir from './Compartir';
 import Seguimiento from './Seguimiento';
@@ -175,7 +175,10 @@ class FilePerfil extends Component {
                                         icon: require('../../img/papelera.svg'),
                                         onPress: () => {
                                             SPopupOpen(
-                                                <EliminarFile key={"acept_eliminar"} data={this.state.obj} />
+                                                {
+                                                    key: "acept_eliminar",
+                                                    content: <EliminarFile key={"acept_eliminar"} data={this.state.obj} />
+                                                }
                                             );
                                         }
                                     })}
@@ -183,13 +186,16 @@ class FilePerfil extends Component {
                                         label: "compartir",
                                         icon: require('../../img/shared.svg'),
                                         onPress: () => {
-                                            SPopupOpen(<Compartir
-                                                key={"compartir"}
-                                                file={curObj}
-                                                close={() => {
-                                                    SPopupClose("compartir")
-                                                    // this._compartir.setObj(false);
-                                                }} />)
+                                            SPopupOpen({
+                                                key: "compartir",
+                                                content: <Compartir
+                                                    key={"compartir"}
+                                                    file={curObj}
+                                                    close={() => {
+                                                        SPopupClose("compartir")
+                                                        // this._compartir.setObj(false);
+                                                    }} />
+                                            })
                                         }
                                     })}
                                     {this.getMenuItem({
@@ -199,13 +205,13 @@ class FilePerfil extends Component {
                                             this.props.navigation.navigate("DescargaPage", this.state.obj)
                                         }
                                     })}
-                                    {this.getMenuItem({
+                                    {/* {this.getMenuItem({
                                         label: "usuarios",
                                         icon: require('../../img/usuarios.svg'),
                                         onPress: () => {
                                             this.props.navigation.navigate("DescargaPage", this.state.obj)
                                         }
-                                    })}
+                                    })} */}
 
                                 </View>
 
