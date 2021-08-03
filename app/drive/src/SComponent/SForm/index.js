@@ -44,6 +44,7 @@ export default class SForm extends Component<SFromProps> {
             props={{
                 type: "danger",
                 col: "xs-12 md-6",
+                variant:"confirm",
                 // customStyle: "primary",
             }} onPress={() => {
                 var data = {};
