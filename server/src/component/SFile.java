@@ -43,6 +43,9 @@ public class SFile {
             case "editar":
                 editar(data, session);
             break;
+            case "editarGrupo":
+                editarGrupo(data, session);
+            break;
             case "anular":
                 anular(data, session);
             break;
@@ -247,6 +250,41 @@ public class SFile {
             e.printStackTrace();
         }
     }
+
+    public void editarGrupo(JSONObject obj, SSSessionAbstract session) {
+        JSONArray files = obj.getJSONArray("data");
+        obj.put("estado", "exito");
+        new editGroups(files).start();
+    }
+
+    public class editGroups extends Thread {
+        JSONArray files;
+        public editGroups(JSONArray files){
+            this.files = files;
+        }
+
+        public void run() {
+            try{
+                JSONObject file;
+                JSONObject obj = new JSONObject();
+                obj.put("component", "file");
+                obj.put("type", "editarGrupo");
+                for (int i = 0; i < files.length(); i++) {
+                    file = files.getJSONObject(i);
+                    Conexion.editObject("file", file);   
+                    obj.put("data",file);
+                    String consulta =  "select get_observadores('"+file.getString("key")+"') as json";
+                    JSONArray observadores = Conexion.ejecutarConsultaArray(consulta);
+                    SSServerAbstract.sendUsers(obj.toString(), observadores);
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    
+    }
+
+    
 
     public void compartirRecursivo(JSONObject obj){
         try {

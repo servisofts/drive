@@ -154,6 +154,10 @@ public class ServerHttp {
                                 obj.getJSONArray("data").getJSONObject(i).put("tamano", aux.length()+"");
                                 Conexion.editObject("file", obj.getJSONArray("data").getJSONObject(i));   
                             break;
+                            case "file":
+                                obj.getJSONArray("data").getJSONObject(i).put("tamano", aux.length()+"");
+                                Conexion.editObject("file", obj.getJSONArray("data").getJSONObject(i));   
+                            break;
                         }
                     }
                 }
