@@ -53,12 +53,17 @@ export const getFilesInPathShared = (props, activeRoot) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        console.log("asdasdasdasd")
-        if (obj.observadores.includes(props.state.usuarioReducer.usuarioLog.key)) {
-            if (obj.key_creador != props.state.usuarioReducer.usuarioLog.key) {
-                objFinal[key] = obj;
+        console.log(props.state.usuarioReducer.usuarioLog.key)
+        try {
+            if (obj.observadores.includes(props.state.usuarioReducer.usuarioLog.key)) {
+                if (obj.key_creador != props.state.usuarioReducer.usuarioLog.key) {
+                    objFinal[key] = obj;
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
+
     })
     return objFinal;
 }
@@ -143,8 +148,11 @@ export const getFilesInPathRoot = (props) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        if (obj.key_creador == props.state.usuarioReducer.usuarioLog.key) {
-            objFinal[key] = obj;
+        if (obj === null || !obj.key_creador || obj.key_creador === undefined || obj.key_creador === null) {
+        } else {
+            if (obj.key_creador == props.state.usuarioReducer.usuarioLog.key) {
+                objFinal[key] = obj;
+            }
         }
         // console.log(obj)
         // console.log(obj.observadores)

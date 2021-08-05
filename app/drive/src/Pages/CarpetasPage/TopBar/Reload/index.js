@@ -22,10 +22,21 @@ class Relaod extends Component {
                 justifyContent: "center",
                 alignItems: "center"
             }} onPress={() => {
-                this.props.dispatch({
-                    component:"file",
-                    type:"reload",
-                })
+                this.props.state.fileReducer.updateOrdenado(false)
+                if (!this.props.state.fileReducer.carpetaSelect) {
+                    this.props.dispatch({
+                        component: "file",
+                        type: "reload",
+                    })
+                } else {
+                    this.props.dispatch({
+                        component: "file",
+                        type: "moveFolder",
+                        key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+                        data: this.props.state.fileReducer.carpetaSelect,
+                        estado: "cargando",
+                    })
+                }
                 // this.props.navigation.navigate("DescargaPage")
             }}>
 

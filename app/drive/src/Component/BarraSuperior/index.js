@@ -31,7 +31,7 @@ class BarraSuperior extends Component {
         }
         return (<>
             <View style={{
-                width: 50,
+                width: 45,
                 height: "100%",
                 justifyContent: "center",
                 borderBottomEndRadius: 30,

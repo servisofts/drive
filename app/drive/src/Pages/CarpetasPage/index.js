@@ -14,6 +14,10 @@ class CarpetasPage extends Component {
         super(props);
         var width = Dimensions.get("window").width;
         var height = Dimensions.get("window").height;
+        props.state.fileReducer.updateOrdenado=(estado)=>{
+            props.state.fileReducer.vistaOrdenado=estado
+            this.setState({...this.state})
+        }
 
         var widthContainer = 800;
         var scale = (width / widthContainer);
@@ -47,7 +51,9 @@ class CarpetasPage extends Component {
     }
     render() {
 
-        var Barra = <BarraSuperior goBack={() => { this.props.navigation.goBack() }} navigation={this.props.navigation} />
+        var Barra = <BarraSuperior goBack={() => { 
+            this.props.state.fileReducer.carpetaSelect =false
+            this.props.navigation.goBack() }} navigation={this.props.navigation} />
         if (this.props.state.fileReducer.routes.length > 0) {
             Barra = <BarraSuperior navigation={this.props.navigation} goBack={() => {
                 this.props.dispatch({
@@ -64,7 +70,7 @@ class CarpetasPage extends Component {
                 height: "100%",
             }}>
                 {Barra}
-                <TopBar  {...this.props} stateParent={this.state} changeVista={(vista) => {
+                <TopBar scaleGlobal={this.state.scaleGlobal} {...this.props} stateParent={this.state} changeVista={(vista) => {
                     this.setState({ vista: vista });
                 }} zoom={(val) => {
                     this.setState({ scaleGlobal: this.state.scaleGlobal + val, reload: true });

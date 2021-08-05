@@ -155,14 +155,18 @@ class FilePerfil extends Component {
                                     <TouchableOpacity style={{
                                         padding: 4,
                                     }} onPress={() => {
-                                        SPopupOpen(<View style={{
+                                        SPopupOpen(<View 
+                                            key="popupConfirmacion"
+                                            style={{
                                             width: "90%",
                                             maxWidth: 600,
-                                            height: 400,
-                                            backgroundColor: "#fff"
+                                            height: 200,
+                                            backgroundColor: "#fff",
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
                                         }}>
                                             <Text style={{
-                                                color: "#fff",
+                                                color: "#000",
                                                 fontSize: 16,
                                                 padding: 8,
                                                 textAlign: "center",
@@ -181,7 +185,7 @@ class FilePerfil extends Component {
                                                     width: 100,
                                                     height: 40,
                                                     borderRadius: 8,
-                                                    backgroundColor: "#ff555588",
+                                                    backgroundColor: "#ff5555",
                                                     justifyContent: "center",
                                                     alignItems: "center"
                                                 }} onPress={() => {
@@ -196,6 +200,7 @@ class FilePerfil extends Component {
                                                         key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                                                         path: this.props.state.fileReducer.routes
                                                     }, true);
+                                                    SPopupClose("popupConfirmacion")
                                                     // this._confirmarEliminar.setObj(false)
                                                 }}>
                                                     <Text style={{ color: "#fff" }}>Eliminar</Text>
@@ -204,11 +209,11 @@ class FilePerfil extends Component {
                                                     width: 100,
                                                     height: 40,
                                                     borderRadius: 8,
-                                                    backgroundColor: "#ffffff88",
+                                                    backgroundColor: "#000",
                                                     justifyContent: "center",
                                                     alignItems: "center"
                                                 }} onPress={() => {
-                                                    // this._confirmarEliminar.setObj(false)
+                                                    SPopupClose("popupConfirmacion")
                                                 }}>
                                                     <Text style={{ color: "#fff" }}>Cancelar</Text>
                                                 </TouchableOpacity>
