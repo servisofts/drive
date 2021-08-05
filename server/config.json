@@ -3,7 +3,7 @@
     "socket_client": {
         "servicio": {
             "puerto": 10001,
-            "ip": "192.168.0.10",
+            "ip": "192.168.0.17",
             "cert": {
                 "OU": "servicio",
                 "pem": "servicio.pem"
@@ -11,13 +11,13 @@
         },
         "reconectTime": 5000
     },
-    "files":{
-        "url":"/u01/servisoftsFiles/drive/"
+    "files": {
+        "url": "/u01/servisoftsFiles/drive/"
     },
     "data_base": {
         "puerto": 5432,
-        "pass": "fullparts123.",
-        "ip": "192.168.0.10",
+        "pass": "postgres",
+        "ip": "192.168.0.17",
         "bd_name": "servisofts.drive",
         "user": "postgres"
     },
@@ -37,6 +37,6 @@
     },
     "socket_server": {
         "puerto": 10017,
-        "ip": "192.168.0.199"
+        "ip": "192.168.0.3"
     }
 }
