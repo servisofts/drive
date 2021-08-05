@@ -15,6 +15,7 @@ export const getFilesInPath = (props) => {
 export const getFilesInPathShared = (props, activeRoot) => {
     var dataFinal = false;
     var data = props.state.fileReducer.data;
+    var root = props.state.fileReducer.activeRoot;
     if (!data) {
         if (props.state.fileReducer.estado == "cargando") { return false }
         if (props.state.fileReducer.estado == "error") { return false }

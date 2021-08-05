@@ -30,6 +30,7 @@ export const choseFile = (props, callback) => {
                     });
                 }
             }).catch(error => {
+                console.log(error);
                 callback({
                     estado: "error",
                     error: error

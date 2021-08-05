@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import AppParams from '../../Params';
+import DocumentPicker from 'react-native-document-picker';
 
 export const choseFile = (props, callback) => {
     var options = {
@@ -17,36 +18,47 @@ export const choseFile = (props, callback) => {
             privateDirectory: true
         },
     };
-    ImagePicker.showImagePicker(options, response => {
-        if (response.didCancel) {
-            console.log("upload")
-            return {}
-        } else if (response.error) {
-            console.log(response.error)
-            return {}
-        } else if (response.customButton) {
-            console.log("upload")
-            return {}
-        } else {
-            // alert("");
-            console.log("upload")
-            ImageResizer.createResizedImage("data:image/jpeg;base64," + response.data, 400, 400, 'PNG', 100).then((uri) => {
-                UploadFile({
-                    data: uri,
-                    type: "image/png",
-                    name: "img.png",
-                    obj: props
-                }, callback);
-            }).catch(err => {
-                console.log("upload")
-                callback({
-                    estado: "error",
-                    error: err
-                })
-            });
-
-        }
+    DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles]
+    }).then((uri) => {
+        UploadFile({
+            data: uri,
+            type: uri.type,
+            name: uri.name,
+            obj: props
+        }, callback);
     });
+    // ImagePicker.showImagePicker(options, response => {
+    //     if (response.didCancel) {
+    //         console.log("upload")
+    //         return {}
+    //     } else if (response.error) {
+    //         console.log(response.error)
+    //         return {}
+    //     } else if (response.customButton) {
+    //         console.log("upload")
+    //         return {}
+    //     } else {
+    //         // alert("");
+    //         // console.log(response)
+    //         ImageResizer.createResizedImage("data:image/jpeg;base64," + response.data, 1024, 1024, 'PNG', 100).then((uri) => {
+    //             var arr = uri.name.split(".");
+    //             UploadFile({
+    //                 data: uri,
+    //                 type: "image/png",
+    //                 name: uri.name,
+    //                 obj: props
+    //             }, callback);
+    //         }).catch(err => {
+    //             console.log("upload")
+    //             callback({
+    //                 estado: "error",
+    //                 error: err
+    //             })
+    //         });
+
+    //     }
+    // });
     return {}
 }
 

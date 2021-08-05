@@ -78,15 +78,17 @@ export default class DropFileView extends Component {
             onLoad: false
         };
         this.onUpload = this.props.onUpload;
+        // this.esperar();
+    }
+    componentDidMount() {
         this.esperar();
     }
-
     esperar = async () => {
         await delay(300)
-        if (isLoad) {
+        if (this.isLoad) {
             return;
         }
-        isLoad = true;
+        this.isLoad = true;
 
         console.log("Asdasdasadas----")
         document.querySelectorAll(".drop-zone__inputa").forEach(inputElement => {
@@ -136,18 +138,23 @@ export default class DropFileView extends Component {
 
 
         return (
-            <View {...this.props}>
+            <View style={{
+                width: "100%",
+                height: "100%",
+                // backgroundColor: "#fff",
+                overflow: "hidden",
+            }}>
                 <div id={"dropFilea"} style={{
+                    // display:"flex",
                     width: "100%",
                     height: "100%",
-                    position: "absolute",
-                    // backgroundColor: "#000"
+                    // backgroundColor: "#f00",
                 }} className={"dropZonea"}>
                     <input type='file' name='file' className='drop-zone__inputa' accept="*" style={{
                         display: "none"
                     }} />
+                    {this.props.children}
                 </div>
-                {this.props.children}
             </View>
         );
     }

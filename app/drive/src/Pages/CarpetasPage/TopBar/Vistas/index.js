@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import { openDropDown, closeDropDown } from '../../../../Component/DropDown';
+import { openDropDown, closeDropDown } from '../../../../SComponent';
 import Svg from '../../../../Svg';
 import ModoVista from '../ModoVista';
 
@@ -8,7 +8,7 @@ export default class Vistas extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            vista: "drag"
+            vista: props.stateParent.vista
         };
         this.iconLista = require('../../../../img/list.svg');
         this.iconDrag = require('../../../../img/drag.svg');

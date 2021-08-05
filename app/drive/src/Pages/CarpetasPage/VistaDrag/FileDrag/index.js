@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, Animated, PanResponder, Platform, TouchableOpacity, TextInput, Linking, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import TouchableDouble from '../../../../Component/TouchableDouble';
 import AppParams from '../../../../Params';
+import { SPopupOpen } from '../../../../SPopup';
 import Svg from '../../../../Svg';
 import FilePreview from '../../FilePreview';
+import RecuperarEliminado from '../../../../Component/RecuperarEliminado';
+
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 export default class FileDrag extends Component {
@@ -19,7 +22,7 @@ export default class FileDrag extends Component {
             curpost: { x: (props.position.x / this.props.scale), y: (props.position.y / this.props.scale) }
         }
 
-        this.timePanIn =0;
+        this.timePanIn = 0;
         this.parametros = {
             useNativeDriver: (Platform.OS != "web"),
         }
@@ -28,8 +31,12 @@ export default class FileDrag extends Component {
     }
 
     verPerfil = async (url) => {
-
         await delay(300)
+        if (this.props.obj.estado == 0) {
+            SPopupOpen(<RecuperarEliminado key={"acept_recuperar"} data={this.props.data}/>);
+
+            return;
+        }
         this.props.navigation.navigate("FilePerfil", this.props.obj);
     }
 
@@ -264,6 +271,10 @@ export default class FileDrag extends Component {
                     if (this.props.obj.tipo == 0) {
                         this.props.moveFolder(this.props.obj);
                     } else {
+                        if (this.props.obj.estado == 0) {
+                            // alert(this.props.data.descripcion)
+                            return;
+                        }
                         this.props.navigation.navigate("DescargaPage", this.props.obj)
                     }
                 }}

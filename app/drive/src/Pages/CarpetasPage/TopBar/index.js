@@ -7,7 +7,6 @@ import SubirArchibo from './SubirArchibo';
 import ZoonFile from './ZoonFile';
 // import ModoVista from './ModoVista';
 // import CerrarSession from './CerrarSession';
-import { openDropDown } from '../../../Component/DropDown';
 import Vistas from './Vistas';
 import Reload from './Reload';
 export default class TopBar extends Component {

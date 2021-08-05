@@ -116,6 +116,59 @@ const subir = (state, action) => {
 const editar = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
+        if (action.data.estado == 0) {
+            if (state.trash.data) {
+                state.trash.data[action.data.key] = action.data;
+            }
+            if (state.data) {
+                if (action.path && action.path.length > 0) {
+                    var curData = state;
+                    action.path.map((obj, key) => {
+                        if (curData) {
+                            curData = curData.data[obj.key];
+                            if (!curData.data) {
+                                curData.data = {}
+                            }
+                        }
+                    })
+                    if (curData) {
+                        delete curData.data[action.data.key];
+                    }
+                } else {
+                    delete state.data[action.data.key];
+                }
+                // state.data[action.data.key] = action.data;
+            }
+        } else {
+            if (state.trash.data) {
+                delete state.trash.data[action.data.key];
+            }
+            if (state.data) {
+                if (action.path && action.path.length > 0) {
+                    var curData = state;
+                    action.path.map((obj, key) => {
+                        if (curData) {
+                            curData = curData.data[obj.key];
+                            if (!curData.data) {
+                                curData.data = {}
+                            }
+                        }
+                    })
+                    if (curData) {
+                        curData.data[action.data.key] = action.data;
+                    }
+                } else {
+                    state.data[action.data.key] = action.data;
+                }
+            }
+        }
+
+        state.lastEdit = action.data;
+    }
+}
+const editar2copy = (state, action) => {
+    state.estado = action.estado
+    if (action.estado === "exito") {
         if (state.activeRoot.key == "trash") {
             if (state.trash.data) {
                 if (action.path.length > 0) {

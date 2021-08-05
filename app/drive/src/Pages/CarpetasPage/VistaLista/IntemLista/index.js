@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Platform, TouchableWithoutFeedback } from 'react-native';
 import TouchableDouble from '../../../../Component/TouchableDouble';
 import AppParams from '../../../../Params';
 import FilePreview from '../../FilePreview';
 import moment from 'moment';
 import 'moment/locale/es';
+import { SPopupOpen } from '../../../../SPopup';
+import RecuperarEliminado from '../../../../Component/RecuperarEliminado';
 moment.locale("es")
 type type = {
     data: Object,
@@ -20,6 +22,11 @@ export default class IntemLista extends Component<type> {
         };
     }
     verPerfil = () => {
+        if (this.props.data.estado == 0) {
+            SPopupOpen(<RecuperarEliminado key={"acept_recuperar"} data={this.props.data}/>);
+
+            return;
+        }
         this.props.navigation.navigate("FilePerfil", this.props.data);
     }
     setSelect(select) {
@@ -74,8 +81,9 @@ export default class IntemLista extends Component<type> {
             )
         } else {
             var text = this.props.data.descripcion;
-            if (!this.state.isSelec) {
-                text = text.substring(0, 20);
+            var dicant = 28;
+            if (!this.state.select && text.length > dicant) {
+                text = text.substring(0, dicant).trim() + "..."
             }
             return (
                 <Text style={{
@@ -167,48 +175,58 @@ export default class IntemLista extends Component<type> {
     render() {
         var data = this.props.data;
         return (
-            <View style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                // paddingTop: 4,
-                paddingRight: 8,
-                paddingLeft: 8,
-
+            <TouchableWithoutFeedback style={{
+            }} onPress={() => {
             }}>
-                <TouchableDouble style={{
-                    flexDirection: "row",
+                <View style={{
                     width: "100%",
-                    height: 30 * this.state.scale,
-                    backgroundColor: (this.state.isSelec ? "#4444ff88" : this.props.background),
-                    borderRadius: 5 * this.state.scale,
+                    justifyContent: "center",
                     alignItems: "center",
-                    paddingStart: 10 * this.state.scale,
-                }} onSinglePress={() => {
-                    this.onPress()
-                }} onDoublePress={() => {
-                    // alert(this.props.obj.tipo)
-                    if (this.props.data.tipo == 0) {
-                        this.props.moveFolder(this.props.data);
-                    } else {
-                        this.props.navigation.navigate("DescargaPage", this.props.data)
-                    }
-                }}
-                    onLongPress={() => {
-                        this.verPerfil()
-                    }}>
-                    <View style={{
-                        width: 25 * this.state.scale,
-                        height: 25 * this.state.scale,
-                        padding: 5 * this.state.scale,
-                    }}>
-                        <FilePreview src={AppParams.urlImages + data.key} obj={data} />
-                    </View>
+                    // paddingTop: 4,
+                    paddingRight: 8,
+                    paddingLeft: 8,
 
-                    {this.getItems()}
-                </TouchableDouble>
+                }}>
+                    <TouchableDouble style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        height: 30 * this.state.scale,
+                        backgroundColor: (this.state.isSelec ? "#4444ff88" : this.props.background),
+                        borderRadius: 5 * this.state.scale,
+                        alignItems: "center",
+                        paddingStart: 4 * this.state.scale,
+                    }} onSinglePress={() => {
+                        this.onPress()
+                    }} onDoublePress={() => {
 
-            </View>
+                        if (this.props.data.tipo == 0) {
+                            this.props.moveFolder(this.props.data);
+                        } else {
+                            if (this.props.data.estado == 0) {
+                                // alert(this.props.data.descripcion)
+                                return;
+                            }
+                            this.props.navigation.navigate("DescargaPage", this.props.data)
+                        }
+                    }}
+                        onLongPress={() => {
+                            this.verPerfil()
+                        }}>
+                        <View style={{
+                            width: 20 * this.state.scale,
+                            height: 20 * this.state.scale,
+                            // padding: 2 * this.state.scale,
+                            alignItems: "center",
+                            marginEnd: 2 * this.state.scale,
+                        }}>
+                            <FilePreview src={AppParams.urlImages + data.key} obj={data} />
+                        </View>
+
+                        {this.getItems()}
+                    </TouchableDouble>
+
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

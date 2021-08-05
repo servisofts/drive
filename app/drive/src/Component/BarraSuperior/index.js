@@ -73,7 +73,7 @@ class BarraSuperior extends Component {
         )
     }
     getTitle() {
-        var text = this.props.state.fileReducer.activeRoot.descripcion
+        var text = this.props.state.fileReducer.activeRoot.descripcion+"/"
         if (this.props.title) {
             text = this.props.title;
         } else {
