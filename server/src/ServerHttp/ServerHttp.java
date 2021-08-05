@@ -3,6 +3,7 @@ package ServerHttp;
 import java.net.URI;
 import util.console;
 
+import org.apache.commons.io.FileUtils;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,9 @@ import org.json.JSONObject;
 
 import component.Documento;
 import component.Manejador;
+import component.SFile;
 import conexion.Conexion;
+import io.undertow.util.NetworkUtils;
 
 import java.nio.file.Files;
 import java.io.IOException;
@@ -161,21 +164,44 @@ public class ServerHttp {
         }
     }
 
-
+    public static String defaultOrigin(HttpExchange exchange) {
+        String host = NetworkUtils.formatPossibleIpv6Address(exchange.getRemoteAddress().getHostName());
+        String protocol = "http";
+        int port = exchange.getRemoteAddress().getPort();
+        //This browser set header should not need IPv6 escaping
+        StringBuilder allowedOrigin = new StringBuilder(256);
+        allowedOrigin.append(protocol).append("://").append(host);
+        if (!isDefaultPort(port, protocol)) {
+            allowedOrigin.append(':').append(port);
+        }
+        return allowedOrigin.toString();
+    }
+    private static boolean isDefaultPort(int port, String protocol) {
+        return (("http".equals(protocol) && 80 == port) || ("https".equals(protocol) && 443 == port));
+    }
     private static void handleRequest(HttpExchange exchange) throws IOException {
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+
+       // String origin = defaultOrigin(exchange);
+      //  exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://drive.servisofts.com");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
-        List<String> header = exchange.getRequestHeaders().get("key_usuario");
-        System.out.println(header);
+        //List<String> header = exchange.getRequestHeaders().get("key_usuario");
+        //System.out.println(origin);
         String ruta = Config.getJSON("files").getString("url");
+        String ruta2 = Config.getJSON("files").getString("url");
         URI requestURI = exchange.getRequestURI();
         String path  = requestURI.getPath().replaceAll("/", "");
 
         String key_usuario = "";
-        if(header!=null){
-            key_usuario=header.get(0);
-        }
 
+            if(requestURI.getQuery()!=null){
+                String param = requestURI.getQuery().split("&")[0];
+                if(param != null){
+                    if(param.split("=")[0].equals("key_usuario")){
+                        key_usuario =param.split("=")[1]; 
+                    }
+                }
+            }
+            
 
         String arrPartes[]= path.split("\\.");
         String extension = ""; 
@@ -185,12 +211,16 @@ public class ServerHttp {
             path=arrPartes[0];
             extension = arrPartes[1];
         }
-        
+        JSONObject elFile = null;
         try{
             String consulta = "select get_file_path_invertido('"+path+"') as json";
             JSONArray files = Conexion.ejecutarConsultaArray(consulta);
             if(files.length()>0){
-            
+
+                consulta = "select file_get_by_key('"+files.getJSONObject(0).optString("key")+"') as json";
+                elFile = Conexion.ejecutarConsultaObject(consulta);
+                //elFile = elFile.getJSONObject(JSONObject.getNames(elFile)[0]);
+
                 consulta = "select get_file_key_creador('"+path+"') as json";
                 PreparedStatement ps = Conexion.preparedStatement(consulta);
                 ResultSet rs = ps.executeQuery();
@@ -199,11 +229,16 @@ public class ServerHttp {
                 ps.close();
 
                 ruta+=key_creador;
+                ruta2+=key_creador;
                 String key_file="";
                 for ( int i = files.length()-1; i >= 0; i--) {
                     key_file = files.getJSONObject(i).getString("key");
                     ruta += "/"+key_file;
+                    if(i >= 1){
+                        ruta2 += "/"+key_file;
+                    }
                 }
+                
 
                 if(key_usuario.length()>0){
                     JSONObject file_tipo_seguimiento = new JSONObject();
@@ -217,19 +252,31 @@ public class ServerHttp {
                     file_tipo_seguimiento.put("estado",1);
                     Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
                 }
-            
             }else{
                 ruta += "usuario/"+path;
             }
-            
-
 
         }catch(Exception e){
             e.printStackTrace();
         }
 
-        File file = new File (ruta);
-        if(!file.exists()){
+        String url_temp = Config.getJSON().getJSONObject("files").getString("url")+"temp/"+UUID.randomUUID().toString()+"/";
+        File file = null;
+        if(elFile!=null){
+            if(elFile.getInt("tipo")==1){
+                file = new File (ruta);    
+            }else{
+                if(key_usuario.length()>0){
+                    file = SFile.createOriginalZipFiles(key_usuario, elFile.getString("key"), url_temp, ruta2);
+                }       
+            }
+
+        }else{
+            file = new File (ruta);
+        }
+        
+
+        if(file == null || !file.exists()){
             file = new File("./default.png");
         }
         byte [] bytearray  = new byte [(int)file.length()];
@@ -241,6 +288,7 @@ public class ServerHttp {
         OutputStream os = exchange.getResponseBody();
         os.write(bytearray,0,bytearray.length);
         os.close();
+        FileUtils.deleteDirectory(new File(url_temp)); 
     }
 
     private static void copyInputStreamToFile(InputStream inputStream, File file) throws IOException {

@@ -120,7 +120,6 @@ public class Usuario {
         File f = new File(url);
         if(!f.exists()) f.mkdirs();
 
-
         try {
             String key = UUID.randomUUID().toString();
             JSONObject file = new JSONObject();

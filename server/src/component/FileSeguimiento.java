@@ -50,7 +50,7 @@ public class FileSeguimiento {
         try {
             JSONObject file;
             if(obj.has("path")){
-                String consulta =  "select file_get_by_key('"+obj.getJSONArray("path")
+                String consulta =  "select file_getall_by_key('"+obj.getJSONArray("path")
                 .getJSONObject(obj
                 .getJSONArray("path").length()-1)
                 .getString("key")+"') as json";
