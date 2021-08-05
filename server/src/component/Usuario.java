@@ -101,7 +101,6 @@ public class Usuario {
     }
 
     public void defaultType(JSONObject obj, SSSessionAbstract session) {
-
         SocketCliete.send("usuario", obj, session);
 
     }
