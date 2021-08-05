@@ -15,6 +15,7 @@ export const getFilesInPath = (props) => {
 export const getFilesInPathShared = (props, activeRoot) => {
     var dataFinal = false;
     var data = props.state.fileReducer.data;
+    var root = props.state.fileReducer.activeRoot;
     if (!data) {
         if (props.state.fileReducer.estado == "cargando") { return false }
         if (props.state.fileReducer.estado == "error") { return false }
@@ -53,11 +54,17 @@ export const getFilesInPathShared = (props, activeRoot) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        if (obj.tipo_observador == 2) {
-            if (obj.key_usuario_compartio == activeRoot.usr.key) {
-                objFinal[key] = obj;
+        console.log(props.state.usuarioReducer.usuarioLog.key)
+        try {
+            if (obj.observadores.includes(props.state.usuarioReducer.usuarioLog.key)) {
+                if (obj.key_creador != props.state.usuarioReducer.usuarioLog.key) {
+                    objFinal[key] = obj;
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
+
     })
     return objFinal;
 }
@@ -127,7 +134,8 @@ export const getFilesInPathRoot = (props) => {
                     component: "file",
                     type: "getAll",
                     estado: "cargando",
-                    path: routes
+                    path: routes,
+                    key_usuario: props.state.usuarioReducer.usuarioLog.key,
                 }
                 // alert(JSON.stringify(object));
                 props.state.socketReducer.session[AppParams.socket.name].send(object, true);
@@ -141,13 +149,18 @@ export const getFilesInPathRoot = (props) => {
     }
     Object.keys(dataFinal).map((key) => {
         var obj = dataFinal[key];
-        if (obj.tipo_observador != 2) {
-            objFinal[key] = obj;
+        if (obj === null || !obj.key_creador || obj.key_creador === undefined || obj.key_creador === null) {
+        } else {
+            if (obj.key_creador == props.state.usuarioReducer.usuarioLog.key) {
+                objFinal[key] = obj;
+            }
         }
+        // console.log(obj)
+        // console.log(obj.observadores)
+        // objFinal[key] = obj;
     })
     return objFinal;
 }
-
 
 export const getPosicionDisponible = ({ curFile, props }) => {
     var widthContainer = props.widthContainer;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import ProgressCircle from '../../../Component/ProgressCircle';
 import Svg from '../../../Svg';
+import FilePreview from '../../CarpetasPage/FilePreview';
 
 export default class DescargaProgres extends Component {
     constructor(props) {
@@ -10,8 +11,8 @@ export default class DescargaProgres extends Component {
             curPorcent: 0,
         };
     }
-    animateTo(value, duration) {
-        this.setState({ curPorcent: value });
+    animateTo(value, duration, extra) {
+        this.setState({ curPorcent: value, extra: extra });
         this._progress.animateTo(value, duration);
     }
     getContenido() {
@@ -34,11 +35,20 @@ export default class DescargaProgres extends Component {
             </TouchableOpacity>)
         } else {
             var porcent = (1 - this.state.curPorcent) * 100;
+            const getDetail = (extra) => {
+                if (!extra.received) {
+                    return <View />
+                }
+                return <>
+                    <Text style={{ fontSize: 18, color: "#fff" }}>{extra.velocity} </Text>
+                    <Text style={{ fontSize: 18, color: "#fff" }}>{extra.received.val + " / " + this.state.extra.size.val} </Text>
+                </>
+            }
             return (<TouchableOpacity style={{
                 width: 300,
                 height: 300,
                 padding: 40,
-                backgroundColor: "#ff6666",
+                // backgroundColor: "#ff6666",
                 borderRadius: 200,
                 justifyContent: "center",
                 alignItems: "center"
@@ -46,6 +56,7 @@ export default class DescargaProgres extends Component {
 
             }}>
                 <Text style={{ fontSize: 45, color: "#fff" }}>{porcent.toFixed(0) + "%"}</Text>
+                {getDetail(this.state.extra)}
             </TouchableOpacity>)
         }
     }

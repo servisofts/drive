@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { getFilesInPath, getPosicionDisponible } from '../../../../FileFunction';
 import AppParams from '../../../../Params';
@@ -9,6 +9,8 @@ class NuevaCarpeta extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            scale: this.props.scaleGlobal,
+
         };
     }
 
@@ -28,7 +30,6 @@ class NuevaCarpeta extends Component {
                     if (!curFile) {
                         return;
                     }
-
                     var posicion = getPosicionDisponible({
                         curFile, props: {
                             ...this.props.stateParent

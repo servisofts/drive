@@ -42,6 +42,7 @@ class Usuarios extends Component {
     getUsuario(key) {
         var cabecera = this.props.state.usuarioReducer.data["registro_administrador"];
         if (!cabecera) cabecera = {};
+        if (!key) { return false }
         var usr = cabecera[key];
         if (!usr) {
             if (this.props.state.usuarioReducer.estado == "cargando") {
@@ -143,12 +144,7 @@ class Usuarios extends Component {
                 borderRadius: 8,
                 marginTop: 4,
             }}>
-                <ScrollView style={{
-                    width: "100%",
-                    flex: 1,
-                }}>
-                    {Lista}
-                </ScrollView>
+                {Lista}
             </View>
         );
     }

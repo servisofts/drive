@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, ScrollView 
 import { connect } from 'react-redux';
 import SThread from '../../../Component/SThread';
 import AppParams from '../../../Params';
+import { SView } from '../../../SComponent';
 
 class Compartir extends Component {
     constructor(props) {
@@ -96,10 +97,10 @@ class Compartir extends Component {
                             marginStart: 8,
                         }}>
                             <Text style={{
-                                color:"#fff"
+                                color: "#fff"
                             }}>{obj["Correo"]}</Text>
                             <Text style={{
-                                color:"#fff"
+                                color: "#fff"
                             }}>{obj["Telefono"]}</Text>
                         </View>
                     </View>
@@ -121,15 +122,15 @@ class Compartir extends Component {
     }
     render() {
         return (
-            <View style={{
+            <SView style={{
                 width: "100%",
-                maxWidth: 600,
                 height: "100%",
-                height: 400,
                 alignItems: "center",
                 padding: 8,
-                borderRadius:8,
-                backgroundColor: "#222222ee",
+                borderRadius: 8,
+                backgroundColor: "#00000a",
+            }} props={{
+                withoutFeedback: true
             }}>
                 <Text style={{
                     color: "#fff",
@@ -205,7 +206,7 @@ class Compartir extends Component {
                     </TouchableOpacity>
                     {/* {this.getSend()} */}
                 </View>
-            </View>
+            </SView>
         );
     }
 }

@@ -3,6 +3,7 @@ import { Platform, Text } from 'react-native';
 import Logo from '../img/logo.svg';
 import LogoB from '../img/logoblanco.svg';
 import See from '../img/see.svg';
+import Error from '../img/error.svg';
 import Folder from '../img/ssfolder.svg';
 import EPUndefined from '../img/extensionPack/undefined.svg';
 
@@ -20,6 +21,8 @@ const Svg = (props) => {
             return (Platform.OS == "web" ? <img style={props.style} src={See} /> : <See style={props.style} />);
         case "folder":
             return (Platform.OS == "web" ? <img style={props.style} src={Folder} /> : <Folder style={props.style} />);
+        case "Error":
+            return (Platform.OS == "web" ? <img style={props.style} src={Error} /> : <Error style={props.style} />);
         case "EPUndefined":
             return (Platform.OS == "web" ? <img style={props.style} src={EPUndefined} /> : <EPUndefined style={props.style} />);
         default: return <Text>Not Found</Text>

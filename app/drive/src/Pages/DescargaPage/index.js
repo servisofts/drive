@@ -9,7 +9,8 @@ import DescargaProgres from './DescargaProgres';
 import SFetchBlob from '../../Component/SFetchBlob';
 import AppParams from '../../Params';
 import { connect } from 'react-redux';
- class DescargaPage extends Component {
+import FilePreview from '../CarpetasPage/FilePreview';
+class DescargaPage extends Component {
     static navigationOptions = {
         headerShown: false,
     }
@@ -19,7 +20,9 @@ import { connect } from 'react-redux';
             this.props.navigation.goBack();
             return <View />
         }
+
         var params = this.props.navigation.state.params;
+        this.data = params;
         this.state = {
             _url: new STextImput({
                 defaultValue: AppParams.urlImages + params.key,
@@ -60,13 +63,30 @@ import { connect } from 'react-redux';
                         backgroundColor: "#ffffff44",
                         alignItems: "center"
                     }}>
-                        {this.state._url.getComponent()}
+                        <View style={{
+                            width: "100%",
+                            flexDirection: "row",
+                            alignItems: "center"
+                        }}>
+                            <View style={{
+                                width: 70,
+                                height: 70,
+                            }}>
+                                <FilePreview obj={this.data} />
+                            </View>
+                            <Text style={{
+                                fontSize: 20,
+                                color: "#fff"
+                            }}>{this.data.descripcion}</Text>
+                        </View>
+
+                        {/* {this.state._url.getComponent()} */}
                         <DescargaProgres
                             descargar={() => {
                                 var url = this.state._url.getValue();
-                                new SFetchBlob().descargar({ url: url, ...this.props.navigation.state.params, key_usuario:this.props.state.usuarioReducer.usuarioLog.key }, (progres) => {
+                                new SFetchBlob().descargar({ url: url, ...this.props.navigation.state.params, key_usuario: this.props.state.usuarioReducer.usuarioLog.key }, (evt) => {
                                     // console.log(progres)
-                                    this._progress.animateTo(progres, 1);
+                                    this._progress.animateTo(1 - evt.porcent, 1, evt);
                                 });
                             }}
                             ref={(ref) => {

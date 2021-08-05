@@ -31,7 +31,7 @@ class BarraSuperior extends Component {
         }
         return (<>
             <View style={{
-                width: 50,
+                width: 45,
                 height: "100%",
                 justifyContent: "center",
                 borderBottomEndRadius: 30,
@@ -73,7 +73,7 @@ class BarraSuperior extends Component {
         )
     }
     getTitle() {
-        var text = this.props.state.fileReducer.activeRoot.descripcion
+        var text = this.props.state.fileReducer.activeRoot.descripcion+"/"
         if (this.props.title) {
             text = this.props.title;
         } else {
@@ -92,7 +92,7 @@ class BarraSuperior extends Component {
                         // }
                         text += "/"
                     } else {
-                        text += obj.descripcion
+                        text += obj.descripcion+"/"
                     }
 
                 });

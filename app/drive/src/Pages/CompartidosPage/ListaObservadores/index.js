@@ -10,6 +10,9 @@ class ListaObservadores extends Component {
         this.state = {
         };
     }
+    componentDidMount() {
+        this.sendServer()
+    }
     getUsuario(key) {
         var cabecera = this.props.state.usuarioReducer.data["registro_administrador"];
         if (!cabecera) cabecera = {};
@@ -33,23 +36,30 @@ class ListaObservadores extends Component {
         }
         return usr;
     }
+
+    sendServer() {
+        var object = {
+            component: "observador",
+            type: "getAll",
+            estado: "cargando",
+            key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+        }
+        this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+    }
     render() {
         var data = this.props.state.observadorReducer.data;
+       
         if (!data) {
             if (this.props.state.observadorReducer.estado == "cargando") { return <ActivityIndicator color={"#fff"} /> }
             if (this.props.state.observadorReducer.estado == "error") { return <ActivityIndicator color={"#fff"} /> }
-            var object = {
-                component: "observador",
-                type: "getAll",
-                estado: "cargando",
-                key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
-            }
-            this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+            this.sendServer()
             return <ActivityIndicator color={"#fff"} />
         }
-
+        
         return Object.keys(data).map((key) => {
             var obj = data[key];
+            // alert(key);
+            // console.log(root);
             var usr = this.getUsuario(key);
             if (!usr) {
                 return <ActivityIndicator color={"#fff"} />

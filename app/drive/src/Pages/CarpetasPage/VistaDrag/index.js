@@ -25,6 +25,7 @@ class ArchibosContainer extends Component {
 
         this.state = {
             scale: this.props.scaleGlobal,
+            ordenado: false
         };
     }
     backAction = () => {
@@ -106,29 +107,44 @@ class ArchibosContainer extends Component {
         var limit = parseInt((this.state.dimensiones.width / size) - 0);
         // alert(limit)
         this._fileDrag = {};
+        var count = 0
+        var count2 = 0
+        var fila = 1
+
         // console.log(dataFinal)
+        var sizeWidth = this.props.stateParent.widthContainer
+        if (!this.state.ordenado) {
+            Object.keys(dataFinal).map((key) => {
+                var obj = dataFinal[key];
+                var x = 180 * (count / 2)
+                var anchoItem = x + 110
+                obj.posy = 10
+                if (anchoItem > sizeWidth) {
+                    x = 180 * (count2 / 2)
+                    anchoItem = x + 110
+
+                    if (anchoItem > sizeWidth) {
+                        count2 = 0
+                        x = 180 * (count2 / 2)
+                        fila++
+                        count2++
+                        obj.posy = fila * 100
+                    } else {
+                        obj.posy = fila * 100
+                        count2++
+                    }
+
+                }
+                count++
+                obj.posx = x
+            })
+            this.state.ordenado = true
+            this.setState({ ...this.state })
+            return <ActivityIndicator color={"#fff"} />
+        }
         return Object.keys(dataFinal).map((key) => {
             var obj = dataFinal[key];
-
-            // if (i % limit == 0) {
-            //     if (i != 0) {
-            //         y += size + margin;
-            //     }
-            //     x = margin;
-            // } else {
-            //     x += size;
-            // }
-            // i++;
-            // var post = { x: x, y: y };
-
-            // if (obj.posx && obj.posy) {
-            //     post = { x: obj.posx * this.state.scale, y: obj.posy * this.state.scale };
-            // }
-            var post = { x: 0, y: 0 };
-            if (obj.posx && obj.posy) {
-                post = { x: obj.posx * this.state.scale, y: obj.posy * this.state.scale };
-            }
-
+          var  post = { x: obj.posx * this.state.scale, y: obj.posy * this.state.scale };
             return (<FileDrag ref={(ref) => {
                 this._fileDrag[key] = ref;
             }} obj={obj} position={post}
@@ -141,6 +157,7 @@ class ArchibosContainer extends Component {
                 navigation={this.props.navigation}
                 scrollView={this._scrollView}
                 moveFolder={(obj) => {
+                    this.props.state.fileReducer.carpetaSelect = obj
                     this.props.dispatch({
                         component: "file",
                         type: "moveFolder",
@@ -148,7 +165,6 @@ class ArchibosContainer extends Component {
                         data: obj,
                         estado: "cargando",
                     })
-
                 }}
             />)
         });
@@ -223,8 +239,8 @@ class ArchibosContainer extends Component {
                                             y: pos.y
                                         }
                                     });
-                                    arrPos.push({...posicion});
-                                    posicion.x+=100;
+                                    arrPos.push({ ...posicion });
+                                    posicion.x += 100;
                                     pos = posicion;
                                 }
                                 uploadHttp({

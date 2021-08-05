@@ -6,14 +6,14 @@ import BackgroundImage from '../../Component/BackgroundImage';
 import BarraSuperior from '../../Component/BarraSuperior';
 import AppParams from '../../Params';
 import Svg from '../../Svg';
-import { SPopupClose, SPopupOpen } from '../../SPopup';
+import { SPopupClose, SPopupOpen } from '../../SComponent'
 import FilePreview from '../CarpetasPage/FilePreview';
 import Compartir from './Compartir';
 import Seguimiento from './Seguimiento';
 import Ventanas from '../../Component/Ventanas';
 import Usuarios from './Usuarios';
 import SSCrollView from '../../Component/SScrollView';
-
+import EliminarFile from '../../Component/EliminarFile';
 class FilePerfil extends Component {
 
     static navigationOptions = {
@@ -33,6 +33,23 @@ class FilePerfil extends Component {
             return tamano_str;
         }
         return "0 Kb";
+    }
+    getMenuItem = ({ label, icon, onPress }) => {
+        return (
+            <TouchableOpacity style={{
+                padding: 4,
+                alignItems: "center",
+                justifyContent: "center"
+            }} onPress={() => {
+                if (onPress) onPress();
+            }}>
+                <Svg resource={icon} style={{
+                    width: 50,
+                    height: 50,
+                }} />
+                <Text style={{ color: "#999", fontSize: 10, textAlign: "center" }}>{label}</Text>
+            </TouchableOpacity>
+        )
     }
     render() {
         var Select = false;
@@ -71,17 +88,20 @@ class FilePerfil extends Component {
                 <View style={{
                     width: "100%",
                     flex: 1,
+                    alignItems: "center",
                 }}>
-                    <SSCrollView>
-                        <View style={{
-                            width: "100%",
-                            borderRadius: 8,
-                            maxWidth: 500,
-                            backgroundColor: "#ffffff44",
-                            alignItems: "center"
-                        }}>
-                            <BackgroundImage source={require("../../img/fondos/color/1.jpg")} />
-
+                    <BackgroundImage source={require("../../img/fondos/color/1.jpg")} />
+                    {/* <SSCrollView> */}
+                    <View style={{
+                        width: "100%",
+                        minHeight: "95%",
+                        borderRadius: 8,
+                        maxWidth: 600,
+                        overflow: 'hidden',
+                        // backgroundColor: "#00000044",
+                        alignItems: "center",
+                    }}>
+                        <SSCrollView>
                             <View style={{
                                 width: "95%",
                                 height: 130,
@@ -100,14 +120,12 @@ class FilePerfil extends Component {
                                 <View style={{
                                     flex: 1,
                                     justifyContent: "center",
-                                    alignItems: "center"
-                                    // backgroundColor:"#000"
+                                    alignItems: "center",
                                 }}>
                                     <View style={{
                                         width: "95%",
-                                        flex: 1,
                                         alignItems: "center",
-                                        flexDirection: "row"
+                                        flexDirection: "row",
                                     }}>
                                         <Text style={{
                                             flex: 5,
@@ -124,7 +142,6 @@ class FilePerfil extends Component {
                                     </View>
                                     <View style={{
                                         width: "95%",
-                                        flex: 1,
                                         alignItems: "center",
                                         flexDirection: "row"
                                     }}>
@@ -132,37 +149,42 @@ class FilePerfil extends Component {
                                             width: "90%",
                                             fontSize: 12,
                                             color: "#bbb"
-                                        }}>Creado: {new Date(this.state.obj.fecha_on).toLocaleDateString()} {new Date(this.state.obj.fecha_on).toLocaleTimeString()}</Text>
+                                        }}>{new Date(this.state.obj.fecha_on).toLocaleDateString()} {new Date(this.state.obj.fecha_on).toLocaleTimeString()}</Text>
                                     </View>
                                 </View>
                             </View>
 
                             <View style={{
                                 width: "95%",
-                                height: 60,
+                                height: 100,
                                 borderBottomWidth: 1,
                                 borderColor: "#aaa",
                             }}>
-                                <Text style={{
-                                    color: "#fff",
-                                    fontSize: 11,
-                                }}>Acciones</Text>
+                                {/* <Text style={{
+                                color: "#fff",
+                                fontSize: 11,
+                            }}>Acciones</Text> */}
                                 <View style={{
                                     width: "100%",
                                     flex: 1,
                                     flexDirection: "row",
+                                    justifyContent: "space-evenly"
                                 }}>
                                     <TouchableOpacity style={{
                                         padding: 4,
                                     }} onPress={() => {
-                                        SPopupOpen(<View style={{
+                                        SPopupOpen(<View 
+                                            key="popupConfirmacion"
+                                            style={{
                                             width: "90%",
                                             maxWidth: 600,
-                                            height: 400,
-                                            backgroundColor: "#fff"
+                                            height: 200,
+                                            backgroundColor: "#fff",
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
                                         }}>
                                             <Text style={{
-                                                color: "#fff",
+                                                color: "#000",
                                                 fontSize: 16,
                                                 padding: 8,
                                                 textAlign: "center",
@@ -181,7 +203,7 @@ class FilePerfil extends Component {
                                                     width: 100,
                                                     height: 40,
                                                     borderRadius: 8,
-                                                    backgroundColor: "#ff555588",
+                                                    backgroundColor: "#ff5555",
                                                     justifyContent: "center",
                                                     alignItems: "center"
                                                 }} onPress={() => {
@@ -196,7 +218,8 @@ class FilePerfil extends Component {
                                                         key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
                                                         path: this.props.state.fileReducer.routes
                                                     }, true);
-                                                    this._confirmarEliminar.setObj(false)
+                                                    SPopupClose("popupConfirmacion")
+                                                    // this._confirmarEliminar.setObj(false)
                                                 }}>
                                                     <Text style={{ color: "#fff" }}>Eliminar</Text>
                                                 </TouchableOpacity>
@@ -204,11 +227,11 @@ class FilePerfil extends Component {
                                                     width: 100,
                                                     height: 40,
                                                     borderRadius: 8,
-                                                    backgroundColor: "#ffffff88",
+                                                    backgroundColor: "#000",
                                                     justifyContent: "center",
                                                     alignItems: "center"
                                                 }} onPress={() => {
-                                                    this._confirmarEliminar.setObj(false)
+                                                    SPopupClose("popupConfirmacion")
                                                 }}>
                                                     <Text style={{ color: "#fff" }}>Cancelar</Text>
                                                 </TouchableOpacity>
@@ -216,7 +239,7 @@ class FilePerfil extends Component {
                                         </View>
                                         );
                                     }}>
-                                        <Svg resource={require('../../img/delete.svg')} style={{
+                                        <Svg resource={require('../../img/papelera.svg')} style={{
                                             width: 50,
                                             height: "100%",
                                         }} />
@@ -234,7 +257,7 @@ class FilePerfil extends Component {
                                                 }} />)
                                             // this._compartir.setObj(this.state.obj)
                                         }}>
-                                        <Svg resource={require('../../img/shareFolder.svg')} style={{
+                                        <Svg resource={require('../../img/shared.svg')} style={{
                                             width: 50,
                                             height: "100%",
                                         }} />
@@ -250,16 +273,26 @@ class FilePerfil extends Component {
                                         }} />
                                     </TouchableOpacity>
                                 </View>
-                            </View>
-                            <Ventanas ref={(ref) => { this.ventanas = ref }} default={"Usuarios"} ventanas={{
-                                Seguimiento: <Seguimiento file={curObj} />,
-                                Usuarios: <Usuarios file={curObj} />
-                            }} />
 
-                        </View>
-                    </SSCrollView>
+                            </View>
+                            <View style={{
+                                width: "100%",
+                                flex: 1,
+                                alignItems: "center",
+                                // backgroundColor: "#fff"
+                            }}>
+                                <Seguimiento file={curObj} />
+                                {/* <Ventanas ref={(ref) => { this.ventanas = ref }} default={"Usuarios"} ventanas={{
+                                Seguimiento: 
+                                Usuarios: <Usuarios file={curObj} />
+                            }} /> */}
+                            </View>
+
+                        </SSCrollView>
+                    </View>
+                    {/* </SSCrollView> */}
                 </View>
-            </View>
+            </View >
         );
     }
 }

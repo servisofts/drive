@@ -10,6 +10,9 @@ export default (state, action) => {
             case "getByKey":
                 getByKey(state, action);
                 break;
+            case "registro":
+                registro(state, action);
+                break;
         }
         state.type = action.type;
         state.lastSend = new Date();
@@ -22,5 +25,14 @@ const getByKey = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
         state.data[action.key_file] = action.data;
+    }
+}
+const registro = (state, action) => {
+    state.estado = action.estado
+    if (action.estado === "exito") {
+        if (state.data[action.key_file]) {
+            state.data[action.key_file][action.data.key] = action.data;
+        }
+
     }
 }

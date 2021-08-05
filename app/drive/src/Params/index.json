@@ -7,9 +7,9 @@
         "deviceKey": "drive_deviceKey",
         "fbtoken": "FIREBASE_TOKEN"
     },
-    "urlImages": "http://192.168.0.199:30017/",
+    "urlImages": "https://drive.servisofts.com/images/",
     "servicios": {
-        "drive": "http://192.168.0.199:30017/",
+        "drive": "https://drive.servisofts.com/images/",
         "roles_permisos": "http://192.168.0.199:30016/"
     }
 }

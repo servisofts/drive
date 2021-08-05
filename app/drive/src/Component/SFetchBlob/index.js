@@ -1,19 +1,20 @@
+import FetchFunction from "./FetchFunction";
+
 export default class SFetchBlob {
 
     constructor() {
     }
     descargar = async (props, callback) => {
         console.log("INICIANDO DESCARGA....");
-        var url = props.url;
+        var url = props.url+"?key_usuario="+props.key_usuario;
         console.log(url);
         var myInit = {
             method: 'GET',
             cache: "no-cache",
-            headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                // "Access-Control-Allow-Headers": "http://localhost:3000",
-                "key_usuario":props.key_usuario,
-            }
+            // headers: {
+            //     "Access-Control-Allow-Headers": "https://drive.servisofts.com",
+            //     "key_usuario": props.key_usuario,
+            // }
         };
         try {
             var myRequest = new Request(url, myInit);
@@ -21,6 +22,8 @@ export default class SFetchBlob {
             const reader = response.body.getReader();
             const contentLength = +response.headers.get('Content-Length');
             // console.log(contentLength)
+            var lastP = false;
+
             let receivedLength = 0; // received that many bytes at the moment
             let chunks = []; // array of received binary chunks (comprises the body)
             while (true) {
@@ -30,7 +33,25 @@ export default class SFetchBlob {
                 }
                 chunks.push(value);
                 receivedLength += value.length;
-                callback(1 - (receivedLength / contentLength))
+                var resp = FetchFunction.progresFormat(contentLength, receivedLength);
+
+                if (lastP) {
+                    var time = resp.time - lastP.time;
+                    if (time > 250 || !lastP.velocity) {
+                        var bytes = resp.received.byte - lastP.received.byte
+                        var bxs = bytes / (time / 1000);
+                        var timeInfo = FetchFunction.formatByte(bxs);
+                        resp.velocity = timeInfo.val + "/s";
+                        lastP = resp;
+                    } else {
+                        resp.velocity = lastP.velocity
+                    }
+                } else {
+                    lastP = resp;
+                    resp.velocity = 0;
+                }
+
+                callback(resp)
                 // console.log(`Received ${receivedLength} of ${contentLength}`)
             }
             let chunksAll = new Uint8Array(receivedLength); // (4.1)
@@ -45,7 +66,12 @@ export default class SFetchBlob {
             a.style.display = 'none';
             a.href = uri;
             var arrUr = props.descripcion.split("/");
-            var name = arrUr[arrUr.length - 1]
+            var name = "";
+            if (props.tipo == 0) {
+                name = arrUr[arrUr.length - 1] + ".zip";
+            } else {
+                name = arrUr[arrUr.length - 1]
+            }
             a.download = name;
             document.body.appendChild(a);
             a.click();

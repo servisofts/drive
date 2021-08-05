@@ -52,9 +52,13 @@ class STextImput extends Component {
         if (!this.propsTemp.style) {
             this.propsTemp.style = this.propiedades.style;
         }
+        if (!this.propsTemp.style) {
+            this.propsTemp.style = this.propiedades.style;
+        }
         this.propiedades.style = {
             ...this.propiedades.style,
-            borderColor: "#ff0000"
+            borderColor: "#660000",
+            borderWidth:1,
         }
         return false;
     }
@@ -147,7 +151,7 @@ class STextImput extends Component {
                 this.setState({ value: text })
                 this.value = text;
                 this.value = this.value.trim();
-                if (this.propiedades.type == "Monto") {
+                if (this.propiedades.type === "Monto") {
                     const clean = text.replace(/[^0-9]/g, '');
                     this.value = clean
                     // this.verify();

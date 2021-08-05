@@ -1,88 +1,19 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import ActionButtom from '../../Component/ActionButtom';
 import BackgroundImage from '../../Component/BackgroundImage';
 import BarraSuperior from '../../Component/BarraSuperior';
-import NaviDrawer from '../../Component/NaviDrawer';
-// import SFotoPicker from '../../Component/SFotoPicker';
-import { choseFile } from '../../Component/SImageImput';
-import SSCrollView from '../../Component/SScrollView';
-import STextImput from '../../Component/STextImput';
 import AppParams from '../../Params';
-import { SPopupOpen } from '../../SPopup';
-import STheme from '../../STheme';
-import Svg from '../../Svg';
-import RolDeUsuario from './RolDeUsuario';
-var _ref = {};
+import { SForm, SPopupOpen, SScrollView2, SText, SView } from '../../SComponent';
 class UsuarioRegistroPage extends Component {
   static navigationOptions = ({ navigation }) => {
-    const key = navigation.getParam('key', false);
     return {
       headerShown: false,
-      title: (!key ? "Crear usuario" : "Editar usuario")
     }
   }
   constructor(props) {
     super(props);
     this.state = {};
-    var styleImput = {
-      width: "80%",
-      height: 50,
-      borderWidth: 1,
-      borderColor: "#999",
-      margin: 8,
-      borderRadius: 4,
-      padding: 8,
-      color:"#fff",
-    }
-    this.cabecera = "registro_administrador"
-    var key = this.props.navigation.getParam("key", false);
-    this.TextButom = "CREAR";
-    this.data = {};
-    if (key) {
-      this.TextButom = "EDITAR";
-      this.data = this.props.state.usuarioReducer.data[this.cabecera][key];
-      // this.data.key = key;
-      if (!this.data) {
-        alert("NO HAY DATA");
-      }
-    }
-
-    this.imputs = {
-      Nombres: new STextImput({
-        placeholder: "Nombres",
-        defaultValue: this.data["Nombres"],
-        // autoCapitalize: "none",
-        style: styleImput
-      }),
-
-      Apellidos: new STextImput({
-        placeholder: "Apellidos",
-        defaultValue: this.data["Apellidos"],
-        // autoCapitalize: "none",
-        style: styleImput
-      }),
-      Correo: new STextImput({
-        placeholder: "Correo",
-        defaultValue: this.data["Correo"],
-        // autoCapitalize: "none",
-        style: styleImput
-      }),
-      Telefono: new STextImput({
-        placeholder: "Telefono",
-        type: "Phone",
-        defaultValue: this.data["Telefono"],
-        // autoCapitalize: "none",
-        style: styleImput
-      }),
-      Password: new STextImput({
-        placeholder: "Password",
-        defaultValue: this.data["Password"],
-        // autoCapitalize: "none",
-        style: styleImput
-      }),
-    }
   }
   componentDidMount() { // B
 
@@ -91,24 +22,11 @@ class UsuarioRegistroPage extends Component {
   render() {
     if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "registro") {
       this.props.state.usuarioReducer.estado = "";
-      // alert()
-      var close = SPopupOpen(<View key={"errorUsuario"} style={{
-        width: "100%",
-        height: 200,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-      }}>
-        <Text>Usted es este usuario?</Text>
-        <Text>{JSON.stringify(this.props.state.usuarioReducer.error)}</Text>
-        <TouchableOpacity onPress={() => {
-          close()
-        }} style={{
-          width: 100,
-          height: 50,
-          backgroundColor: "#660000"
-        }}>
-        </TouchableOpacity>
-      </View>);
+      SPopupOpen({
+        type: "Error", content: <SText props={{ type: "primary", variant: "h3" }} style={{
+          textAlign: "center"
+        }}>El usuario ya existe.</SText>
+      })
     }
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "registro") {
       this.props.state.usuarioReducer.estado = "";
@@ -119,8 +37,6 @@ class UsuarioRegistroPage extends Component {
       this.props.state.usuarioReducer.estado = "";
       this.props.navigation.goBack();
     }
-
-
     return (
       <View style={{
         width: "100%",
@@ -128,72 +44,45 @@ class UsuarioRegistroPage extends Component {
       }}>
         <BackgroundImage />
 
-        <BarraSuperior title={(this.data ? "Registro" : "Editar") + " de usuario"} navigation={this.props.navigation}
+        <BarraSuperior title={(!this.data ? "Registro  de" : "Editar") + " usuario"} navigation={this.props.navigation}
           goBack={() => {
             this.props.navigation.goBack();
           }}
         />
-        <View style={{
+        <SView style={{
           flex: 1,
           width: "100%",
+        }} props={{
+          variant: "center"
         }}>
-          <SSCrollView contentContainerStyle={{
-            alignItems: "center"
-          }}>
-            <View style={{
-              width: "90%",
-              maxWidth: 600,
-              alignItems: 'center',
-              justifyContent: 'center',
+          <SScrollView2 disableHorizontal>
+            <SView style={{
+              flex: 1,
+              width: "100%",
+            }} props={{
+              variant: "center"
             }}>
-              <View style={{
-                width: "100%",
-                maxWidth: 600,
-                alignItems: 'center',
-                // justifyContent: 'center',
-              }}>
-                {/* <SFotoPicker style={{
-                  width: 180,
-                  height: 180
+              <SForm
+                ref={(ref) => { this.formulario = ref }}
+                props={{
+                  variant: "center",
+                  col: "xs-11 sm-9 md-8 lg-6 xl-4"
                 }}
-                  data={{
-                    component: "proyecto",
-                    key: (!this.data ? "" : this.data.key),
-                    url: AppParams.servicios["proyecto"] + "usuario_",
-                  }} /> */}
+                inputProps={{
+                  customStyle: "primary",
+                }}
+                inputs={{
+                  Nombres: { label: "Nombres", type: "default", isRequired: true },
+                  Apellidos: { label: "Apellidos", type: "default", isRequired: true },
+                  Correo: { label: "Correo", type: "email", isRequired: true },
+                  Telefono: { label: "Telefono", type: "phone", isRequired: true },
+                  Password: { label: "Contraseña", type: "password", isRequired: true },
+                  Password2: { label: "Repetir contraseña", type: "password", isRequired: true },
+                }}
+                onSubmitName={"Login"}
+                onSubmit={(data) => {
 
-                <TouchableOpacity style={{
-                  width: 180,
-                  height: 180,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: STheme.color.card,
-                  borderRadius: 8,
-                  marginBottom: 16,
-                  overflow: 'hidden',
-                }} onPress={() => {
-                  choseFile({
-                    servicio: "drive",
-                    component: "usuario",
-                    type: "subirFoto",
-                    estado: "cargando",
-                    key: (!this.data ? "" : this.data.key),
-                    key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
-                  }, (resp) => {
-                    this.props.dispatch({
-                      component: "image",
-                      type: "cambio",
-                      url: AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key),
-                    })
-                    // this.state.repaint = new Date().getTime()
-                    // this.setState({ ...this.state });
-                  });
-                }}>
-                  {this.props.state.imageReducer.getImage(AppParams.servicios[AppParams.socket.name] + "usuario_" + (!this.data ? "" : this.data.key), {
-                    width: "100%",
-                    height: "100%",
-                  })}
-                </TouchableOpacity>
+           
                 {Object.keys(this.imputs).map((key) => {
                   return this.imputs[key].getComponent();
                 })}

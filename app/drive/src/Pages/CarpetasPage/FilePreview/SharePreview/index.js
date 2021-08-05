@@ -11,10 +11,11 @@ class SharePreview extends Component {
     }
 
     render() {
-        if (this.props.file.tipo_observador != 2) {
+
+        if (this.props.file.key_creador == this.props.state.usuarioReducer.usuarioLog.key) {
             return <View />
         }
-        // console.log(this.props.file)
+        console.log(this.props.file)
         return (
             <View style={{
                 position: "absolute",
@@ -30,7 +31,7 @@ class SharePreview extends Component {
                 alignItems: "center",
                 backgroundColor: "#ffffffcc",
             }}>
-                {this.props.state.imageReducer.getImage(AppParams.urlImages + this.props.file.key_usuario_compartio, {
+                {this.props.state.imageReducer.getImage(AppParams.urlImages + this.props.file.key_creador, {
                     width: "100%",
                     height: "100%",
                 })}
