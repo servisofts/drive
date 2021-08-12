@@ -142,7 +142,6 @@ const editar = (state, action) => {
         } else {
             if (state.trash.data) {
                 delete state.trash.data[action.data.key];
-                return;
                 //lo quitamos de eliminados;
             }
             if (state.data) {

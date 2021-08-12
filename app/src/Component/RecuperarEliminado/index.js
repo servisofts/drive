@@ -48,7 +48,7 @@ class RecuperarEliminado extends Component {
                         alignItems: "center"
                     }} onPress={() => {
                         var obj = { ...this.props.data };
-                        alert(JSON.stringify(obj));
+                        // alert(JSON.stringify(obj));
                         delete obj["data"];
                         obj.estado = 1;
                         this.props.state.socketReducer.session[AppParams.socket.name].send({
