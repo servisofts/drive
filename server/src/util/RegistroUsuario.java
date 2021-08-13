@@ -14,22 +14,58 @@ import javax.mail.internet.MimeMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EmailRegistroUsr extends Thread {
+public class RegistroUsuario extends Thread {
 
     /*
      * asunto para pass
      */
     private JSONObject data;
 
-    public EmailRegistroUsr(JSONObject data) {
+    private static final String EmailFrom = "servisofts.srl@gmail.com";
+    private static final String PassFrom = "servisofts123.";
+
+    private static final String PathFile = "emails/RegistroUsuario.html";
+
+    public RegistroUsuario(JSONObject data) {
         this.data = data;
     }
+
+    
 	public static void main(String[] args) {
         JSONObject obj = new JSONObject();
-        obj.put("correo", "ricky.paz.d.97@gmail.com");
+        obj.put("correo", "eduardol47@gmail.com"); //este paremetro es obligatorio por que es el correo al q se va a enviar 
         obj.put("pass", "ABDBSC");
-        new EmailRegistroUsr(obj).start();
+        //se envia
+        new RegistroUsuario(obj).start();
     }
+
+    private static String getHtml(JSONObject data) throws JSONException {
+        String cuerpo = "";
+            try {
+                    FileReader file;
+                    file = new FileReader(PathFile);
+                    int valor = file.read();
+                    String configJson = "";
+                    while (valor != -1) {
+                        configJson = String.valueOf(((char) valor));
+                        cuerpo = cuerpo + configJson;
+                        valor = file.read();
+                    }
+                    file.close();
+
+                    //parametros que se van a remplasar
+                    cuerpo = cuerpo.replaceAll("usuarioServisofts",data.getString("correo"));
+                    cuerpo = cuerpo.replaceAll("passServisofts",data.getString("pass"));
+
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+          
+        return cuerpo;
+    }
+
     @Override
     public void run() {
         try {
@@ -42,20 +78,20 @@ public class EmailRegistroUsr extends Thread {
             // Puerto de gmail para envio de correos
             props.setProperty("mail.smtp.port", "465");
             // Nombre del usuario
-            props.setProperty("mail.smtp.user", "servisofts.srl@gmail.com");
+            props.setProperty("mail.smtp.user", EmailFrom);
             // Si requiere o no usuario y password para conectarse.
             props.setProperty("mail.smtp.auth", "true");
             Session session = Session.getDefaultInstance(props);
             // session.setDebug(true);
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("servisofts.srl@gmail.com"));
+            message.setFrom(new InternetAddress(EmailFrom));
             // message.addRecipient(Message.RecipientType.TO, new
             // InternetAddress(data.getString("E")));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(data.getString("correo")));
             message.setSubject("Registro de usuario.");
             message.setContent(getHtml(data), "text/html");
             Transport t = session.getTransport("smtp");
-            t.connect("servisofts.srl@gmail.com", "servisofts123.");
+            t.connect(EmailFrom,PassFrom);
             t.sendMessage(message, message.getAllRecipients());
             t.close();
             System.out.println("Correo enviado a "+data.getString("correo"));
@@ -63,35 +99,5 @@ public class EmailRegistroUsr extends Thread {
             // Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private static String getHtml1(JSONObject data) {
-        String html = "<h1>Glup</h1>";
-        html+="<p>Bienvenido a glup.</p>";
-        html+="<p>Nueva contraseña: "+data.getString("pass")+"</p>";
-        html+="<p>Verifique su usuario</p>";
-        html+="<a href='https://www.glup.com'>https://www.glup.com</a>";
-        html+="<p>Glub.</p>";
-        return html;
-    }
-    private static String getHtml(JSONObject data) throws JSONException {
-        String cuerpo = "";
-            try {
-                    FileReader file;
-                    file = new FileReader("emails/RegistroUsuario.html");
-                    int valor = file.read();
-                    String configJson = "";
-                    while (valor != -1) {
-                        configJson = String.valueOf(((char) valor));
-                        cuerpo = cuerpo + configJson;
-                        valor = file.read();
-                    }
-                    file.close();
-                    cuerpo = cuerpo.replaceAll("usuarioServisofts",data.getString("correo"));
-                    cuerpo = cuerpo.replaceAll("passServisofts",data.getString("pass"));
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-          
-        return cuerpo;
-    }
+   
 }
