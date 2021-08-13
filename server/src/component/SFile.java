@@ -239,10 +239,8 @@ public class SFile {
             Conexion.editObject("file", file);
             obj.put("data", file);
             obj.put("estado", "exito");
-
             String consulta =  "select get_observadores('"+file.getString("key")+"') as json";
             JSONArray observadores = Conexion.ejecutarConsultaArray(consulta);
-
             SSServerAbstract.sendUsers(obj.toString(), observadores);
         } catch (SQLException e) {
             obj.put("estado", "error");
