@@ -25,6 +25,9 @@ public class ObservadorPermiso {
             case "registro":
                 registro(data, session);
             break;
+            case "getPermisos":
+                getPermisos(data, session);
+            break;
             case "editar":
                 editar(data, session);
             break;
@@ -58,6 +61,19 @@ public class ObservadorPermiso {
             JSONObject data = Conexion.ejecutarConsultaObject(consulta);
             obj.put("data", data);
             obj.put("estado", "exito");
+        } catch (SQLException e) {
+            obj.put("estado", "error");
+            e.printStackTrace();
+        }
+    }
+
+    public  void getPermisos(JSONObject obj, SSSessionAbstract session) {
+        try {
+            String consulta =  "select observador_permiso_get_permisos('"+obj.getString("key_usuario")+"','"+obj.getJSONArray("key_files")+"') as json";
+            JSONObject data = Conexion.ejecutarConsultaObject(consulta);
+            obj.put("data", data);
+            obj.put("estado", "exito");
+            
         } catch (SQLException e) {
             obj.put("estado", "error");
             e.printStackTrace();
@@ -98,6 +114,24 @@ public class ObservadorPermiso {
             Conexion.editObject("observador_permiso", observador_permiso);
             obj.put("data", observador_permiso);
             obj.put("estado", "exito");
+
+            String consulta =  "select get_permiso('"+observador_permiso.getString("key")+"') as json";
+            JSONObject permiso = Conexion.ejecutarConsultaObject(consulta);
+            String nombre_permiso = JSONObject.getNames(permiso)[0];
+            JSONObject observador = permiso.getJSONObject(nombre_permiso);
+            String key_us = observador.getString("key_usuario");
+            String key_file = observador.getString("key_file");
+
+            permiso.put(nombre_permiso, observador_permiso.getInt("estado")==1);
+            JSONObject sendPermiso = new JSONObject();
+            sendPermiso.put("component", "observadorPermiso");
+            sendPermiso.put("type", "cambioPermiso");
+            sendPermiso.put("key_file", key_file);
+            sendPermiso.put("data", permiso);
+            sendPermiso.put("estado", "exito");
+
+            SSServerAbstract.sendUser(sendPermiso.toString(), key_us);
+
             SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET_WEB, obj.toString());
             SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET, obj.toString());
         } catch (SQLException e) {
@@ -153,4 +187,4 @@ public class ObservadorPermiso {
         }
     }
 
-}
+}   

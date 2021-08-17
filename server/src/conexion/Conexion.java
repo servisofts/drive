@@ -119,11 +119,9 @@ public class Conexion {
     }
 
     public static boolean editObject(String nombre_tabla, JSONObject obj) throws SQLException {
-
         if(obj.isNull("key")){
             return false;
         }
-
         String consulta =  "SELECT public.desc_tabla('"+nombre_tabla+"') as json";
         JSONArray tabla = Conexion.ejecutarConsultaArray(consulta);
         JSONObject tupla;
@@ -133,21 +131,11 @@ public class Conexion {
             if(!tupla.getString("column_name").equals("key") && !tupla.getString("column_name").equals("key") && !tupla.getString("column_name").equals("fecha_on")){
                 if(!obj.isNull(tupla.getString("column_name"))){
                     switch(tupla.getString("data_type")){
-                        case "character varying":
-                            aux+=tupla.getString("column_name")+"='"+obj.getString(tupla.getString("column_name"))+"',";   
-                        break;
-                        case "timestamp without time zone":
-                            aux+=tupla.getString("column_name")+"='"+obj.getString(tupla.getString("column_name"))+"',";   
-                        break;
-                        case "double precision":
-                            aux+=tupla.getString("column_name")+"="+obj.getDouble(tupla.getString("column_name"))+",";   
-                        break;
-                        case "integer":
-                            aux+=tupla.getString("column_name")+"="+obj.getInt(tupla.getString("column_name"))+",";   
-                        break;
-                        default :
-                            aux+=tupla.getString("column_name")+"='"+obj.getString(tupla.getString("column_name"))+"',";   
-                        break;
+                        case "character varying": aux+=tupla.getString("column_name")+"='"+obj.getString(tupla.getString("column_name"))+"',"; break;
+                        case "timestamp without time zone": aux+=tupla.getString("column_name")+"='"+obj.getString(tupla.getString("column_name"))+"',"; break;
+                        case "double precision": aux+=tupla.getString("column_name")+"="+obj.getDouble(tupla.getString("column_name"))+","; break;
+                        case "integer": aux+=tupla.getString("column_name")+"="+obj.getInt(tupla.getString("column_name"))+","; break;
+                        default : aux+=tupla.getString("column_name")+"='"+obj.getString(tupla.getString("column_name"))+"',"; break;
                     }
                 }
             }
@@ -155,9 +143,7 @@ public class Conexion {
         if(aux.length()==0){
             return false;
         }
-
         aux = aux.substring(0,aux.length()-1);
-        
         String funct = "update "+nombre_tabla+" set "+aux+" where key ='"+obj.getString("key")+"'";
         PreparedStatement ps = con.prepareStatement(funct);
         ps.executeUpdate();
