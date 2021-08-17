@@ -61,9 +61,12 @@ export const getFilesInPathShared = (props, activeRoot) => {
         var obj = dataFinal[key];
         if (obj.observadores.includes(props.state.usuarioReducer.usuarioLog.key)) {
             if (obj.key_creador != props.state.usuarioReducer.usuarioLog.key) {
-                if (obj.key_creador == root.usr.key) {
-                    objFinal[key] = obj;
+                if (root.usr) {
+                    if (obj.key_creador == root.usr.key) {
+                        objFinal[key] = obj;
+                    }
                 }
+
             }
         }
     })

@@ -18,7 +18,7 @@ export default class TopBar extends Component {
     }
 
     render() {
-        if (this.props.state.fileReducer.activeRoot.key == "trash") {
+        if (this.props.state.fileReducer.activeRoot.key == "trash" || this.props.state.fileReducer.activeRoot.key != "raiz") {
             return (
                 <View style={{
                     width: "100%",

@@ -3,7 +3,7 @@ const initialState = {
     root: {
         "raiz": {
             key: "raiz",
-            descripcion: "/"
+            descripcion: ""
         },
         "shared": {
             key: "shared",
@@ -89,8 +89,48 @@ const subir = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
         if (state.data) {
+            if (action.path && action.path.length > 0) {
+                var size = action.path.length;
+                var lastPath = action.path[size - 1];
+                if (lastPath) {
+                    var parent = state.data[lastPath.key];
+                    if (parent) {
+                        // parent[action.data.key] = action.data;
+                        action.data.map((obj) => {
+                            parent[obj.key] = obj;
+                        })
+                        return;
+                        //remplazamos un file dentro de un path;
+                    }
+                }
+            } else {
+                if (state.data["root"]) {
+                    action.data.map((obj) => {
+                        state.data["root"][obj.key] = obj;
+                    })
+                    return;
+                }
+                //remplazamos un file en la raiz;
+            }
+        }
+    }
+}
+const subir2 = (state, action) => {
+    state.estado = action.estado
+    if (action.estado === "exito") {
+        if (state.data) {
             if (action.path.length > 0) {
                 var curData = state;
+                var size = action.path.length;
+                var lastPath = action.path[size - 1];
+                if (lastPath) {
+                    var parent = state.data[lastPath.key];
+                    if (parent) {
+                        delete parent[action.data.key];
+                        return;
+                        //Cuando se elimina un file dentro de un path;
+                    }
+                }
                 action.path.map((obj, key) => {
                     if (curData) {
                         curData = curData.data[obj.key];
@@ -134,7 +174,12 @@ const editar = (state, action) => {
                         }
                     }
                 } else {
-                    delete state.data["root"][action.data.key];
+                    if (state.data) {
+                        if (state.data["root"]) {
+                            delete state.data["root"][action.data.key];
+                        }
+                    }
+
                     return;
                     //Cuando se elimina un file en la raiz;
                 }
@@ -250,7 +295,8 @@ const getAll = (state, action) => {
             //     curData.data = {};
             // }
         } else {
-            if (!action.data) {
+            if (!state.data) {
+                state.data = {}
                 state.data["root"] = {};
             } else {
                 state.data["root"] = action.data;

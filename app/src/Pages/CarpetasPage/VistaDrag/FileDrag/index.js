@@ -58,7 +58,7 @@ export default class FileDrag extends Component {
     }
     createPam() {
         this.panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx != 0 || gestureState.dy != 0),
+            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx != 0 && gestureState.dy != 0),
             // onShouldBlockNativeResponder:(evt,gh)=>true,
             // onMoveShouldSetPanResponder: (evt, gestureState) => true,
             // onStartShouldSetPanResponderCapture: (evt, gestureState) => false,

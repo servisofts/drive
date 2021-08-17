@@ -5,7 +5,7 @@ import AppParams from '../../../../Params';
 import FilePreview from '../../FilePreview';
 import moment from 'moment';
 import 'moment/locale/es';
-import { SPopupOpen } from '../../../../SPopup';
+import { SPopupOpen } from "../../../../SComponent";
 import RecuperarEliminado from '../../../../Component/RecuperarEliminado';
 moment.locale("es")
 type type = {
@@ -23,8 +23,12 @@ export default class IntemLista extends Component<type> {
     }
     verPerfil = () => {
         if (this.props.data.estado == 0) {
-            SPopupOpen(<RecuperarEliminado key={"acept_recuperar"} data={this.props.data}/>);
-
+            SPopupOpen({
+                key: "acept_recuperar",
+                content: (
+                    <RecuperarEliminado key={"acept_recuperar"} data={this.props.data} />
+                )
+            });
             return;
         }
         this.props.navigation.navigate("FilePerfil", this.props.data);
