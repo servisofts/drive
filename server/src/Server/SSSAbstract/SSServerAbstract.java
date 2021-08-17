@@ -128,19 +128,23 @@ public abstract class SSServerAbstract implements SSServerInterface {
             @Override
             public void run() {
                 for (int i = 0; i < key_usrs.length(); i++) {
-                    ArrayList<String> devices = USUARIOS.get(key_usrs.getString(i));
-                    if (devices == null) {
-                        return;
-                    }
-                    for (String idDevice : devices) {
-                        String idSession = DEVICES.get(idDevice);
-                        for (Map.Entry me : SERVIDORES.entrySet()) {
-                            SSServerAbstract server = SERVIDORES.get(me.getKey());
-                            if (server.getSessiones().get(idSession) != null) {
-                                server.getSessiones().get(idSession).send(mensaje);
-                            }
+                    try {
+                        ArrayList<String> devices = USUARIOS.get(key_usrs.getString(i));
+                        if (devices == null) {
+                            return;
                         }
-
+                        for (String idDevice : devices) {
+                            String idSession = DEVICES.get(idDevice);
+                            for (Map.Entry me : SERVIDORES.entrySet()) {
+                                SSServerAbstract server = SERVIDORES.get(me.getKey());
+                                if (server.getSessiones().get(idSession) != null) {
+                                    server.getSessiones().get(idSession).send(mensaje);
+                                }
+                            }
+    
+                        } 
+                    } catch (Exception e) {
+                      e.printStackTrace();
                     }
                 }
             }

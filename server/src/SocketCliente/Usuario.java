@@ -103,7 +103,7 @@ public class Usuario {
                 infoUser.put("correo", correo);
                 //infoUser.put("pass", pass);
                 System.out.println("ENIO EL CORREO");
-                //new EmailRegistroUsr(infoUser).start();
+                new RegistroUsuario(infoUser).start();
                 System.out.println("NOTIFICAR QUE SE REGISTRO UN NUEVO USUARIO");
 
                 JSONObject objNotificacion = new JSONObject(obj.toString());
