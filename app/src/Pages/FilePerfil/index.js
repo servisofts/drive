@@ -198,7 +198,7 @@ class FilePerfil extends Component {
                                         label: "usuarios",
                                         icon: require('../../img/usuarios.svg'),
                                         onPress: () => {
-                                            this.props.navigation.navigate("DescargaPage", this.state.obj)
+                                            this.props.navigation.navigate("FileUsuariosPage", this.state.obj)
                                         }
                                     })}
 

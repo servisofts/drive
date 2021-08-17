@@ -89,7 +89,7 @@ class LoginPage extends Component {
             }} onPress={() => {
               this.props.navigation.navigate("UsuarioRegistroPageUpdate")
             }}>
-            Registro Cambio
+            Registro
           </SButtom>
         </SView>
       </SView>

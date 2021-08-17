@@ -128,10 +128,10 @@ export default class SIDialCodeAlert extends Component<typeProps> {
                                     }} >{item.flag}</SText>
                                     <SText style={{
                                         flex: 8,
-                                    }} props={{ type: "primary" }}>{item.en}</SText>
+                                    }} props={{ type: "default" }}>{item.en}</SText>
                                     <SText style={{
                                         flex: 2,
-                                    }} props={{ type: "primary" }}>{item.dialCode}</SText>
+                                    }} props={{ type: "default" }}>{item.dialCode}</SText>
                                 </View>
 
                                 <SView

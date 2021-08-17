@@ -19,6 +19,7 @@ import CompartidosPage from './CompartidosPage'
 import TestRNF from './TestRNF'
 import NotificacionPage from './NotificacionPage'
 import AjustesPage from './AjustesPage'
+import FileUsuariosPage from './FileUsuariosPage'
 
 import SComponent from '../SComponent/Pages';
 
@@ -41,6 +42,7 @@ export const getPages = () => {
         CompartidosPage,
         NotificacionPage,
         AjustesPage,
+        FileUsuariosPage,
         ...SComponent,
         UsuarioRegistroPageUpdate,
 

@@ -35,6 +35,9 @@ export default (state, action) => {
             case "editar":
                 editar(state, action);
                 break;
+            case "mover":
+                mover(state, action);
+                break;
             case "getAll":
                 getAll(state, action);
                 break;
@@ -154,6 +157,65 @@ const subir2 = (state, action) => {
     }
 }
 const editar = (state, action) => {
+    state.estado = action.estado
+    if (action.estado === "exito") {
+        if (action.data.estado == 0) {
+            if (state.trash.data) {
+                state.trash.data[action.data.key] = action.data;
+                //lo pasamos a eliminados;
+            }
+            if (state.data) {
+                if (action.path && action.path.length > 0) {
+                    var size = action.path.length;
+                    var lastPath = action.path[size - 1];
+                    if (lastPath) {
+                        var parent = state.data[lastPath.key];
+                        if (parent) {
+                            delete parent[action.data.key];
+                            return;
+                            //Cuando se elimina un file dentro de un path;
+                        }
+                    }
+                } else {
+                    if (state.data) {
+                        if (state.data["root"]) {
+                            delete state.data["root"][action.data.key];
+                        }
+                    }
+
+                    return;
+                    //Cuando se elimina un file en la raiz;
+                }
+            }
+        } else {
+            if (state.trash.data) {
+                delete state.trash.data[action.data.key];
+                //lo quitamos de eliminados;
+            }
+            if (state.data) {
+                if (action.path && action.path.length > 0) {
+                    var size = action.path.length;
+                    var lastPath = action.path[size - 1];
+                    if (lastPath) {
+                        var parent = state.data[lastPath.key];
+                        if (parent) {
+                            parent[action.data.key] = action.data;
+                            return;
+                            //remplazamos un file dentro de un path;
+                        }
+                    }
+                } else {
+                    if (state.data["root"]) {
+                        state.data["root"][action.data.key] = action.data;
+                        return;
+                    }
+                    //remplazamos un file en la raiz;
+                }
+            }
+        }
+    }
+}
+const mover = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
         if (action.data.estado == 0) {

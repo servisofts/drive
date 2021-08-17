@@ -232,3 +232,46 @@ export const getPosicionDisponible = ({ curFile, props }) => {
     }
     return { x: x, y: y }
 }
+
+export const getPermisoFile = (props, key_file) => {
+    return props.state.observadorPermisoReducer.file[key_file]
+}
+export const getPermisoFileType = (props, key_file, type) => {
+    if (!props.state.observadorPermisoReducer.file[key_file]) return false
+    return props.state.observadorPermisoReducer.file[key_file][type];
+}
+export const getPermisos = (props, key_files) => {
+    // if (props.state.fileReducer.routes.length <= 0) {
+    //     return {
+    //         ver: true,
+    //         subir: true,
+    //         eliminar: true,
+    //         editar: true,
+    //         crear: true
+    //     };
+    // }
+    // var key_file = props.state.fileReducer.routes[props.state.fileReducer.routes.length - 1].key
+    var exito = true;
+    var data = {};
+    key_files.map(key_file => {
+        data[key_file] = props.state.observadorPermisoReducer.file[key_file];
+        if (!data[key_file]) {
+            exito = false;
+        }
+    })
+    if (!exito) {
+        if (props.state.observadorPermisoReducer.estado == "cargando") { return false }
+        if (props.state.observadorPermisoReducer.estado == "error") { return false }
+        var object = {
+            component: "observadorPermiso",
+            type: "getPermisos",
+            estado: "cargando",
+            key_usuario: props.state.usuarioReducer.usuarioLog.key,
+            key_files: key_files
+        }
+        // alert(JSON.stringify(object));
+        props.state.socketReducer.session[AppParams.socket.name].send(object, true);
+        return false;
+    }
+    return data;
+}

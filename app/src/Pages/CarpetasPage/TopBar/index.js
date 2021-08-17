@@ -25,11 +25,13 @@ export default class TopBar extends Component {
                     height: 40,
                     flexDirection: "row"
                 }}>
+                    <NuevaCarpeta {...this.props} />
                     <Vistas  {...this.props} />
                     <ZoonFile {...this.props} val={-0.1} />
                     <ZoonFile {...this.props} val={0.1} />
                     <Reload />
                     <Ordenar  {...this.props} />
+
                 </View>
             );
         }

@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import BackgroundImage from '../../../Component/BackgroundImage';
 import DropFileView, { uploadHttp } from '../../../Component/DropFileView';
 import SNestedScrollView from '../../../Component/SNestedScrollView';
-import { getFilesInPath, getPosicionDisponible } from '../../../FileFunction';
+import { getFilesInPath, getPermisoFile, getPosicionDisponible } from '../../../FileFunction';
 import AppParams from '../../../Params';
 import FileDrag from './FileDrag';
+import { getPermisos } from '../../../FileFunction/index';
 
 const fondos = [
     require("../../../img/fondos/ss.jpg"),
@@ -96,7 +97,7 @@ class ArchibosContainer extends Component {
     actualizarPosicion = (props) => {
         var object = {
             component: "file",
-            type: "editar",
+            type: "mover",
             estado: "cargando",
             tipo_seguimiento: "cambiar_posicion",
             key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
@@ -151,6 +152,7 @@ class ArchibosContainer extends Component {
         if (Object.keys(dataFinal).length <= 0) {
             return <Text>Vacio</Text>
         }
+        var permisos = getPermisos(this.props, Object.keys(dataFinal));
         this.datafinal = dataFinal;
         var size = 110 * this.state.scale;
         var margin = 5 * this.state.scale;
@@ -191,6 +193,7 @@ class ArchibosContainer extends Component {
                 editarNombre={(obj) => {
                     this.editarNombre(obj);
                 }}
+                permisos={getPermisoFile(this.props, key)}
                 actualizarPosicion={(obj) => { this.actualizarPosicion(obj) }}
                 layoutParent={this.state.dimensiones}
                 scale={this.state.scale}
@@ -205,6 +208,17 @@ class ArchibosContainer extends Component {
                         estado: "cargando",
                     })
 
+                }}
+                onSelect={(key) => {
+                    Object.keys(this._fileDrag).map((keyRef) => {
+                        if (key == keyRef) {
+                            return;
+                        }
+                        if (this._fileDrag[keyRef]) {
+                            this._fileDrag[keyRef].setSelect(false)
+
+                        }
+                    })
                 }}
             />)
         });
@@ -226,6 +240,7 @@ class ArchibosContainer extends Component {
             var instance: VistaDrag = this;
             this.props.onLoad(instance);
         }
+        
         return (
             <View style={{
                 flex: 1,
@@ -252,53 +267,75 @@ class ArchibosContainer extends Component {
                         }}>
 
                         <TouchableWithoutFeedback onPress={() => {
-                            if (!this._fileDrag) {
-                                return <View />
-                            }
-                            Object.keys(this._fileDrag).map((key) => {
-                                var FileDrag = this._fileDrag[key];
-                                if (FileDrag) {
-                                    FileDrag.unSelect();
-                                }
-                            })
+
                         }}>
                             <DropFileView style={{
                                 width: "100%",
                                 height: "100%",
                                 overflow: "hidden",
                                 // backgroundColor: "#00000022",
-                            }} onLayout={this.props.onLayout} onUpload={(files, position) => {
-                                var pos = {
-                                    x: (position.x / this.state.scale) - 55,
-                                    y: (position.y / this.state.scale) - 55,
-                                }
-                                var arrPos = [];
-                                var curFile = getFilesInPath(this.props);
-                                for (let i = 0; i < files.files.length; i++) {
-                                    var posicion = getPosicionDisponible({
-                                        curFile, props: {
-                                            ...this.props.stateParent,
-                                            x: pos.x,
-                                            y: pos.y
-                                        }
-                                    });
-                                    arrPos.push({ ...posicion });
-                                    posicion.x += 100;
-                                    pos = posicion;
-                                }
-                                uploadHttp({
-                                    props: {
-                                        component: "file",
-                                        type: "subir",
-                                        estado: "cargando",
-                                        key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
-                                        path: this.props.state.fileReducer.routes,
-                                        positions: arrPos
-                                    }, imput: files,
-                                }, (resp) => {
+                            }}
+                                onPress={() => {
+                                    Object.keys(this._fileDrag).map((keyRef) => {
+                                        if (this._fileDrag[keyRef]) {
+                                            this._fileDrag[keyRef].setSelect(false)
 
-                                })
-                            }}>
+                                        }
+                                    })
+
+                                }}
+                                onLayout={this.props.onLayout}
+                                onUpload={(files, position) => {
+                                    var allowUpload = true;
+                                    if (this.props.state.fileReducer.routes.length > 0) {
+                                        var key_file = this.props.state.fileReducer.routes[this.props.state.fileReducer.routes.length - 1].key
+                                        var permisos = getPermisos(this.props, [key_file]);
+                                        if (!permisos) {
+                                            allowUpload = false;
+                                        }
+                                        if (!permisos[key_file]["subir"]) {
+                                            allowUpload = false;
+                                        }
+                                    } else {
+                                        if (this.props.state.fileReducer.activeRoot.key != "raiz") {
+                                            allowUpload = false;
+                                        }
+                                    }
+                                    if(!allowUpload){
+                                        alert("No tiene permisos");
+                                        return;
+                                    }
+                                    var pos = {
+                                        x: (position.x / this.state.scale) - 55,
+                                        y: (position.y / this.state.scale) - 55,
+                                    }
+                                    var arrPos = [];
+                                    var curFile = getFilesInPath(this.props);
+                                    for (let i = 0; i < files.files.length; i++) {
+                                        var posicion = getPosicionDisponible({
+                                            curFile, props: {
+                                                ...this.props.stateParent,
+                                                x: pos.x,
+                                                y: pos.y
+                                            }
+                                        });
+                                        arrPos.push({ ...posicion });
+                                        posicion.x += 100;
+                                        pos = posicion;
+                                    }
+                                    uploadHttp({
+                                        props: {
+                                            component: "file",
+                                            type: "subir",
+                                            estado: "cargando",
+                                            key_usuario: this.props.state.usuarioReducer.usuarioLog.key,
+                                            path: this.props.state.fileReducer.routes,
+                                            positions: arrPos
+                                        }, imput: files,
+                                    }, (resp) => {
+
+                                    })
+                                }}>
                                 {this.getFiles()}
                             </DropFileView>
                         </TouchableWithoutFeedback>

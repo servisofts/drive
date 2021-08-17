@@ -43,7 +43,9 @@ export default class FileDrag extends Component {
         }
         this.props.navigation.navigate("FilePerfil", this.props.obj);
     }
-
+    setSelect(select) {
+        this.setState({ select: select, isEdit: false })
+    }
     unSelect() {
 
         this.state.select = 0;
@@ -57,8 +59,17 @@ export default class FileDrag extends Component {
         this.setState({ ...this.state });
     }
     createPam() {
+        var allowMove = true;
+        if (!this.props.permisos) {
+            allowMove = false;
+        }
+        if (this.props.permisos) {
+            if (!this.props.permisos["editar"]) {
+                allowMove = false;
+            }
+        }
         this.panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx != 0 && gestureState.dy != 0),
+            onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx != 0 && gestureState.dy != 0 && allowMove),
             // onShouldBlockNativeResponder:(evt,gh)=>true,
             // onMoveShouldSetPanResponder: (evt, gestureState) => true,
             // onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
@@ -141,6 +152,7 @@ export default class FileDrag extends Component {
     }
     onPress() {
         if (this.state.select == 0) {
+            if (this.props.onSelect) this.props.onSelect(this.props.obj.key)
             this.setState({ select: 1 })
         } else {
             if (!this.state.isEdit) {
@@ -149,6 +161,15 @@ export default class FileDrag extends Component {
         }
     }
     getName() {
+        if (!this.props.permisos) {
+            this.state.isEdit = false;
+        }
+        if (this.props.permisos) {
+            if (!this.props.permisos["editar"]) {
+                this.state.isEdit = false;
+            }
+        }
+
         if (this.state.isEdit) {
             return (
                 <TextInput style={{

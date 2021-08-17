@@ -78,6 +78,10 @@ class DescargaPage extends Component {
                                 fontSize: 20,
                                 color: "#fff"
                             }}>{this.data.descripcion}</Text>
+                            {/* <Text style={{
+                                fontSize: 20,
+                                color: "#fff"
+                            }}>{this.data.key}</Text> */}
                         </View>
 
                         {/* {this.state._url.getComponent()} */}

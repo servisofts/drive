@@ -1,7 +1,7 @@
 {
     "drive": {
         "web": {
-            "ip": "ws://192.168.0.213:20017/",
+            "ip": "ws://192.168.0.199:20017/",
             "__ip": "wss://qa.drive.servisofts.com/servers/",
             "_ip": "wss://drive.servisofts.com/servers/"
         },

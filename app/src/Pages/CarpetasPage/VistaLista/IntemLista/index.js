@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'moment/locale/es';
 import { SPopupOpen } from "../../../../SComponent";
 import RecuperarEliminado from '../../../../Component/RecuperarEliminado';
+import { getPermisoFile } from '../../../../FileFunction';
 moment.locale("es")
 type type = {
     data: Object,
@@ -47,6 +48,14 @@ export default class IntemLista extends Component<type> {
         }
     }
     getName() {
+        if (!this.props.permisos) {
+            this.state.isEdit = false;
+        }
+        if (this.props.permisos) {
+            if (!this.props.permisos["editar"]) {
+                this.state.isEdit = false;
+            }
+        }
         if (this.state.isEdit) {
             return (
                 <TextInput style={{

@@ -1,6 +1,7 @@
 const initialState = {
     estado: "Not Found",
     data: {},
+    file: {}
 }
 
 export default (state, action) => {
@@ -13,8 +14,11 @@ export default (state, action) => {
             case "editar":
                 editar(state, action);
                 break;
-            case "registro":
-                registro(state, action);
+            case "cambioPermiso":
+                cambioPermiso(state, action);
+                break;
+            case "getPermisos":
+                getPermisos(state, action);
                 break;
         }
         state.type = action.type;
@@ -43,12 +47,25 @@ const editar = (state, action) => {
 
     }
 }
-const registro = (state, action) => {
+const cambioPermiso = (state, action) => {
     state.estado = action.estado
     if (action.estado === "exito") {
-        if (state.data[action.key_file]) {
-            state.data[action.key_file][action.data.key] = action.data;
-        }
+        if (state.file[action.key_file]) {
+            state.file[action.key_file] = {
+                ...state.file[action.key_file],
+                ...action.data
+            };
+            alert(JSON.stringify(state.file[action.key_file], "\s", "\t"))
 
+        }
+    }
+}
+const getPermisos = (state, action) => {
+    state.estado = action.estado
+    if (action.estado === "exito") {
+        if (!action.key_files) return;
+        action.key_files.map((key_file) => {
+            state.file[key_file] = action.data[key_file];
+        });
     }
 }
