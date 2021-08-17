@@ -89,7 +89,7 @@ public class ServerHttp {
 
                 @Override
                 public int getContentLength() {
-                    return 0; // tested to work with 0 as return
+                    return this.getContentLength();
                 }
 
                 @Override

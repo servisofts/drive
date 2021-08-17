@@ -12,8 +12,6 @@ import java.util.UUID;
 import conexion.*;
 import util.ZipDir;
 import SocketCliente.SocketCliete;
-
-import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,6 +40,9 @@ public class SFile {
             break;
             case "editar":
                 editar(data, session);
+            break;
+            case "mover":
+                mover(data, session);
             break;
             case "editarGrupo":
                 editarGrupo(data, session);
@@ -234,6 +235,22 @@ public class SFile {
     }
 
     public void editar(JSONObject obj, SSSessionAbstract session) {
+        try {
+            JSONObject file = obj.getJSONObject("data");
+            Conexion.editObject("file", file);
+            obj.put("data", file);
+            obj.put("estado", "exito");
+            String consulta =  "select get_observadores('"+file.getString("key")+"') as json";
+            JSONArray observadores = Conexion.ejecutarConsultaArray(consulta);
+            SSServerAbstract.sendUsers(obj.toString(), observadores);
+        } catch (SQLException e) {
+            obj.put("estado", "error");
+            obj.put("error", e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void mover(JSONObject obj, SSSessionAbstract session) {
         try {
             JSONObject file = obj.getJSONObject("data");
             Conexion.editObject("file", file);

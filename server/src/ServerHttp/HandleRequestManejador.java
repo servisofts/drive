@@ -61,7 +61,7 @@ public class HandleRequestManejador {
             JSONObject obj = new JSONObject();
             if (data.length() > 0) {
                 obj = new JSONObject(data);
-                Manejador manejador = new Manejador(obj, null);
+                new Manejador(obj, null);
             }
             os.write(obj.toString().getBytes());
             os.write("\r\n".getBytes());
