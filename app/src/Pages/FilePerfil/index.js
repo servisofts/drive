@@ -24,6 +24,7 @@ class FilePerfil extends Component {
         this.state = {
             obj: props.navigation.state.params
         };
+        this.obj = props.navigation.state.params;
 
     }
     getTamanho() {
@@ -52,14 +53,22 @@ class FilePerfil extends Component {
         )
     }
     render() {
-        var Select = false;
-        var routes = this.props.state.fileReducer.routes;
-        var lastPath = { key: "root" };
-        if (routes.length > 0) {
-            var size = routes.length;
-            var lastPath = routes[size - 1];
+        // var Select = false;
+        // var routes = this.props.state.fileReducer.routes;
+        // var lastPath = { key: "root" };
+        // if (routes.length > 0) {
+        //     var size = routes.length;
+        //     var lastPath = routes[size - 1];
+        // }
+        // Select = this.props.state.fileReducer.data[lastPath.key];
+        if (!this.obj) {
+            this.props.navigation.goBack();
+            return <View />
         }
-        Select = this.props.state.fileReducer.data[lastPath.key];
+        var Select = this.props.state.fileReducer.data["root"];
+        if (this.obj.key_file) {
+            Select = this.props.state.fileReducer.data[this.obj.key_file];
+        }
         var curObj = Select[this.state.obj.key];
         if (!curObj) {
             this.props.navigation.goBack();

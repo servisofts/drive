@@ -45,7 +45,7 @@ class Ordenar extends Component {
                 // this.props.navigation.navigate("DescargaPage")
             }}>
 
-                <Svg resource={require('../../../../img/ajustes.svg')} style={{
+                <Svg name={"Ordenar"} style={{
                     width: 28,
                     height: 28,
                 }} />

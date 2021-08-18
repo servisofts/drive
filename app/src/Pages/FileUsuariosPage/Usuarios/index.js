@@ -106,7 +106,7 @@ class Usuarios extends Component {
                     <View style={{
                         width: 40,
                         height: 40,
-                        backgroundColor: "#fff",
+                        backgroundColor: "#00000022",
                         borderRadius: 4,
                         overflow: 'hidden',
                     }}>
@@ -121,6 +121,7 @@ class Usuarios extends Component {
                     }}>
                         <View style={{
                             flex: 1,
+                            justifyContent: "center",
                         }}>
                             <Text style={{
                                 color: "#fff",

@@ -7,13 +7,13 @@
         "deviceKey": "drive_deviceKey",
         "fbtoken": "FIREBASE_TOKEN"
     },
-    "_urlImages": "https://drive.servisofts.com/images/",
+    "urlImages": "https://drive.servisofts.com/images/",
     "_urlImages": "https://qa.drive.servisofts.com/images/",
-    "urlImages": "http://192.168.0.199:30017/",
+    "_urlImages": "http://192.168.0.199:30017/",
     "servicios": {
         "_drive": "https://qa.drive.servisofts.com/images/",
-        "_drive": "https://drive.servisofts.com/images/",
-        "drive": "http://192.168.0.199:30017/",
+        "drive": "https://drive.servisofts.com/images/",
+        "_drive": "http://192.168.0.199:30017/",
         "roles_permisos": "http://192.168.0.17:30016/"
     }
 }
