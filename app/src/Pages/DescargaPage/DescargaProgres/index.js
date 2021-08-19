@@ -32,6 +32,7 @@ export default class DescargaProgres extends Component {
                     width: "70%",
                     height: "70%",
                 }} />
+                <Text style={{ fontSize: 14, color: "#fff", textAlign: "center" }}>{"Click to start download!"} </Text>
             </TouchableOpacity>)
         } else {
             var porcent = (1 - this.state.curPorcent) * 100;

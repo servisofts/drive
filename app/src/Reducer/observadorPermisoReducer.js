@@ -55,7 +55,7 @@ const cambioPermiso = (state, action) => {
                 ...state.file[action.key_file],
                 ...action.data
             };
-            alert(JSON.stringify(state.file[action.key_file], "\s", "\t"))
+            // alert(JSON.stringify(state.file[action.key_file], "\s", "\t"))
 
         }
     }

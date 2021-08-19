@@ -77,7 +77,7 @@ export default class SFetchBlob {
             a.click();
             window.URL.revokeObjectURL(uri);
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
 
     }
