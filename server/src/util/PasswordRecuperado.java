@@ -36,7 +36,7 @@ public class PasswordRecuperado extends Thread {
         obj.put("correo", "eduardol47@gmail.com"); //este paremetro es obligatorio por que es el correo al q se va a enviar 
         obj.put("pass", "ABDBSC");
         //se envia
-        new RegistroUsuario(obj).start();
+        new PasswordRecuperado(obj).start();
     }
 
     private static String getHtml(JSONObject data) throws JSONException {
