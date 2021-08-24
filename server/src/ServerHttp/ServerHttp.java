@@ -186,8 +186,8 @@ public class ServerHttp {
     private static void handleRequest(HttpExchange exchange) throws IOException {
 
        // String origin = defaultOrigin(exchange);
-      //  exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://drive.servisofts.com");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+       exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        // exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
         //List<String> header = exchange.getRequestHeaders().get("key_usuario");
         //System.out.println(origin);
         String ruta = Config.getJSON("files").getString("url");

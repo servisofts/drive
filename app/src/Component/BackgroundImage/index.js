@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Platform } from 'react-native';
+import { STheme } from '../../SComponent';
 import SImage from '../SImage';
 type type = {
     source: Object
@@ -21,7 +22,7 @@ export default class BackgroundImage extends Component<type> {
             left: 0,
             position: "absolute",
             // opacity: 0.8,
-            // backgroundColor: "#fff",
+            backgroundColor: STheme().backgroundColor,
             ...this.props.style,
         }}>
             <SImage source={require("../../img/fondos/background.png")} style={{

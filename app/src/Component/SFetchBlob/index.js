@@ -11,9 +11,7 @@ export default class SFetchBlob {
         var myInit = {
             method: 'GET',
             cache: "no-cache",
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            }
+         
         };
         try {
             var myRequest = new Request(url, myInit);

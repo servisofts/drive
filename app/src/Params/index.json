@@ -7,6 +7,7 @@
         "deviceKey": "drive_deviceKey",
         "fbtoken": "FIREBASE_TOKEN"
     },
-    "urlImages": "https://drive.icysmedical.com/images/"
+    "urlImages": "https://drive.icysmedical.com/images/",
+    "_urlImages": "http://192.168.0.215:30017/"
 
 }

@@ -93,6 +93,16 @@ class LoginPage extends Component {
             }}>
             Registro
           </SButtom>
+          <SButtom
+            style={{ margin: 6, }}
+
+            props={{
+              type: "outline",
+            }} onPress={() => {
+              this.props.navigation.navigate("RecuperarPassPage")
+            }}>
+            Recuperar Pass
+          </SButtom>
         </SView>
       </SView>
 
