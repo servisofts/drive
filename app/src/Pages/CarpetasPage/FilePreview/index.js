@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import SImage from '../../../Component/SImage';
 import Svg from '../../../Svg';
 import SharePreview from './SharePreview';
-
+import { SvgXml } from 'react-native-svg';
 export default class FilePreview extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +25,21 @@ export default class FilePreview extends Component {
             </>
         }
         if (["svg",].includes(type.toLocaleLowerCase())) {
+         
+            return <View style={{
+                width: "100%",
+                height: "100%",
+                // borderWidth: 2,
+                borderColor: "#999",
+                backgroundColor: "#00000022",
+                borderRadius: 4,
+            }}>
+                {/* <SvgXml
+                    width="100%"
+                    height="100%"
+                    xml={this.props.src + ".svg"}
+                /> */}
+            </View>
             return <Svg resource={require('../../../img/extensionPack/svg.svg')} style={{
                 width: "100%",
                 height: "100%",
@@ -43,7 +58,7 @@ export default class FilePreview extends Component {
                 width: "100%",
                 height: "100%",
                 resizeMode: "contain",
-                objectFit:"contain"
+                objectFit: "contain"
             }} />
             </View>;
         }

@@ -11,10 +11,9 @@ export default class SFetchBlob {
         var myInit = {
             method: 'GET',
             cache: "no-cache",
-            // headers: {
-            //     "Access-Control-Allow-Headers": "https://drive.servisofts.com",
-            //     "key_usuario": props.key_usuario,
-            // }
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            }
         };
         try {
             var myRequest = new Request(url, myInit);

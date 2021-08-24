@@ -95,6 +95,9 @@ export default class IntemLista extends Component<type> {
         } else {
             var text = this.props.data.descripcion;
             var dicant = 28;
+            if(!text){
+                text = "no name";
+            }
             if (!this.state.select && text.length > dicant) {
                 text = text.substring(0, dicant).trim() + "..."
             }

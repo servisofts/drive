@@ -36,6 +36,8 @@ class Permisos extends Component {
                 icon: require("../../../../img/permisos/eliminar.svg"),
             }
         }
+        // alert(JSON.stringify(this.props.data,"\s","\t"))
+
         return Object.keys(DataPer).map((key) => {
             var obj = permisos[key];
             if (!obj) {
@@ -71,7 +73,7 @@ class Permisos extends Component {
                         height: 25,
                     }} />
 
-                    {obj.estado ? (
+                    {!obj.estado ? (
                         <View style={{
                             width: "100%",
                             height: "100%",
@@ -88,7 +90,6 @@ class Permisos extends Component {
                     color: "#fff",
                     fontSize: 10,
                 }}>{key}</Text>
-
 
             </View>
         })

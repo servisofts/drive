@@ -69,20 +69,16 @@ const registro = (state, action) => {
     if (action.estado === "exito") {
         if (state.data) {
             if (action.path.length > 0) {
-                var curData = state;
-                action.path.map((obj, key) => {
-                    if (curData) {
-                        curData = curData.data[obj.key];
-                        if (!curData.data) {
-                            curData.data = {}
-                        }
+                var size = action.path.length;
+                var lastPath = action.path[size - 1];
+                if (lastPath) {
+                    var parent = state.data[lastPath.key];
+                    if (parent) {
+                        state.data[lastPath.key][action.data.key] = action.data;
                     }
-                })
-                if (curData) {
-                    curData.data[action.data.key] = action.data;
                 }
             } else {
-                state.data[action.data.key] = action.data;
+                state.data["root"][action.data.key] = action.data;
             }
         }
         state.lastRegister = action.data;

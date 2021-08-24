@@ -7,6 +7,7 @@ import Folder from '../img/ssfolder.svg';
 import EPUndefined from '../img/extensionPack/undefined.svg';
 import ShowMore from '../img/showmore.svg';
 import Ordenar from '../img/ordenar.svg';
+import IcysMedical from '../img/IcysMedical.svg'
 const Svg = (props) => {
 
     if (props.resource) {
@@ -15,6 +16,8 @@ const Svg = (props) => {
     switch (props.name) {
         case "logo":
             return (Platform.OS == "web" ? <img style={props.style} src={Logo} /> : <Logo style={props.style} />);
+        case "IcysMedical":
+            return (Platform.OS == "web" ? <img style={props.style} src={IcysMedical} /> : <IcysMedical style={props.style} />);
         case "logoBlanco":
             return (Platform.OS == "web" ? <img style={props.style} src={LogoB} /> : <LogoB style={props.style} />);
         case "see":
