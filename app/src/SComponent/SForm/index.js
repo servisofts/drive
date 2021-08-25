@@ -1,5 +1,5 @@
 import React, { Component, ViewStyle } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { SButtom } from '../SButtom';
 import { SInput, TypeInputProps } from '../SInput';
 import { SView, SViewPropsType } from '../SView';
@@ -27,6 +27,38 @@ export default class SForm extends Component<SFromProps> {
         };
         this._ref = {};
     }
+    onSubmit() {
+        var data = {};
+        var isValid = true;
+        Object.keys(this._ref).map((key) => {
+            var input: SInput = this._ref[key];
+            if (!input) { isValid = false; return false; }
+            if (!input.verify()) {
+                isValid = false;
+            }
+            data[key] = input.getValue();
+        })
+        if (isValid) {
+            this.props.onSubmit(data);
+        }
+    }
+    onEnter(e) {
+        if (e.key === 'Enter') {
+            this.onSubmit();
+            e.preventDefault();
+        }
+    }
+    componentDidMount() {
+        if (Platform.OS === 'web') {
+            document.addEventListener('keydown', (e) => this.onEnter(e));
+        }
+    }
+    componentWillUnmount() {
+        if (Platform.OS === 'web') {
+            document.removeEventListener('keydown', (e) => this.onEnter(e));
+        }
+    }
+
     setError(key) {
         if (this._ref[key]) {
             this._ref[key].setError(true);
@@ -34,10 +66,11 @@ export default class SForm extends Component<SFromProps> {
     }
 
     onErrorForm(data) {
-        data.map((text,key) => {
+        data.map((text, key) => {
             this._ref[text].setError(true);
         })
     }
+
     getButtom() {
         if (!this.props.onSubmit) return <View />
         var label = "REGISTRAR"
@@ -52,18 +85,7 @@ export default class SForm extends Component<SFromProps> {
                 col: "xs-12 md-6",
                 // customStyle: "primary",
             }} onPress={() => {
-                var data = {};
-                var isValid = true;
-                Object.keys(this._ref).map((key) => {
-                    var input: SInput = this._ref[key];
-                    if (!input.verify()) {
-                        isValid = false;
-                    }
-                    data[key] = input.getValue();
-                })
-                if (isValid) {
-                    this.props.onSubmit(data);
-                }
+                this.onSubmit();
             }}>
             {label}
         </SButtom>

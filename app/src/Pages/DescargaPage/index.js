@@ -36,6 +36,32 @@ class DescargaPage extends Component {
             })
         };
     }
+    getName(name) {
+        if (!name) return "";
+        // if (name.length > 20) return name.substring(0, 30) + "...";
+        return name;
+    }
+    getTamano(tamano) {
+        var size = "--";
+        if (tamano > 0) {
+            var byte = tamano;
+            var kbyte = byte / 1024;
+            var Mg = kbyte / 1024;
+            var Gb = Mg / 1024;
+
+            if (Gb > 1) {
+                size = Gb.toFixed(1) + " GB"
+            } else if (Mg > 1) {
+                size = Mg.toFixed(1) + " MB"
+            } else if (kbyte > 1) {
+                size = kbyte.toFixed(0) + " KB"
+            } else if (byte > 1) {
+                size = byte + " B"
+            }
+
+        }
+        return size;
+    }
     render() {
 
         return (
@@ -61,23 +87,41 @@ class DescargaPage extends Component {
                         maxWidth: 500,
                         padding: 8,
                         backgroundColor: "#ffffff44",
-                        alignItems: "center"
+                        alignItems: "center",
+                        overflow: "hidden"
                     }}>
                         <View style={{
                             width: "100%",
                             flexDirection: "row",
-                            alignItems: "center"
+                            alignItems: "center",
+
                         }}>
                             <View style={{
                                 width: 70,
                                 height: 70,
+                                borderRadius: 4,
+                                overflow: 'hidden',
                             }}>
-                                <FilePreview obj={this.data} />
+                                <FilePreview src={AppParams.urlImages + this.data.key} obj={this.data} />
                             </View>
-                            <Text style={{
-                                fontSize: 20,
-                                color: "#fff"
-                            }}>{this.data.descripcion}</Text>
+                            <View style={{
+                                flex: 1,
+                                height: "100%",
+                                justifyContent: "center",
+                                paddingStart:8,
+                                // alignItems:"center",
+                            }}>
+                                <Text style={{
+                                    fontSize: 16,
+                                    color: "#fff",
+                                    // textAlign: "center"
+                                }}>{this.getName(this.data.descripcion)}</Text>
+                                <Text style={{
+                                    fontSize: 12,
+                                    color: "#aaa",
+                                    // textAlign: "right"
+                                }}>{this.getTamano(this.data.tamano)}</Text>
+                            </View>
                         </View>
 
                         {/* {this.state._url.getComponent()} */}

@@ -11,10 +11,7 @@ export default class SFetchBlob {
         var myInit = {
             method: 'GET',
             cache: "no-cache",
-            // headers: {
-            //     "Access-Control-Allow-Headers": "https://drive.servisofts.com",
-            //     "key_usuario": props.key_usuario,
-            // }
+         
         };
         try {
             var myRequest = new Request(url, myInit);
@@ -77,7 +74,7 @@ export default class SFetchBlob {
             a.click();
             window.URL.revokeObjectURL(uri);
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
 
     }

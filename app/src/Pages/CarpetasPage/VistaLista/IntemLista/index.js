@@ -5,8 +5,9 @@ import AppParams from '../../../../Params';
 import FilePreview from '../../FilePreview';
 import moment from 'moment';
 import 'moment/locale/es';
-import { SPopupOpen } from '../../../../SPopup';
+import { SPopupOpen } from "../../../../SComponent";
 import RecuperarEliminado from '../../../../Component/RecuperarEliminado';
+import { getPermisoFile } from '../../../../FileFunction';
 moment.locale("es")
 type type = {
     data: Object,
@@ -23,8 +24,12 @@ export default class IntemLista extends Component<type> {
     }
     verPerfil = () => {
         if (this.props.data.estado == 0) {
-            SPopupOpen(<RecuperarEliminado key={"acept_recuperar"} data={this.props.data}/>);
-
+            SPopupOpen({
+                key: "acept_recuperar",
+                content: (
+                    <RecuperarEliminado key={"acept_recuperar"} data={this.props.data} />
+                )
+            });
             return;
         }
         this.props.navigation.navigate("FilePerfil", this.props.data);
@@ -43,6 +48,14 @@ export default class IntemLista extends Component<type> {
         }
     }
     getName() {
+        if (!this.props.permisos) {
+            this.state.isEdit = false;
+        }
+        if (this.props.permisos) {
+            if (!this.props.permisos["editar"]) {
+                this.state.isEdit = false;
+            }
+        }
         if (this.state.isEdit) {
             return (
                 <TextInput style={{
@@ -82,6 +95,9 @@ export default class IntemLista extends Component<type> {
         } else {
             var text = this.props.data.descripcion;
             var dicant = 28;
+            if(!text){
+                text = "no name";
+            }
             if (!this.state.select && text.length > dicant) {
                 text = text.substring(0, dicant).trim() + "..."
             }

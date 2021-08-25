@@ -22,6 +22,7 @@ export const init = (_store) => {
 }
 
 
+
 export const insertInReducer = () => {
     var states = store.getState();
     Object.keys(Config).map((key) => {

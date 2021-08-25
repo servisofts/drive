@@ -10,6 +10,7 @@ import ZoonFile from './ZoonFile';
 import Vistas from './Vistas';
 import Reload from './Reload';
 import Ordenar from './Ordenar/index';
+import ShowMore from './ShowMore';
 export default class TopBar extends Component {
     constructor(props) {
         super(props);
@@ -18,21 +19,23 @@ export default class TopBar extends Component {
     }
 
     render() {
-        if (this.props.state.fileReducer.activeRoot.key == "trash") {
-            return (
-                <View style={{
-                    width: "100%",
-                    height: 40,
-                    flexDirection: "row"
-                }}>
-                    <Vistas  {...this.props} />
-                    <ZoonFile {...this.props} val={-0.1} />
-                    <ZoonFile {...this.props} val={0.1} />
-                    <Reload />
-                    <Ordenar  {...this.props} />
-                </View>
-            );
-        }
+        // if (this.props.state.fileReducer.activeRoot.key == "trash" || this.props.state.fileReducer.activeRoot.key != "raiz") {
+        //     return (
+        //         <View style={{
+        //             width: "100%",
+        //             height: 40,
+        //             flexDirection: "row"
+        //         }}>
+        //             <NuevaCarpeta {...this.props} />
+        //             <Vistas  {...this.props} />
+        //             <ZoonFile {...this.props} val={-0.1} />
+        //             <ZoonFile {...this.props} val={0.1} />
+        //             <Reload />
+        //             <Ordenar  {...this.props} />
+
+        //         </View>
+        //     );
+        // }
         return (
             <View style={{
                 width: "100%",
@@ -48,6 +51,7 @@ export default class TopBar extends Component {
                 <ZoonFile {...this.props} val={0.1} />
                 <Reload />
                 <Ordenar {...this.props} />
+                <ShowMore {...this.props} />
                 {/* <CerrarSession {...this.props} /> */}
 
             </View>

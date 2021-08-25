@@ -19,10 +19,12 @@ import CompartidosPage from './CompartidosPage'
 import TestRNF from './TestRNF'
 import NotificacionPage from './NotificacionPage'
 import AjustesPage from './AjustesPage'
-
+import FileUsuariosPage from './FileUsuariosPage'
+import RecuperarPassPage from './RecuperarPassPage'
 import SComponent from '../SComponent/Pages';
 
-
+import CodigoRecibidoPage from './CodigoRecibidoPage'
+import NuevoPassPage from './NuevoPassPage'
 export const getPages = () => {
     return {
         // TestRNF,
@@ -41,6 +43,10 @@ export const getPages = () => {
         CompartidosPage,
         NotificacionPage,
         AjustesPage,
+        FileUsuariosPage,
+        RecuperarPassPage,
+        NuevoPassPage,
+        CodigoRecibidoPage,
         ...SComponent,
         UsuarioRegistroPageUpdate,
 

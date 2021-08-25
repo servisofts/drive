@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { getFilesInPath, getPosicionDisponible } from '../../../../FileFunction';
+import { getFilesInPath, getPermisos, getPosicionDisponible } from '../../../../FileFunction';
 import AppParams from '../../../../Params';
 import Svg from '../../../../Svg';
 
@@ -13,6 +13,22 @@ class NuevaCarpeta extends Component {
     }
 
     render() {
+
+        if (this.props.state.fileReducer.routes.length > 0) {
+            var key_file = this.props.state.fileReducer.routes[this.props.state.fileReducer.routes.length - 1].key
+            var permisos = getPermisos(this.props, [key_file]);
+            if (!permisos) {
+                return <View />
+            }
+            if (!permisos[key_file]["crear"]) {
+                return <View />
+            }
+        } else {
+            if (this.props.state.fileReducer.activeRoot.key != "raiz") {
+                return <View />
+            }
+        }
+
         return (
             <>
                 <TouchableOpacity style={{

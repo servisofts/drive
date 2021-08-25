@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import BackgroundImage from '../../../Component/BackgroundImage';
 import DropFileView, { uploadHttp } from '../../../Component/DropFileView';
 import SOrdenador from '../../../Component/SOrdenador';
-import { getFilesInPath } from '../../../FileFunction';
+import { getFilesInPath, getPermisoFile } from '../../../FileFunction';
 import AppParams from '../../../Params';
 import IntemLista from './IntemLista';
 import SSCrollView from '../../../Component/SScrollView';
+import { getPermisos } from '../../../FileFunction/index';
 
 class VistaLista extends Component {
     constructor(props) {
@@ -117,7 +118,7 @@ class VistaLista extends Component {
         if (Object.keys(dataFinal).length <= 0) {
             return <Text>Vacio</Text>
         }
-
+        var permisos = getPermisos(this.props, Object.keys(dataFinal));
         this._files = {};
         var ordenador = new SOrdenador({
             listaKeys: dataFinal
@@ -142,6 +143,7 @@ class VistaLista extends Component {
                 scale={this.state.scale}
                 header={this.state.header}
                 data={dataFinal[key]}
+                permisos={getPermisoFile(this.props, key)}
                 background={(i % 2 == 0 ? ("#000000" + (Platform.OS == "web" ? "22" : "44")) : ("#444444") + (Platform.OS == "web" ? "66" : "44"))}
                 navigation={this.props.navigation}
                 editarNombre={(obj) => {

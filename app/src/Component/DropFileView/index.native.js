@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 export default class DropFileView extends Component {
     constructor(props) {
@@ -11,9 +11,9 @@ export default class DropFileView extends Component {
     render() {
 
         return (
-            <View {...this.props}>
+            <TouchableOpacity activeOpacity={0} {...this.props}>
                 {this.props.children}
-            </View>
+            </TouchableOpacity>
         );
     }
 }

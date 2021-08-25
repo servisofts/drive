@@ -17,7 +17,7 @@ class BarraSuperior extends Component {
     startAnimation() {
         Animated.timing(this.state.anim, {
             toValue: 100,
-            duration: !this.props.duration ? 1000 : this.props.duration,
+            duration: !this.props.duration ? 350 : this.props.duration,
         }).start();
     }
     componentDidMount() {
@@ -42,8 +42,8 @@ class BarraSuperior extends Component {
                 <TouchableOpacity style={{
                     width: "100%",
                     height: "100%",
-                    justifyContent:"center",
-                    alignItems:"flex-end",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
                     // backgroundColor: "#ffffff22",
                 }} onPress={() => {
                     this.props.navigation.navigate("UsuarioPerfilPage")
@@ -114,12 +114,15 @@ class BarraSuperior extends Component {
                 width: "100%",
                 height: 45,
                 flexDirection: "row",
-                backgroundColor: "#fff",
+                backgroundColor: this.state.anim.interpolate({
+                    inputRange: [80, 100],
+                    outputRange: ["#000", "#fff"]
+                }),
                 transform: [
                     {
-                        translateX: this.state.anim.interpolate({
+                        translateY: this.state.anim.interpolate({
                             inputRange: [0, 100],
-                            outputRange: [Dimensions.get("window").width * -1, 0]
+                            outputRange: [-45, 0]
                         })
                     }
                 ]
@@ -129,8 +132,7 @@ class BarraSuperior extends Component {
                     flexDirection: "row",
                     backgroundColor: "#000",
                     borderBottomEndRadius: 30,
-                    borderWidth: 1,
-                    borderColor: "#000",
+
                     // overflow: "hidden",
                 }}>
                     <TouchableOpacity style={{
