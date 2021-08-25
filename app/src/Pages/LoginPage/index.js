@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import AppParams from '../../Params';
 import { SButtom, SForm, SView, } from '../../SComponent';
 import Svg from '../../Svg';
+import Server from './Server'
 var _ref = {};
 class LoginPage extends Component {
   static navigationOptions = {
@@ -33,7 +34,7 @@ class LoginPage extends Component {
         alignItems: "center",
       }}>
         <SView props={{
-          col: "xs-8 md-6 lg-4",
+          col: "xs-6 md-4 lg-2",
           variant: "center"
         }} style={{
           marginTop: 16,
@@ -46,6 +47,7 @@ class LoginPage extends Component {
               fill: "#fff"
             }} />
         </SView>
+        <Server />
         <SForm
           ref={(ref) => { this.formulario = ref }}
           props={{
@@ -90,6 +92,16 @@ class LoginPage extends Component {
               this.props.navigation.navigate("UsuarioRegistroPageUpdate")
             }}>
             Registro
+          </SButtom>
+          <SButtom
+            style={{ margin: 6, }}
+
+            props={{
+              type: "outline",
+            }} onPress={() => {
+              this.props.navigation.navigate("RecuperarPassPage")
+            }}>
+            Recuperar Pass
           </SButtom>
         </SView>
       </SView>

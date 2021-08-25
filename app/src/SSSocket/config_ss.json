@@ -1,11 +1,13 @@
 {
     "drive": {
         "web": {
-            "_ip": "wss://drive.icysmedical.com/servers/",
-            "ip": "ws://192.168.0.215:20017/"
+            "ip": "wss://drive.icysmedical.com/servers/",
+            "__ip": "wss://qa.drive.servisofts.com/servers/",
+            "_ip": "wss://drive.servisofts.com/servers/"
         },
         "native": {
             "ip": "drive.servisofts.com",
+            "_ip": "qa.drive.servisofts.com",
             "puerto": 10017,
             "cert": "MIIDzDCCArSgAwIBAgIEYJtO/zANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCQk8xEjAQBgNVBAgMCUF2IEJhbnplcjETMBEGA1UEBwwKU2FudGEgQ3J1ejEXMBUGA1UECgwOU2Vydmlzb2Z0cyBTUkwxDjAMBgNVBAsMBWRyaXZlMR0wGwYDVQQDDBRkcml2ZS5zZXJ2aXNvZnRzLmNvbTEnMCUGCSqGSIb3DQEJARYYcmlja3kucGF6LmQuOTdAZ21haWwuY29tMB4XDTIxMDUxMjAzNDM1OVoXDTIxMDUxMzAzNDM1OVowgacxCzAJBgNVBAYTAkJPMRIwEAYDVQQIDAlBdiBCYW56ZXIxEzARBgNVBAcMClNhbnRhIENydXoxFzAVBgNVBAoMDlNlcnZpc29mdHMgU1JMMQ4wDAYDVQQLDAVkcml2ZTEdMBsGA1UEAwwUZHJpdmUuc2Vydmlzb2Z0cy5jb20xJzAlBgkqhkiG9w0BCQEWGHJpY2t5LnBhei5kLjk3QGdtYWlsLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKd4czpTp5TlolI2L52qfcthKSkJBs0CWWC0IFCBv00kcCDZB194EQ42nBd2tpG1IKyDT3uoV2kv1K+vq+Wj9Xnf7VOY/mnwlapubXBnW9Ln4SIIOK6bUDO3EwCKwbQLghOhBFgG/NgpocGzFpe5OsqGd1kozSDfm72vbAoVldQbhEILtS0h187tE8loe6frpBaat/V8PQvhd4zLwEKJ9UDW2xbqeZ9Zq1zDKctvelAFgGT1d4q5uX1nckSb941Tj3Ybhn9dCF5ta+F2RSDvV6XOOL2LPNXwDlVqT5QnLs1zpsk3hs/Vbc+bEdPXfHfPHTVfRbv5dMVOa/ayliWG7ykCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAnlJaXo04Ho8xCs5wozx9N5SzEwfMjxx61ACsK4HbeLF4ULKTSeSqm4Qv6PQrPK7wks81PakuST0oIMEoxU0xnie6bwqQxtNTcfzQvoVnH3mDle9BKWpAVvDMCGLyaVXE9vdj0YfcQy6UPt9KmOMMB6v26wYh2ExdINMuGQdnkijIG47ITEVKWx8OU37fGdNZGfXmflUQd9pylJHP7UkeOJdna2ZwV9ojlCSrTzEo1wDYD0riPs+31yufTzMP1yQn6q0jDjvQX+kfxoUyya1UIoueVAdRoHnW1YlVxH/AJ6QM9QoICsfNQSRqPWsQF5VFo/tEYJvXVtecz8xMn9H3WA=="
         },

@@ -7,13 +7,7 @@
         "deviceKey": "drive_deviceKey",
         "fbtoken": "FIREBASE_TOKEN"
     },
-    "urlImages": "https://drive.servisofts.com/images/",
-    "_urlImages": "https://qa.drive.servisofts.com/images/",
-    "_urlImages": "http://192.168.0.199:30017/",
-    "servicios": {
-        "_drive": "https://qa.drive.servisofts.com/images/",
-        "drive": "https://drive.servisofts.com/images/",
-        "_drive": "http://192.168.0.199:30017/",
-        "roles_permisos": "http://192.168.0.17:30016/"
-    }
+    "urlImages": "https://drive.icysmedical.com/images/",
+    "_urlImages": "http://192.168.0.215:30017/"
+
 }
