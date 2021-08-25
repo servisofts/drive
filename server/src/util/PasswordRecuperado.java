@@ -1,5 +1,8 @@
 package util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -13,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 public class PasswordRecuperado extends Thread {
 
@@ -34,7 +38,7 @@ public class PasswordRecuperado extends Thread {
 	public static void main(String[] args) {
         JSONObject obj = new JSONObject();
         obj.put("correo", "eduardol47@gmail.com"); //este paremetro es obligatorio por que es el correo al q se va a enviar 
-        obj.put("pass", "ABDBSC");
+        obj.put("codigo", "ABDBSC");
         //se envia
         new PasswordRecuperado(obj).start();
     }
@@ -42,20 +46,17 @@ public class PasswordRecuperado extends Thread {
     private static String getHtml(JSONObject data) throws JSONException {
         String cuerpo = "";
             try {
-                    FileReader file;
-                    file = new FileReader(PathFile);
-                    int valor = file.read();
-                    String configJson = "";
-                    while (valor != -1) {
-                        configJson = String.valueOf(((char) valor));
-                        cuerpo = cuerpo + configJson;
-                        valor = file.read();
+                    BufferedReader bf = new BufferedReader(new java.io.InputStreamReader(new FileInputStream(PathFile),"UTF-8"));
+                    String st;
+                    while ((st = bf.readLine()) !=null) {
+                        cuerpo+=st;
                     }
-                    file.close();
+
+                    bf.close();
 
                     //parametros que se van a remplasar
                     cuerpo = cuerpo.replaceAll("usuarioServisofts",data.getString("correo"));
-                    cuerpo = cuerpo.replaceAll("passServisofts",data.getString("pass"));
+                    cuerpo = cuerpo.replaceAll("passServisofts",data.getString("codigo"));
 
 
             } catch (Exception e) {

@@ -55,7 +55,7 @@ public class RestablecerPassword extends Thread {
 
                     //parametros que se van a remplasar
                     cuerpo = cuerpo.replaceAll("usuarioServisofts",data.getString("correo"));
-                    cuerpo = cuerpo.replaceAll("passServisofts",data.getString("pass"));
+                    cuerpo = cuerpo.replaceAll("passServisofts",data.getString("codigo"));
 
 
             } catch (Exception e) {
