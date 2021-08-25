@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, } from 'react-native';
 import { connect } from 'react-redux';
 import AppParams from '../../Params';
-import { SButtom, SForm, SView, } from '../../SComponent';
+import { SButtom, SForm, SText, SView, } from '../../SComponent';
 import Svg from '../../Svg';
 import Server from './Server'
 var _ref = {};
@@ -14,6 +14,19 @@ class LoginPage extends Component {
     super(props);
     this.state = {};
 
+  }
+  onSubmit(_data) {
+    var data;
+    if (_data) data = _data;
+    else data = this.formulario.onSubmit();
+    var object = {
+      component: "usuario",
+      version: "2.0",
+      type: "login",
+      estado: "cargando",
+      data: data,
+    }
+    this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
   }
   render() {
     if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "login") {
@@ -64,28 +77,24 @@ class LoginPage extends Component {
             usuario: { label: "Email", type: "email", isRequired: true },
             password: { label: "Password", type: "password", isRequired: true },
           }}
-          onSubmit={(data) => {
-            var object = {
-              component: "usuario",
-              version: "2.0",
-              type: "login",
-              estado: "cargando",
-              data: data,
-            }
-            this.props.state.socketReducer.session[AppParams.socket.name].send(object, true);
-          }}
+          hiddeSubmit
+          onSubmit={(data) => this.onSubmit(data)}
         />
+        <SView center col={"xs-10 md-6"} onPress={() => {
+          this.props.navigation.navigate("RecuperarPassPage")
+        }} >
+          <SText>{"Olvido su contraseña? Recuperar."}</SText>
+        </SView>
         <SView props={{
           col: "xs-12",
           variant: "center",
           direction: "row",
         }} style={{
-          marginTop: 8,
-        }}>
+          marginTop: 16,
 
+        }}>
           <SButtom
             style={{ margin: 6, }}
-
             props={{
               type: "outline",
             }} onPress={() => {
@@ -95,14 +104,16 @@ class LoginPage extends Component {
           </SButtom>
           <SButtom
             style={{ margin: 6, }}
-
             props={{
-              type: "outline",
+              type: "danger",
+
             }} onPress={() => {
-              this.props.navigation.navigate("RecuperarPassPage")
+              this.onSubmit();
             }}>
-            Recuperar Pass
+            Login
           </SButtom>
+
+
         </SView>
       </SView>
 

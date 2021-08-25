@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, TouchableOpacity, Text, TextInput, ScrollView, StyleSheet, NativeModules, ActivityIndicator } from 'react-native';
-import Svg from '../../../Svg';
-import { SText, SView } from '../../../SComponent';
-import AppParams from '../../../Params';
+import Svg from '../../../../Svg';
+import { SText, SView } from '../../../../SComponent';
+import AppParams from '../../../../Params';
 // import ImgFondoCruces from '../ImgFondoCruces'
 
 const RecuperarPass = (props) => {
@@ -211,7 +211,9 @@ const styles = StyleSheet.create({
     },
 
     touch4: {
-        backgroundColor: "#2C4C7E",
+        // backgroundColor: "#2C4C7E",
+        borderWidth:1,
+        borderColor: "#fff",
         width: "80%",
         height: 40,
         margin: 2,

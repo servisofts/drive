@@ -90,7 +90,6 @@ class UsuarioRegistroPage extends Component {
 
   render() {
     if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "registro") {
-      
       this.props.state.usuarioReducer.estado = "";
       // alert()
       var close = SPopupOpen(<View key={"errorUsuario"} style={{

@@ -31,6 +31,7 @@ export {
     SButtom,
     SContainer,
     SThemeChange,
+    SPopup,
     SPopupOpen,
     SPopupClose,
     SSize,

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, Text } from 'react-native';
 import RecuperarPass from './RecuperarPass';
-import BarraSuperior from '../../Component/BarraSuperior';
+import BarraSuperior from '../../../Component/BarraSuperior';
+import { SPopup } from '../../../SComponent';
 
 class RecuperarPassPage extends Component {
     static navigationOptions = {
@@ -15,7 +16,7 @@ class RecuperarPassPage extends Component {
     render() {
 
         if (this.props.state.usuarioReducer.estadoEmail == "exito" && this.props.state.usuarioReducer.type == "recuperarPass") {
-            alert("Le hemos enviado un código a su correo electrónico")
+            SPopup.alert("Le hemos enviado un código a su correo electrónico")
             this.props.state.usuarioReducer.estadoEmail = false
             this.props.navigation.navigate("CodigoRecibidoPage")
             // this.state..value = ""
@@ -27,7 +28,7 @@ class RecuperarPassPage extends Component {
                 flex: 1,
                 width: "100%",
             }}>
-                <BarraSuperior goBack={()=>{this.props.navigation.goBack()}} />
+                <BarraSuperior goBack={() => { this.props.navigation.goBack() }} title={"Recuperar password"} />
                 <RecuperarPass navigation={this.props.navigation} />
             </View>
         )

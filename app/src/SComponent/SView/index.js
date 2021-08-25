@@ -36,6 +36,8 @@ interface IProps extends ViewProps {
     style: ViewStyle,
     props: SViewPropsType,
     onPress: Function,
+    center: Boolean,
+    col: TypeCol,
 }
 
 export class SView extends Component<IProps> {
@@ -51,6 +53,9 @@ export class SView extends Component<IProps> {
 
     }
     getOption(option) {
+        if(this.props[option]){
+            return this.props[option];
+        }
         return !this.props.props[option] ? 'default' : this.props.props[option]
     }
 
@@ -150,6 +155,7 @@ export class SView extends Component<IProps> {
                         ...(this.getOption("direction") == "row" ? { flexDirection: "row", flexWrap: "wrap", alignContent: "flex-start", } : {}),
 
                     }, {
+                        ...(!this.props.center ? {} : { justifyContent: "center", alignItems: "center", }),
                         ...this.state.style,
                     }
                 ]} >

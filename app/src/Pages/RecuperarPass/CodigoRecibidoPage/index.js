@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, TouchableOpacity, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
-import Svg from '../../Svg';
-import BarraSuperior from '../../Component/BarraSuperior';
-import { SView } from '../../SComponent';
-import AppParams from '../../Params';
+import Svg from '../../../Svg';
+import BarraSuperior from '../../../Component/BarraSuperior';
+import { SPopup, SView } from '../../../SComponent';
+import AppParams from '../../../Params';
 
 class CodigoRecibidoPage extends Component {
     static navigationOptions = {
@@ -31,7 +31,7 @@ class CodigoRecibidoPage extends Component {
 
     render() {
         if (this.props.state.usuarioReducer.estadoEmail == "exito" && this.props.state.usuarioReducer.type == "verificarCodigoPass") {
-            alert("Código confirmado...")
+
             this.props.state.usuarioReducer.estadoEmail = false
             this.props.navigation.navigate("NuevoPassPage")
             this.state.codigo.value = ""
@@ -39,7 +39,7 @@ class CodigoRecibidoPage extends Component {
         }
 
         if (this.props.state.usuarioReducer.estadoEmail == "error" && this.props.state.usuarioReducer.type == "verificarCodigoPass") {
-            alert("Código incorrecto...")
+            SPopup.alert("Código incorrecto. \n Verifique su bandeja de correos.")
             this.props.state.usuarioReducer.estadoEmail = false
             // this.props.navigation.navigate("NuevoPassPage")
             this.state.codigo.value = ""
@@ -50,7 +50,7 @@ class CodigoRecibidoPage extends Component {
             <View style={{
                 flex: 1
             }}>
-                <BarraSuperior goBack={() => { this.props.navigation.goBack() }} />
+                <BarraSuperior goBack={() => { this.props.navigation.goBack() }} title={"Codigo de recuperacion"} />
                 <ScrollView>
                     <View
                         style={{
@@ -124,7 +124,7 @@ class CodigoRecibidoPage extends Component {
                                         style={{
                                             color: '#fff',
                                         }} >
-                                        Validar
+                                        Validar codigo
                                     </Text>
                                 </TouchableOpacity>
 
@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
     },
 
     touch4: {
-        backgroundColor: "#2C4C7E",
+        borderWidth: 1,
+        borderColor: "#fff",
         width: "80%",
         height: 40,
         margin: 2,

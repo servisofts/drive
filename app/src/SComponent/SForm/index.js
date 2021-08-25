@@ -16,6 +16,7 @@ export type SFromProps = {
     inputProps: TypeInputProps,
     inputs: InputsTp,
     onSubmit: Function,
+    hiddeSubmit: boolean,
     submitProps: {
         label: String,
     },
@@ -73,6 +74,7 @@ export default class SForm extends Component<SFromProps> {
 
     getButtom() {
         if (!this.props.onSubmit) return <View />
+        if (this.props.hiddeSubmit) return <View />
         var label = "REGISTRAR"
         if (this.props.submitProps) {
             if (this.props.submitProps.label) {

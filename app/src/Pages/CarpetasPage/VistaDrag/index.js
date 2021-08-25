@@ -234,7 +234,6 @@ class ArchibosContainer extends Component {
         }
 
     }
-
     render() {
         if (this.props.onLoad) {
             var instance: VistaDrag = this;

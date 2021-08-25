@@ -16,15 +16,7 @@ export const uploadHttp = async ({ props, imput }, callback) => {
 
     let xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
-    // xhr.onprogress = (event) => {
-    //     // event.loaded returns how many bytes are downloaded
-    //     // event.total returns the total number of bytes
-    //     // event.total is only available if server sends `Content-Length` header
-    //     console.log(`Downloaded ${event.loaded} of ${event.total} bytes`);
-    // }
-    xhr.open('POST', AppParams.urlImages + "multipart", true);
-    // var sBoundary = "12345";
-    // xhr.setRequestHeader("Content-Type", "multipart\/form-data;");
+ 
     // if (xhr.upload) {
     //     xhr.upload.onprogress = (event) => {
     //         // event.loaded returns how many bytes are downloaded
@@ -32,6 +24,16 @@ export const uploadHttp = async ({ props, imput }, callback) => {
     //         // event.total is only available if server sends `Content-Length` header
     //         console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
     //     };
+    // }
+    xhr.open('POST', AppParams.urlImages + "multipart", true);
+    // var sBoundary = "12345";
+    // xhr.setRequestHeader("Content-Type", "multipart\/form-data;");
+    // xhr.onprogress = (event) => {
+    //     // event.loaded returns how many bytes are downloaded
+    //     // event.total returns the total number of bytes
+    //     // event.total is only available if server sends `Content-Length` header
+    //     alert("asa");
+    //     console.log(`Downloaded ${event.loaded} of ${event.total} bytes`);
     // }
     // xhr.upload.onprogress = function (e) {
     //     if (e.lengthComputable) {

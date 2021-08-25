@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, TouchableOpacity, Text, TextInput, ScrollView, StyleSheet, SafeAreaView, Image, ActivityIndicator } from 'react-native';
-import Svg from '../../Svg';
-import AppParams from '../../Params';
+import Svg from '../../../Svg';
+import AppParams from '../../../Params';
+import { SPopup, SView } from '../../../SComponent';
+import BarraSuperior from '../../../Component/BarraSuperior';
 // import Theme from '../../Styles/Theme.json'
 
 class NuevoPassPage extends Component {
-
+    static navigationOptions = {
+        headerShown: false
+    }
     constructor(props) {
         super(props)
         this.state = {
@@ -72,13 +76,13 @@ class NuevoPassPage extends Component {
     render() {
 
         if (this.props.state.usuarioReducer.estadoEmail == "exito" && this.props.state.usuarioReducer.type == "cambiarPassByCodigo") {
-            alert("Contraseña modificada exitosamente")
+            SPopup.alert("Contraseña modificada exitosamente")
             this.props.state.usuarioReducer.estadoEmail = false
             this.props.navigation.replace("LoginPage")
         }
 
         if (this.props.state.usuarioReducer.estadoEmail == "error" && this.props.state.usuarioReducer.type == "cambiarPassByCodigo") {
-            alert("Algo salío mal")
+            SPopup.alert("Algo salío mal")
             this.props.state.usuarioReducer.estadoEmail = false
         }
 
@@ -87,70 +91,74 @@ class NuevoPassPage extends Component {
                 flex: 1
             }}>
 
-
+                <BarraSuperior goBack={() => { this.props.navigation.goBack() }} title={"Cambiar contraseña"} />
                 <ScrollView>
                     <View style={{
                         width: "100%",
                         // height: 700,
                         alignItems: 'center',
                     }}>
-                        <View style={{
-                            // marginBottom: 50
+                        <SView props={{
+                            col: "xs-12 md-8 xl-6",
+                            variant: "center"
                         }}>
-                            <Svg name="logoCompletoRecurso"
-                                style={{
-                                    marginTop: 35,
-                                    width: 200,
-                                    height: 200,
-                                    fill: "#fff"
-                                }} />
-                        </View>
-
-                        <View
-                            style={styles.view}>
-                            <Text style={styles.texto}>Contraseña</Text>
-                            <TextInput
-                                style={(this.state.pass.error ? styles.error : styles.input)}
-                                placeholder="Ingresar nueva contraseña"
-                                onChangeText={text => this.handleChange(text, "pass")}
-                                value={this.state.pass.value}
-                                autoCapitalize='none'
-                                secureTextEntry
-                            />
-                        </View>
-                        <View
-                            style={styles.view}>
-                            <Text style={styles.texto}>Confirmar contraseña</Text>
-                            <TextInput
-                                style={(this.state.confirmarPass.error ? styles.error : styles.input)}
-                                placeholder="Confirme su nueva contraseña"
-                                onChangeText={text => this.handleChange(text, "confirmarPass")}
-                                value={this.state.confirmarPass.value}
-                                secureTextEntry
-                                autoCapitalize='none'
-                            />
-                        </View>
-
-
-                        {this.props.state.usuarioReducer.estadoEmail === "cargando" && this.props.state.usuarioReducer.type == "cambiarPassByCodigo" ? (
-                            <View style={styles.touch3}>
-                                <ActivityIndicator size="small" color="#fff" />
-                            </View>
-                        ) : (
-                            <TouchableOpacity
-                                style={styles.touch3}
-                                onPress={this.Registrar}>
-                                <Text
+                            <View style={{
+                                // marginBottom: 50
+                            }}>
+                                <Svg name="logoCompletoRecurso"
                                     style={{
-                                        color: '#fff',
-                                        fontSize: 18,
-                                    }}>
-                                    Guardar Contraseña
-                                </Text>
-                            </TouchableOpacity>
-                        )}
+                                        marginTop: 35,
+                                        width: 200,
+                                        height: 200,
+                                        fill: "#fff"
+                                    }} />
+                            </View>
+
+                            <View
+                                style={styles.view}>
+                                <Text style={styles.texto}>Contraseña</Text>
+                                <TextInput
+                                    style={(this.state.pass.error ? styles.error : styles.input)}
+                                    placeholder="Ingresar nueva contraseña"
+                                    onChangeText={text => this.handleChange(text, "pass")}
+                                    value={this.state.pass.value}
+                                    autoCapitalize='none'
+                                    secureTextEntry
+                                />
+                            </View>
+                            <View
+                                style={styles.view}>
+                                <Text style={styles.texto}>Confirmar contraseña</Text>
+                                <TextInput
+                                    style={(this.state.confirmarPass.error ? styles.error : styles.input)}
+                                    placeholder="Confirme su nueva contraseña"
+                                    onChangeText={text => this.handleChange(text, "confirmarPass")}
+                                    value={this.state.confirmarPass.value}
+                                    secureTextEntry
+                                    autoCapitalize='none'
+                                />
+                            </View>
 
 
+                            {this.props.state.usuarioReducer.estadoEmail === "cargando" && this.props.state.usuarioReducer.type == "cambiarPassByCodigo" ? (
+                                <View style={styles.touch3}>
+                                    <ActivityIndicator size="small" color="#fff" />
+                                </View>
+                            ) : (
+                                <TouchableOpacity
+                                    style={styles.touch3}
+                                    onPress={this.Registrar}>
+                                    <Text
+                                        style={{
+                                            color: '#fff',
+                                            fontSize: 14,
+                                        }}>
+                                        Guardar Contraseña
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
+
+                        </SView>
                     </View>
                 </ScrollView>
             </View>
@@ -201,7 +209,8 @@ const styles = StyleSheet.create({
     },
     touch3: {
         marginTop: 15,
-        backgroundColor: "#2c4b81",
+        borderWidth: 1,
+        borderColor: "#fff",
         width: "50%",
         height: 40,
         marginBottom: 10,

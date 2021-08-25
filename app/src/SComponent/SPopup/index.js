@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, ScrollView, } from 'react-native';
+import BackgroundImage from '../../Component/BackgroundImage';
 // import Svg from '../../Svg';
 import { SScrollView } from '../../SComponent'
+import { SText } from '../SText';
 import { SView } from '../SView';
 import SPopupComponent from './SPopupComponent';
-
+import Alert from './Alert';
 var INSTANCE = false;
 
 
@@ -15,7 +17,13 @@ export const SPopupClose = (key) => {
     INSTANCE.close(key);
 }
 export default class SPopup extends Component {
-
+    static alert(title) {
+        INSTANCE.open({
+            key: 'alert',
+            content: <Alert title={title} />,
+            style: {}
+        });
+    }
 
     constructor(props) {
         super(props);

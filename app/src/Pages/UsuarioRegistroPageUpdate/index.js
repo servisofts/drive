@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, TextInput, Dimensions, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { SPopupOpen } from '../../SPopup';
-import { SButtom, SForm, SScrollView2, SView, } from '../../SComponent';
+import { SButtom, SForm, SPopup, SScrollView2, SView, } from '../../SComponent';
 import Svg from '../../Svg';
 import AppParams from '../../Params';
 import BarraSuperior from '../../Component/BarraSuperior';
@@ -24,31 +24,32 @@ class UsuarioRegistroPageUpdate extends Component {
 
   render() {
     if (this.props.state.usuarioReducer.estado == "error" && this.props.state.usuarioReducer.type == "registro") {
-      // alert()
-      var close = SPopupOpen(<View key={"errorUsuario"} style={{
-        width: "100%",
-        height: 200,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-      }}>
-        <Text>Usted es este usuario?</Text>
-        <Text>{JSON.stringify(this.props.state.usuarioReducer.error)}</Text>
-        <TouchableOpacity onPress={() => {
-          close()
-        }} style={{
-          width: 100,
-          height: 50,
-          backgroundColor: "#660000"
-        }}>
-        </TouchableOpacity>
-      </View>);
-      if (this.props.state.usuarioReducer.error) {
-        Object.keys(this.props.state.usuarioReducer.error).map((key) => {
-          var data = this.props.state.usuarioReducer.error[key]
-          console.log(data);
-        })
-      }
       this.props.state.usuarioReducer.estado = "";
+      SPopup.alert("Usuario ya existe")
+      // alert()
+      // var close = SPopupOpen(<View key={"errorUsuario"} style={{
+      //   width: "100%",
+      //   height: 200,
+      //   backgroundColor: "#fff",
+      //   borderRadius: 8,
+      // }}>
+      //   <Text>Usted es este usuario?</Text>
+      //   <Text>{JSON.stringify(this.props.state.usuarioReducer.error)}</Text>
+      //   <TouchableOpacity onPress={() => {
+      //     close()
+      //   }} style={{
+      //     width: 100,
+      //     height: 50,
+      //     backgroundColor: "#660000"
+      //   }}>
+      //   </TouchableOpacity>
+      // </View>);
+      // if (this.props.state.usuarioReducer.error) {
+      //   Object.keys(this.props.state.usuarioReducer.error).map((key) => {
+      //     var data = this.props.state.usuarioReducer.error[key]
+      //     console.log(data);
+      //   })
+      // }
 
     }
     if (this.props.state.usuarioReducer.estado == "exito" && this.props.state.usuarioReducer.type == "registro") {
