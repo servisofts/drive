@@ -170,6 +170,7 @@ public class SFile {
             file.put("observadores",new JSONArray().put(obj.getString("key_usuario")));
             file.put("posx", 0);
             file.put("posy", 0);
+            file.put("tamano", 0);
             if(key_file_padre.length()>0){
                 file.put("key_file",key_file_padre);
             }

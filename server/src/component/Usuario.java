@@ -116,6 +116,7 @@ public class Usuario {
             file.put("fecha_on","now()");
             file.put("estado",1);
             file.put("tipo",0);
+            file.put("tamano",0);
             file.put("posx", 0);
             file.put("posy", 0);
 
