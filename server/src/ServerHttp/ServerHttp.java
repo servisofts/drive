@@ -12,6 +12,8 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import Config.Config;
+import Server.SSSAbstract.SSServerAbstract;
+
 import java.util.List;
 import util.FilesManager;
 
@@ -89,7 +91,7 @@ public class ServerHttp {
 
                 @Override
                 public int getContentLength() {
-                    return this.getContentLength();
+                    return 0;
                 }
 
                 @Override
@@ -153,10 +155,12 @@ public class ServerHttp {
                             case "SFile":
                                 obj.getJSONArray("data").getJSONObject(i).put("tamano", aux.length()+"");
                                 Conexion.editObject("file", obj.getJSONArray("data").getJSONObject(i));   
+                                SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario"));
                             break;
                             case "file":
                                 obj.getJSONArray("data").getJSONObject(i).put("tamano", aux.length()+"");
                                 Conexion.editObject("file", obj.getJSONArray("data").getJSONObject(i));   
+                                SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario"));
                             break;
                         }
                     }
@@ -187,7 +191,7 @@ public class ServerHttp {
 
        // String origin = defaultOrigin(exchange);
       //  exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://drive.servisofts.com");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+       // exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
         //List<String> header = exchange.getRequestHeaders().get("key_usuario");
         //System.out.println(origin);
         String ruta = Config.getJSON("files").getString("url");
@@ -197,14 +201,14 @@ public class ServerHttp {
 
         String key_usuario = "";
 
-            if(requestURI.getQuery()!=null){
-                String param = requestURI.getQuery().split("&")[0];
-                if(param != null){
-                    if(param.split("=")[0].equals("key_usuario")){
-                        key_usuario =param.split("=")[1]; 
-                    }
+        if(requestURI.getQuery()!=null){
+            String param = requestURI.getQuery().split("&")[0];
+            if(param != null){
+                if(param.split("=")[0].equals("key_usuario")){
+                    key_usuario =param.split("=")[1]; 
                 }
             }
+        }
             
 
         String arrPartes[]= path.split("\\.");
@@ -225,7 +229,7 @@ public class ServerHttp {
                 elFile = Conexion.ejecutarConsultaObject(consulta);
                 //elFile = elFile.getJSONObject(JSONObject.getNames(elFile)[0]);
 
-                consulta = "select get_file_key_creador('"+path+"') as json";
+                consulta = "select get_file_key_creador('"+files.getJSONObject(files.length()-1).getString("key")+"') as json";
                 PreparedStatement ps = Conexion.preparedStatement(consulta);
                 ResultSet rs = ps.executeQuery();
                 String key_creador = rs.next()?rs.getString("json"):"";
