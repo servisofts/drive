@@ -54,7 +54,16 @@ public class Usuario {
                 confirmarDatos(data);
                 break;
             }
+            case "recuperarPass": {
+                recuperarPass(data);
+                break;
+            }
+        }
+    }
 
+    private void recuperarPass(JSONObject obj) {
+        if(obj.getString("estado").equals("exito")) {
+            new PasswordRecuperado(obj.getJSONObject("data")).start();
         }
     }
 
