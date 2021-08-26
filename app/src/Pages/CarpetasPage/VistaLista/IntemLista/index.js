@@ -63,12 +63,12 @@ export default class IntemLista extends Component<type> {
                     fontSize: 10 * this.state.scale,
                     padding: 0,
                     margin: 0,
-                    paddingTop: (Platform.OS == "web" ? 9 * this.state.scale : 0),
+                    borderWidth: 0,
+                    // paddingTop: (Platform.OS == "web" ? 9 * this.state.scale : 0),
                     // flex: 1,
                     // height: 100,
-                    // height: "100%",
-                    // textAlign: "center",
-                    // justifyContent: "center",
+                    height: "100%",
+                    justifyContent: "center",
                     color: "#fff",
                     // backgroundColor: "transparent"
                     // backgroundColor: "#000"
@@ -79,12 +79,13 @@ export default class IntemLista extends Component<type> {
                             if (this.newName && this.newName != this.props.data.descripcion) {
                                 this.props.data.descripcion = this.newName;
                                 this.props.editarNombre(this.props.data);
+                                this.setState({ isSelec: false });
                             }
                         }
                     }}
                     selectTextOnFocus={true}
-                    multiline={true}
-                    numberOfLines={5}
+                    // multiline={true}
+                    // numberOfLines={5}
                     autoFocus={true}
                     defaultValue={this.props.data.descripcion}
                     onChangeText={(text) => {
@@ -95,25 +96,37 @@ export default class IntemLista extends Component<type> {
         } else {
             var text = this.props.data.descripcion;
             var dicant = 28;
-            if(!text){
+            if (!text) {
                 text = "no name";
             }
-            if (!this.state.select && text.length > dicant) {
-                text = text.substring(0, dicant).trim() + "..."
-            }
+            // if (!this.state.select && text.length > dicant) {
+            //     text = text.substring(0, dicant).trim() + "..."
+            // }
             return (
-                <Text style={{
-                    color: "#fff",
-                    fontSize: 10 * this.state.scale,
-                }}
-                // onPress={(evt) => {
-                //     if (this.state.isSelec) {
-                //         this.setState({ isEdit: true });
-                //     } else {
-                //         this.onPress();
-                //     }
-                // }}
-                >{text}</Text>
+                <View style={{
+                    flex: 1,
+                    width: "100%",
+                    height: "100%",
+                    // justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    flexGrow: 1,
+                }}>
+                    <Text style={{
+                        color: "#fff",
+                        fontSize: 10 * this.state.scale,
+                        flexShrink: 0,
+                        textAlign: "center"
+                    }}
+                    // onPress={(evt) => {
+                    //     if (this.state.isSelec) {
+                    //         this.setState({ isEdit: true });
+                    //     } else {
+                    //         this.onPress();
+                    //     }
+                    // }}
+                    >{text}</Text>
+                </View>
             )
         }
 
@@ -181,6 +194,10 @@ export default class IntemLista extends Component<type> {
                 padding: 0,
                 margin: 0,
                 justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                overflow: "hidden",
+                flexGrow: 1,
             }}>
                 {text}
             </View >)
