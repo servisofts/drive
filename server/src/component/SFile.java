@@ -3,6 +3,8 @@ package component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -137,12 +139,18 @@ public class SFile {
 
     public void registro(JSONObject obj, SSSessionAbstract session) {
         try {
-            
+            String key_usuario_padre =  obj.getString("key_usuario");
             String key_file_padre =  "";
             if(obj.getJSONArray("path").length()>0){
                 key_file_padre =  obj.getJSONArray("path").getJSONObject(obj.getJSONArray("path").length()-1).getString("key");    
+                String consulta = "select get_file_key_creador('"+key_file_padre+"') as json";
+                PreparedStatement ps = Conexion.preparedStatement(consulta);
+                ResultSet rs = ps.executeQuery();
+                key_usuario_padre = rs.next()?rs.getString("json"):"";
+                rs.close();
+                ps.close();
             }
-            String url = Config.getJSON().getJSONObject("files").getString("url")+obj.getString("key_usuario")+"/";
+            String url = Config.getJSON().getJSONObject("files").getString("url")+key_usuario_padre+"/";
             File f = new File(url);
             if(!f.exists()) f.mkdirs();
             for (int i = 0; i < obj.getJSONArray("path").length(); i++) {
@@ -162,6 +170,7 @@ public class SFile {
             file.put("observadores",new JSONArray().put(obj.getString("key_usuario")));
             file.put("posx", 0);
             file.put("posy", 0);
+            file.put("tamano", 0);
             if(key_file_padre.length()>0){
                 file.put("key_file",key_file_padre);
             }
@@ -192,9 +201,11 @@ public class SFile {
             Conexion.insertArray("observador", new JSONArray().put(observador));
             Observador.registrarPermisos(observador, true, true, true, true, true);
             
+            obj.put("data", file);
+            obj.put("estado", "exito");
+            
             if(key_file_padre.length()>0){
-                JSONObject observadores = Observador.getByKeyFile(key_file_padre); 
-                
+                JSONObject observadores = Observador.getByKeyFile(key_file_padre);
 
                 for (int j = 0; j < JSONObject.getNames(observadores).length; j++) {
                     observador = observadores.getJSONObject(JSONObject.getNames(observadores)[j]);
@@ -208,7 +219,12 @@ public class SFile {
                         observador.put("fecha_on","now()");
                         observador.put("estado",1);
                         Conexion.insertArray("observador", new JSONArray().put(observador));
-                        Observador.registrarPermisos(observador, true, false, false, false, false);
+                        
+                        if(key_usuario_padre.equals(observador.getString("key_usuario"))){
+                            Observador.registrarPermisos(observador, true, true, true, true, true);    
+                        }else{
+                            Observador.registrarPermisos(observador, true, false, false, false, false);
+                        }
 
                         file_tipo_seguimiento = new JSONObject();
                         file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
@@ -220,12 +236,13 @@ public class SFile {
                         file_tipo_seguimiento.put("fecha","now()");
                         file_tipo_seguimiento.put("key_ref",observador.getString("key_usuario"));
                         Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
+
+                        SSServerAbstract.sendUser(obj.toString(),observador.getString("key_usuario"));
                     }
                 }
             }
 
-            obj.put("data", file);
-            obj.put("estado", "exito");
+            
             SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario"));
         } catch (SQLException e) {
             obj.put("estado", "error");
@@ -298,8 +315,6 @@ public class SFile {
         }
     
     }
-
-    
 
     public void compartirRecursivo(JSONObject obj){
         try {
@@ -437,11 +452,23 @@ public class SFile {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
             String fecha_on = formatter.format(new Date());
 
+            
+            String key_usuario_padre =  obj.getString("key_usuario");
             String key_file_padre =  "";
             if(obj.getJSONArray("path").length()>0){
                 key_file_padre =  obj.getJSONArray("path").getJSONObject(obj.getJSONArray("path").length()-1).getString("key");    
+                String consulta = "select get_file_key_creador('"+key_file_padre+"') as json";
+                PreparedStatement ps = Conexion.preparedStatement(consulta);
+                ResultSet rs = ps.executeQuery();
+                key_usuario_padre = rs.next()?rs.getString("json"):"";
+                rs.close();
+                ps.close();
+                
             }
-            String url = Config.getJSON().getJSONObject("files").getString("url")+obj.getString("key_usuario")+"/";
+
+            
+
+            String url = Config.getJSON().getJSONObject("files").getString("url")+key_usuario_padre+"/";
             File f = new File(url);
             if(!f.exists()) f.mkdirs();
             for (int i = 0; i < obj.getJSONArray("path").length(); i++) {
@@ -508,6 +535,10 @@ public class SFile {
 
                 Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
 
+                obj.put("dirs", direcciones);
+                obj.put("estado", "exito");
+                obj.put("data", documentos);
+
                 if(key_file_padre.length()>0){
                     file.put("key_file",key_file_padre);
                     JSONObject observadores = Observador.getByKeyFile(key_file_padre); 
@@ -515,15 +546,20 @@ public class SFile {
                     for (int j = 0; j < JSONObject.getNames(observadores).length; j++) {
                         observador = observadores.getJSONObject(JSONObject.getNames(observadores)[j]);
                         if(!obj.getString("key_usuario").equals(observador.getString("key_usuario"))){
+
                             observador.put("key",UUID.randomUUID().toString());
                             observador.put("descripcion","invitado");
                             observador.put("tipo",2);
                             observador.put("key_file",key);
-                            observador.put("key_usuario_invito",obj.getString("key_usuario"));
+                            observador.put("key_usuario_compartio",obj.getString("key_usuario"));
                             observador.put("fecha_on",fecha_on);
                             observador.put("estado",1);
                             Conexion.insertArray("observador", new JSONArray().put(observador));
-                            Observador.registrarPermisos(observador, true, false, false, false, false);
+                            if(key_usuario_padre.equals(observador.getString("key_usuario"))){
+                                Observador.registrarPermisos(observador, true, true, true, true, true);    
+                            }else{
+                                Observador.registrarPermisos(observador, true, false, false, false, false);
+                            }
 
                             file_tipo_seguimiento = new JSONObject();
                             file_tipo_seguimiento.put("key",UUID.randomUUID().toString());
@@ -536,16 +572,12 @@ public class SFile {
                             file_tipo_seguimiento.put("estado",1);
                             file_tipo_seguimiento.put("key_ref",observador.getString("key_usuario"));
                             Conexion.insertArray("file_tipo_seguimiento", new JSONArray().put(file_tipo_seguimiento));
+                            SSServerAbstract.sendUser(obj.toString(),observador.getString("key_usuario"));
                         }
                     }
                 }
             }
-            obj.put("dirs", direcciones);
-            obj.put("estado", "exito");
-            obj.put("data", documentos);
             
-            SSServerAbstract.sendUser(obj.toString(),obj.getString("key_usuario"));
-            //SSServerAbstract.sendServer(SSServerAbstract.TIPO_SOCKET, obj.toString());
         }catch(Exception e){ 
             e.printStackTrace();
         }
@@ -553,7 +585,6 @@ public class SFile {
 
     public static File createOriginalZipFiles(String key_usuario, String key_file, String url_temp, String raiz){
         try{
-            
             String url = raiz+"/";
             String url_init = "";
             File f = new File(url_temp);
