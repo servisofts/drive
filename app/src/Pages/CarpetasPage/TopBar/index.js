@@ -11,6 +11,8 @@ import Vistas from './Vistas';
 import Reload from './Reload';
 import Ordenar from './Ordenar/index';
 import ShowMore from './ShowMore';
+import Svg from '../../../Svg';
+import Inicio from './Inicio';
 export default class TopBar extends Component {
     constructor(props) {
         super(props);
@@ -51,9 +53,8 @@ export default class TopBar extends Component {
                 <ZoonFile {...this.props} val={0.1} />
                 <Reload />
                 <Ordenar {...this.props} />
-                <ShowMore {...this.props} />
+                <Inicio {...this.props} />
                 {/* <CerrarSession {...this.props} /> */}
-
             </View>
         );
     }

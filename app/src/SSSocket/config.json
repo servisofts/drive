@@ -1,8 +1,8 @@
 {
     "drive": {
         "web": {
-            "ip": "wss://drive.icysmedical.com/servers/",
-            "_ip": "ws://192.168.0.215:20017/"
+            "_ip": "wss://drive.icysmedical.com/servers/",
+            "ip": "ws://192.168.0.214:20017/"
         },
         "native": {
             "ip": "drive.servisofts.com",

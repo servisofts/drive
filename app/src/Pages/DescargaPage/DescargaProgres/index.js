@@ -58,6 +58,24 @@ export default class DescargaProgres extends Component {
             }}>
                 <Text style={{ fontSize: 45, color: "#fff" }}>{porcent.toFixed(0) + "%"}</Text>
                 {getDetail(this.state.extra)}
+                <TouchableOpacity 
+                onPress={()=>{
+                    console.log(this.props.state.usuarioReducer.cancelarDescarga );
+                }}
+                style={{
+                    position: 'absolute',
+                    top: 10,
+                    width: 35,
+                    height: 35,
+                    borderRadius: 100,
+                    borderColor: "red",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Text style={{fontSize: 35  ,color:"red", fontWeight: 'bold',}}>
+                        X
+                    </Text>
+                </TouchableOpacity>   
             </TouchableOpacity>)
         }
     }
@@ -81,6 +99,7 @@ export default class DescargaProgres extends Component {
                     }}
                     duration={10000}>
                     {this.getContenido()}
+              
                 </ProgressCircle>
             </View>
         );

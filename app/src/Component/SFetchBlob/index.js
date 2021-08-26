@@ -3,29 +3,35 @@ import FetchFunction from "./FetchFunction";
 export default class SFetchBlob {
 
     constructor() {
+
     }
+
     descargar = async (props, callback) => {
         console.log("INICIANDO DESCARGA....");
-        var url = props.url+"?key_usuario="+props.key_usuario;
+        console.log(" DESCARGA...." + props.cancelar);
+     
+        var url = props.url + "?key_usuario=" + props.key_usuario;
         console.log(url);
         var myInit = {
             method: 'GET',
             cache: "no-cache",
-         
+
         };
         try {
             var myRequest = new Request(url, myInit);
             let response = await fetch(myRequest);
             const reader = response.body.getReader();
             const contentLength = +response.headers.get('Content-Length');
-            // console.log(contentLength)
             var lastP = false;
-
             let receivedLength = 0; // received that many bytes at the moment
             let chunks = []; // array of received binary chunks (comprises the body)
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) {
+                    break;
+                }
+                if (props.cancelar.estado) {
+                    controller.abort()
                     break;
                 }
                 chunks.push(value);

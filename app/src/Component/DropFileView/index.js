@@ -25,6 +25,7 @@ export const uploadHttp = async ({ props, imput }, callback) => {
     //         console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
     //     };
     // }
+    console.log(AppParams.urlImages);
     xhr.open('POST', AppParams.urlImages + "multipart", true);
     // var sBoundary = "12345";
     // xhr.setRequestHeader("Content-Type", "multipart\/form-data;");
