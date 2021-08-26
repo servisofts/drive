@@ -8,6 +8,7 @@ import SImage from '../SImage';
 class BarraSuperior extends Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             anim: new Animated.Value(0),
         };

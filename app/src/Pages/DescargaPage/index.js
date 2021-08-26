@@ -20,10 +20,22 @@ class DescargaPage extends Component {
             this.props.navigation.goBack();
             return <View />
         }
-
+        this.props.state.usuarioReducer.cancelarDescarga = false
+        var controller = new AbortController();
+        var signal = controller.signal;
+        var dataCancelar = {
+            cancelarfuction: this.props.state.usuarioReducer.cancelarDescargas = () => {
+                this.props.state.usuarioReducer.cancelarDescarga = true
+                this.state.cancelar = this.props.state.usuarioReducer.cancelarDescarga
+                this.setState({ ...this.state })
+            },
+            controller,
+            estado: this.props.state.usuarioReducer.cancelarDescarga
+        }
         var params = this.props.navigation.state.params;
         this.data = params;
         this.state = {
+            dataCancelar,
             _url: new STextImput({
                 defaultValue: AppParams.urlImages + params.key,
                 style: {
@@ -108,7 +120,7 @@ class DescargaPage extends Component {
                                 flex: 1,
                                 height: "100%",
                                 justifyContent: "center",
-                                paddingStart:8,
+                                paddingStart: 8,
                                 // alignItems:"center",
                             }}>
                                 <Text style={{
@@ -126,9 +138,10 @@ class DescargaPage extends Component {
 
                         {/* {this.state._url.getComponent()} */}
                         <DescargaProgres
+                            cancelar={this.state.dataCancelar}
                             descargar={() => {
                                 var url = this.state._url.getValue();
-                                new SFetchBlob().descargar({ url: url, ...this.props.navigation.state.params, key_usuario: this.props.state.usuarioReducer.usuarioLog.key }, (evt) => {
+                                new SFetchBlob().descargar({ cancelar: this.state.dataCancelar, url: url, ...this.props.navigation.state.params, key_usuario: this.props.state.usuarioReducer.usuarioLog.key }, (evt) => {
                                     // console.log(progres)
                                     this._progress.animateTo(1 - evt.porcent, 1, evt);
                                 });
