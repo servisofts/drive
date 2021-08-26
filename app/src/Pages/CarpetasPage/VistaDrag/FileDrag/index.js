@@ -68,6 +68,10 @@ export default class FileDrag extends Component {
                 allowMove = false;
             }
         }
+        if(this.state.isEdit){
+            allowMove = false;
+        }
+
         this.panResponder = PanResponder.create({
             onMoveShouldSetPanResponder: (evt, gestureState) => (gestureState.dx != 0 && gestureState.dy != 0 && allowMove),
             // onShouldBlockNativeResponder:(evt,gh)=>true,
@@ -176,10 +180,12 @@ export default class FileDrag extends Component {
                     width: "100%",
                     fontSize: 8 * this.props.scale,
                     padding: 0,
-                    flex: 1,
+                    height:300,
+                    // flex: 1,
                     textAlign: "center",
                     color: "#fff",
-                    backgroundColor: "transparent"
+                    backgroundColor: "transparent",
+                    overflow:"hidden"
                 }}
                     onBlur={() => {
                         if (this.newName) {
