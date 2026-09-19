@@ -96,6 +96,7 @@ public class File {
                             f.put("type", getMimeType(file));
                             f.put("size", file.length());
                             f.put("lastModified", file.lastModified());
+                            f.put("key", Util.getFileKey(file.getAbsolutePath()));
                             // System.out.println("Archivo: " + file.getName());
                         } else if (file.isDirectory()) {
                             f.put("name", file.getName());
@@ -170,6 +171,7 @@ public class File {
                             f.put("type", getMimeType(file));
                         } catch (Exception e1) {
                         }
+                        f.put("key", Util.getFileKey(file.getAbsolutePath()));
                         f.put("size", file.length());
                         arr.put(f);
                         // System.out.println("Archivo: " + file.getName());
@@ -206,6 +208,7 @@ public class File {
                     f.put("type", getMimeType(file));
                     f.put("size", file.length());
                     f.put("lastModified", file.lastModified());
+                    f.put("key", Util.getFileKey(file.getAbsolutePath()));
                     // System.out.println("Archivo: " + file.getName());
                 } else if (file.isDirectory()) {
                     f.put("name", file.getName());
@@ -348,29 +351,37 @@ public class File {
             Path directory = Paths.get(path);
             Path directory_to = Paths.get(path_to);
 
-            String command = "ffmpeg -i \"" + path + "\" -ss " + startSec + " -to " + endSec + " -c:v libx264 -crf " + crf + " -c:a copy \"" + path_to + "\"";
+            String command = "ffmpeg -i \"" + path + "\" -ss " + startSec + " -to " + endSec + " -c:v libx264 -crf "
+                    + crf + " -c:a copy \"" + path_to + "\"";
             System.out.println(command);
             ProcessBuilder pb = new ProcessBuilder(
-                "ffmpeg", "-i", path,
-                "-ss", String.valueOf(startSec),
-                "-to", String.valueOf(endSec),
-                "-c:v", "libx264",
-                "-crf", String.valueOf(crf),
-                "-c:a", "copy",
-                path_to
-            );
+                    "ffmpeg", "-i", path,
+                    "-ss", String.valueOf(startSec),
+                    "-to", String.valueOf(endSec),
+                    "-c:v", "libx264",
+                    "-crf", String.valueOf(crf),
+                    "-c:a", "copy",
+                    path_to);
             Process process = pb.start();
             new Thread(() -> {
-                try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
+                try (java.io.BufferedReader reader = new java.io.BufferedReader(
+                        new java.io.InputStreamReader(process.getInputStream()))) {
                     String line;
-                    while ((line = reader.readLine()) != null) System.out.println("[ffmpeg stdout] " + line);
-                } catch (IOException e) { e.printStackTrace(); }
+                    while ((line = reader.readLine()) != null)
+                        System.out.println("[ffmpeg stdout] " + line);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }).start();
             new Thread(() -> {
-                try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getErrorStream()))) {
+                try (java.io.BufferedReader reader = new java.io.BufferedReader(
+                        new java.io.InputStreamReader(process.getErrorStream()))) {
                     String line;
-                    while ((line = reader.readLine()) != null) System.out.println("[ffmpeg stderr] " + line);
-                } catch (IOException e) { e.printStackTrace(); }
+                    while ((line = reader.readLine()) != null)
+                        System.out.println("[ffmpeg stderr] " + line);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }).start();
             int exitCode = process.waitFor();
             if (exitCode == 0) {
@@ -378,7 +389,7 @@ public class File {
             } else {
                 obj.put("error", "Error al ejecutar ffmpeg. Código de salida: " + exitCode);
                 obj.put("estado", "error");
-            }   
+            }
             // Verifica si el directorio ya existe
             // if (Files.exists(directory)) {
             // Files.move(directory, directory_to, StandardCopyOption.REPLACE_EXISTING);
